@@ -1,0 +1,1 @@
+- [Next App Router layout](next-app-router-layout.md) — Keep App Router and scaffold Pages Router folders under one source root; remove leftover root app dirs.

@@ -1,19 +1,21 @@
-# [Project name]
+# KashiNagri
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A Varanasi discovery guide for exploring places to stay, food, local areas, culture, transport and itinerary inspiration.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/kashi-nagri run dev` — run the KashiNagri website
+- `pnpm --filter @workspace/kashi-nagri run build` — build the static website export
+- `pnpm --filter @workspace/kashi-nagri run typecheck` — typecheck the website
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
+- Website: Next.js App Router, React, TypeScript, Tailwind CSS, Lucide icons
 - API: Express 5
 - DB: PostgreSQL + Drizzle ORM
 - Validation: Zod (`zod/v4`), `drizzle-zod`
@@ -22,23 +24,27 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/kashi-nagri/src/app/` — App Router pages and shared metadata
+- `artifacts/kashi-nagri/src/App.tsx` — responsive site UI and client-side interactions
+- `artifacts/kashi-nagri/src/data.ts` — illustrative discovery content and types
+- `artifacts/kashi-nagri/src/index.css` — site theme and responsive styling
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- The first release is a frontend-only discovery experience; mock content is labeled illustrative and is not verified inventory.
+- Static export keeps the homepage, Explore and trip preview available without a backend; booking, accounts and itinerary editing are intentionally deferred.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+KashiNagri helps visitors discover Varanasi neighborhoods, stays, food, spiritual services, guides, shopping, local transport, events and trip ideas. The complete itinerary builder is planned for a later part.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Keep future work aligned with the four-part KashiNagri build brief; implement only the current part's scope.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- The generated Vite scaffold contains `src/pages`; Next App Router routes must remain alongside it in `src/app`.
 
 ## Pointers
 
