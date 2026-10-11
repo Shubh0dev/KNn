@@ -1,8 +1,23 @@
 {
   "/_global-error/page": "app/_global-error/page.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/areas/page": "app/areas/page.js",
+  "/events/page": "app/events/page.js",
   "/explore/page": "app/explore/page.js",
+  "/food/[slug]/page": "app/food/[slug]/page.js",
+  "/food/page": "app/food/page.js",
+  "/ghats/page": "app/ghats/page.js",
+  "/guides/[slug]/page": "app/guides/[slug]/page.js",
+  "/guides/page": "app/guides/page.js",
   "/icon.svg/route": "app/icon.svg/route.js",
+  "/local-businesses/page": "app/local-businesses/page.js",
   "/page": "app/page.js",
-  "/plan-my-trip/page": "app/plan-my-trip/page.js"
+  "/places/[slug]/page": "app/places/[slug]/page.js",
+  "/plan-my-trip/page": "app/plan-my-trip/page.js",
+  "/shopping/page": "app/shopping/page.js",
+  "/spiritual-services/page": "app/spiritual-services/page.js",
+  "/stays/[slug]/page": "app/stays/[slug]/page.js",
+  "/stays/page": "app/stays/page.js",
+  "/temples/page": "app/temples/page.js",
+  "/travel/page": "app/travel/page.js"
 }

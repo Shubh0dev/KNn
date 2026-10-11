@@ -35,7 +35,40 @@
     "afterFiles": [],
     "fallback": []
   },
-  "dynamicRoutes": [],
+  "dynamicRoutes": [
+    {
+      "page": "/food/[slug]",
+      "regex": "^/food/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/food/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/guides/[slug]",
+      "regex": "^/guides/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/guides/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/places/[slug]",
+      "regex": "^/places/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/places/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/stays/[slug]",
+      "regex": "^/stays/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/stays/(?<nxtPslug>[^/]+?)(?:/)?$"
+    }
+  ],
   "staticRoutes": [
     {
       "page": "/",
@@ -50,16 +83,52 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/areas",
+      "regex": "^/areas(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/areas(?:/)?$"
+    },
+    {
+      "page": "/events",
+      "regex": "^/events(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/events(?:/)?$"
+    },
+    {
       "page": "/explore",
       "regex": "^/explore(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/explore(?:/)?$"
     },
     {
+      "page": "/food",
+      "regex": "^/food(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/food(?:/)?$"
+    },
+    {
+      "page": "/ghats",
+      "regex": "^/ghats(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/ghats(?:/)?$"
+    },
+    {
+      "page": "/guides",
+      "regex": "^/guides(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/guides(?:/)?$"
+    },
+    {
       "page": "/icon.svg",
       "regex": "^/icon\\.svg(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/icon\\.svg(?:/)?$"
+    },
+    {
+      "page": "/local-businesses",
+      "regex": "^/local\\-businesses(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/local\\-businesses(?:/)?$"
     },
     {
       "page": "/not-found",
@@ -72,6 +141,36 @@
       "regex": "^/plan\\-my\\-trip(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/plan\\-my\\-trip(?:/)?$"
+    },
+    {
+      "page": "/shopping",
+      "regex": "^/shopping(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/shopping(?:/)?$"
+    },
+    {
+      "page": "/spiritual-services",
+      "regex": "^/spiritual\\-services(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/spiritual\\-services(?:/)?$"
+    },
+    {
+      "page": "/stays",
+      "regex": "^/stays(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/stays(?:/)?$"
+    },
+    {
+      "page": "/temples",
+      "regex": "^/temples(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/temples(?:/)?$"
+    },
+    {
+      "page": "/travel",
+      "regex": "^/travel(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/travel(?:/)?$"
     }
   ],
   "dataRoutes": [],

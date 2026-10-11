@@ -27,7 +27,7 @@ function Brand() {
   </Link>;
 }
 
-function Header() {
+export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [language, setLanguage] = useState<'EN' | 'हिं'>('EN');
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -40,18 +40,35 @@ function Header() {
     setMenuOpen(false);
   };
   const navGroups = [
-    { name: 'Temples & Darshan', choices: ['Kashi Vishwanath', 'Temple etiquette', 'Darshan guide'] },
-    { name: 'Ghats & Ganga', choices: ['Explore the ghats', 'Ganga Aarti', 'River journeys'] },
-    { name: 'Stay in Kashi', choices: ['Budget rooms', 'Heritage stays', 'Homestays'] },
-    { name: 'Food & Dining', choices: ['Street food', 'Traditional thali', 'Cafés'] },
-    { name: 'Travel', choices: ['Getting around', 'Railway connections', 'Airport arrivals'] },
-    { name: 'Shopping', choices: ['Banarasi sarees', 'Handicrafts', 'Local markets'] },
-    { name: 'Spiritual Services', choices: ['Puja & path', 'Pandit & purohit', 'Jyotish'] },
-    { name: 'Guides', choices: ['Temple walks', 'Food walks', 'Ghat stories'] },
-    { name: 'Events', choices: ['Festivals', 'Ganga Aarti', 'Seasonal calendar'] },
-    { name: 'More', choices: ['Local directory', 'My Kashi Trip', 'About KashiNagri'] },
+    { name: 'Temples & Darshan', route: '/temples', choices: ['Kashi Vishwanath', 'Temple etiquette', 'Darshan guide'] },
+    { name: 'Ghats & Ganga', route: '/ghats', choices: ['Explore the ghats', 'Ganga Aarti', 'River journeys'] },
+    { name: 'Stay in Kashi', route: '/stays', choices: ['Budget rooms', 'Heritage stays', 'Homestays'] },
+    { name: 'Food & Dining', route: '/food', choices: ['Street food', 'Traditional thali', 'Cafés'] },
+    { name: 'Travel', route: '/travel', choices: ['Getting around', 'Railway connections', 'Airport arrivals'] },
+    { name: 'Shopping', route: '/shopping', choices: ['Banarasi sarees', 'Handicrafts', 'Local markets'] },
+    { name: 'Spiritual Services', route: '/spiritual-services', choices: ['Puja & path', 'Pandit & purohit', 'Jyotish'] },
+    { name: 'Guides', route: '/guides', choices: ['Temple walks', 'Food walks', 'Ghat stories'] },
+    { name: 'Events', route: '/events', choices: ['Festivals', 'Ganga Aarti', 'Seasonal calendar'] },
+    { name: 'More', route: '/local-businesses', choices: ['Local directory', 'Areas of Kashi', 'My Kashi Trip'] },
   ];
-  const routeFor = (label: string) => label === 'My Kashi Trip' ? '/plan-my-trip' : `/explore?q=${encodeURIComponent(label)}`;
+  const routeFor = (label: string) => {
+    if (label === 'My Kashi Trip') return '/plan-my-trip';
+    const map: Record<string, string> = {
+      'Kashi Vishwanath': '/places/kashi-vishwanath', 'Temple etiquette': '/places/temple-etiquette',
+      'Darshan guide': '/temples', 'Explore the ghats': '/ghats', 'Ganga Aarti': '/events/daily-aarti-context',
+      'River journeys': '/travel/river-journey-context', 'Budget rooms': '/stays/value-rooms',
+      'Heritage stays': '/stays/heritage-inspired-stay', 'Homestays': '/stays/local-homestay',
+      'Street food': '/food/morning-kachori', 'Traditional thali': '/food', 'Cafés': '/food/chai-pause',
+      'Getting around': '/travel/moving-through-lanes', 'Railway connections': '/travel/arriving-by-rail',
+      'Airport arrivals': '/travel', 'Banarasi sarees': '/shopping/banarasi-weaving',
+      'Handicrafts': '/shopping', 'Local markets': '/shopping/market-wander', 'Puja & path': '/spiritual-services/puja-basics',
+      'Pandit & purohit': '/spiritual-services/finding-spiritual-guidance', 'Jyotish': '/spiritual-services/jyotish-context',
+      'Temple walks': '/guides/old-city-walk', 'Food walks': '/guides/food-culture-walk',
+      'Ghat stories': '/guides/river-stories', 'Festivals': '/events/dev-deepawali-context',
+      'Seasonal calendar': '/events', 'Local directory': '/local-businesses', 'Areas of Kashi': '/areas',
+    };
+    return map[label] ?? `/explore?q=${encodeURIComponent(label)}`;
+  };
   return <header className="site-header">
     <div className="header-main page-shell">
       <button className="mobile-menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'} aria-expanded={menuOpen} data-testid="button-mobile-menu">
@@ -80,6 +97,7 @@ function Header() {
           </button>
           {activeDropdown === group.name && <div className="nav-popover">
             <span className="eyebrow">Discover in Kashi</span>
+            <Link href={group.route} onClick={() => { setActiveDropdown(null); setMenuOpen(false); }}>Browse all {group.name}<ArrowRight size={13} /></Link>
             {group.choices.map(choice => <Link key={choice} href={routeFor(choice)} onClick={() => { setActiveDropdown(null); setMenuOpen(false); }} data-testid={`link-menu-${choice.toLowerCase().replaceAll(' ', '-')}`}>{choice}<ArrowUpRight size={13} /></Link>)}
           </div>}
         </div>)}
@@ -135,11 +153,20 @@ function Hero() {
 }
 
 function ShortcutStrip() {
+  const destination = (label: string) => {
+    const routes: Record<string, string> = {
+      'Temples & Darshan': '/temples', 'Ghats & Ganga': '/ghats', 'Stay in Kashi': '/stays',
+      'Food & Dining': '/food', 'Travel & Transport': '/travel', 'Spiritual Services': '/spiritual-services',
+      'Guides & Experiences': '/guides', 'Shopping & Markets': '/shopping', 'Local Directory': '/local-businesses',
+      'Events & Festivals': '/events',
+    };
+    return routes[label] ?? '/areas';
+  };
   return <section className="shortcut-section page-shell" aria-label="Explore by category">
     <div className="shortcut-intro"><span className="eyebrow">Begin anywhere</span><p>Find your<br />Kashi.</p></div>
     <div className="shortcut-grid">{shortcuts.map((item, index) => {
       const Icon = shortcutIcons[item.icon];
-      const href = item.label === 'My Kashi Trip' ? '/plan-my-trip' : `/explore?q=${encodeURIComponent(item.query)}`;
+      const href = item.label === 'My Kashi Trip' ? '/plan-my-trip' : destination(item.label);
       return <Link href={href} className="shortcut-item" key={item.label} data-testid={`shortcut-${item.icon}`}>
         <span className={`shortcut-icon tone-${index % 4}`}><Icon size={19} strokeWidth={1.65} /></span><span>{item.label}</span>
       </Link>;
@@ -155,7 +182,8 @@ function SectionTitle({ eyebrow, title, note, href, action = 'View all' }: { eye
 }
 
 function DiscoveryCard({ item, number, compact = false }: { item: Discovery; number: number; compact?: boolean }) {
-  return <Link href={`/explore?q=${encodeURIComponent(item.title)}`} className={`discovery-card ${compact ? 'compact-card' : ''}`} data-testid={`card-discovery-${item.id}`}>
+  const categoryRoutes: Record<string, string> = { Stays: '/stays', Food: '/food', Spiritual: '/spiritual-services', Areas: '/areas', Experiences: '/guides', Shopping: '/shopping', Travel: '/travel', Events: '/events' };
+  return <Link href={categoryRoutes[item.category] ?? '/explore'} className={`discovery-card ${compact ? 'compact-card' : ''}`} data-testid={`card-discovery-${item.id}`}>
     <div className="discovery-image" style={{ backgroundImage: `linear-gradient(0deg, rgba(31,20,16,.57), transparent 72%), url("${item.image ?? '/kashi-lanes.jpg'}")` }}>
       <span className="card-index">{String(number).padStart(2, '0')}</span>
       {item.label && <span className="card-label">{item.label}</span>}
@@ -178,7 +206,7 @@ function StaySection() {
   const [stayType, setStayType] = useState('All stays');
   const visible = stayType === 'All stays' ? stays : stays.filter(item => item.title.toLowerCase().includes(stayType.split(' ')[0].toLowerCase()));
   return <section className="content-section stay-section" id="stays"><div className="page-shell">
-    <SectionTitle eyebrow="Stay a little longer" title="Stay in Kashi" note="A place to rest, from simple pilgrim stays to heritage homes." href="/explore?category=stays" />
+    <SectionTitle eyebrow="Stay a little longer" title="Stay in Kashi" note="A place to rest, from simple pilgrim stays to heritage homes." href="/stays" />
     <div className="stay-controls" aria-label="Filter stay ideas">{['All stays', 'Budget', 'Luxury', 'Guest house', 'Homestay'].map(type => <button className={stayType === type ? 'active' : ''} onClick={() => setStayType(type)} key={type} data-testid={`filter-stays-${type.toLowerCase().replaceAll(' ', '-')}`}>{type}</button>)}</div>
     {visible.length ? <div className="discovery-grid columns-5 stay-grid">{visible.map((item, index) => <DiscoveryCard item={item} number={index + 1} key={item.id} />)}</div> : <div className="filter-empty">More {stayType.toLowerCase()} ideas are being gathered. <button onClick={() => setStayType('All stays')}>See all stay types</button></div>}
     <div className="stay-types"><span>Also explore</span>{['Dharamshalas', 'PG & hostels', 'Long-stay rentals', 'Family stays'].map(label => <Link href={`/explore?q=${encodeURIComponent(label)}`} key={label} data-testid={`link-stay-type-${label.toLowerCase().replaceAll(' ', '-')}`}>{label}<ArrowRight size={13} /></Link>)}</div>
@@ -238,13 +266,13 @@ function TrustAndPartner() {
   </>;
 }
 
-function Footer() {
+export function Footer() {
   const [dialog, setDialog] = useState('');
   return <><footer className="site-footer"><div className="page-shell">
     <div className="footer-main"><div className="footer-brand"><Brand /><p>A thoughtful starting point for discovering the many layers of Kashi.</p><span className="footer-coordinate">25°18′N &nbsp; 83°00′E</span></div>
-      <div className="footer-column"><strong>Discover</strong><Link href="/explore?q=temple">Temples & ghats</Link><Link href="/explore?q=food">Food & dining</Link><Link href="/explore?q=stay">Places to stay</Link><Link href="/explore?q=shopping">Markets & craft</Link></div>
-      <div className="footer-column"><strong>Plan a visit</strong><Link href="/explore?q=transport">Getting around</Link><Link href="/explore?q=festival">Events & festivals</Link><Link href="/explore?q=guide">Local experiences</Link><Link href="/plan-my-trip">My Kashi Trip</Link></div>
-      <div className="footer-column"><strong>KashiNagri</strong><Link href="/explore?q=kashi">About the guide</Link><button onClick={() => setDialog('Contact KashiNagri')} data-testid="button-footer-contact">Contact</button><button onClick={() => setDialog('Privacy notice')} data-testid="button-privacy">Privacy notice</button><button onClick={() => setDialog('Terms of use')} data-testid="button-terms">Terms of use</button></div>
+      <div className="footer-column"><strong>Discover</strong><Link href="/temples">Temples</Link><Link href="/ghats">Ghats & Ganga</Link><Link href="/food">Food & dining</Link><Link href="/stays">Places to stay</Link><Link href="/shopping">Markets & craft</Link></div>
+      <div className="footer-column"><strong>Plan a visit</strong><Link href="/travel">Getting around</Link><Link href="/events">Events & festivals</Link><Link href="/guides">Local experiences</Link><Link href="/areas">Explore by area</Link><Link href="/plan-my-trip">My Kashi Trip</Link></div>
+      <div className="footer-column"><strong>KashiNagri</strong><Link href="/local-businesses">Local directory</Link><Link href="/spiritual-services">Spiritual services</Link><button onClick={() => setDialog('Contact KashiNagri')} data-testid="button-footer-contact">Contact</button><button onClick={() => setDialog('Privacy notice')} data-testid="button-privacy">Privacy notice</button><button onClick={() => setDialog('Terms of use')} data-testid="button-terms">Terms of use</button></div>
     </div>
     <div className="footer-disclosure"><p><strong>A note on information</strong> — KashiNagri is a discovery concept. Sample content is illustrative, not a verified listing or endorsement. Please confirm current details, timings, safety and prices directly with local providers.</p><button onClick={() => setDialog('Share feedback')} data-testid="button-footer-feedback">Share feedback <ArrowUpRight size={13} /></button></div>
     <div className="footer-bottom"><span>© 2026 KashiNagri · Your Complete Guide to Kashi</span><span>Made with respect for the city and its people.</span><div className="footer-social"><button onClick={() => setDialog('Contact KashiNagri')} data-testid="button-social-contact">Contact</button><button onClick={() => setDialog('Social links')} data-testid="button-social-links">Social links <ArrowUpRight size={11} /></button></div></div>
@@ -254,18 +282,18 @@ function Footer() {
 export function HomePage() {
   return <><Header /><main><Hero /><ShortcutStrip /><StaySection />
     <div className="split-sections page-shell">
-      <section className="mini-section" id="food"><SectionTitle eyebrow="Taste the city" title="Food & Dining" note="A morning bite, a long lunch, one more sweet." href="/explore?category=food" /><div className="mini-grid">{foods.slice(0, 4).map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div><p className="section-footnote">Local discovery ideas · details may change</p></section>
-      <section className="mini-section spiritual-mini" id="spiritual"><SectionTitle eyebrow="Meaning & ritual" title="Spiritual services" note="Learn what is offered, and how to take part respectfully." href="/explore?category=spiritual" /><div className="mini-grid">{spiritual.map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div><p className="section-footnote">Sample categories · confirm arrangements directly</p></section>
+      <section className="mini-section" id="food"><SectionTitle eyebrow="Taste the city" title="Food & Dining" note="A morning bite, a long lunch, one more sweet." href="/food" /><div className="mini-grid">{foods.slice(0, 4).map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div><p className="section-footnote">Local discovery ideas · details may change</p></section>
+      <section className="mini-section spiritual-mini" id="spiritual"><SectionTitle eyebrow="Meaning & ritual" title="Spiritual services" note="Learn what is offered, and how to take part respectfully." href="/spiritual-services" /><div className="mini-grid">{spiritual.map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div><p className="section-footnote">Sample categories · confirm arrangements directly</p></section>
     </div>
-    <CardSection id="areas" eyebrow="Find your corner" title="Explore Kashi by area" note="Every neighbourhood carries its own pace and point of view." items={areas} href="/explore?category=areas" columns={6} />
+      <CardSection id="areas" eyebrow="Find your corner" title="Explore Kashi by area" note="Every neighbourhood carries its own pace and point of view." items={areas} href="/areas" columns={6} />
     <ItineraryCallout />
     <div className="lower-discover page-shell">
-      <section className="mini-section"><SectionTitle eyebrow="Go a little deeper" title="Guides & experiences" note="Meet the city through stories, walks and the river." href="/explore?category=experiences" /><div className="mini-grid">{experiences.map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div></section>
-      <section className="mini-section craft-mini"><SectionTitle eyebrow="Take a story home" title="Shopping in Kashi" note="Craft, colour and keepsakes with a sense of place." href="/explore?category=shopping" /><div className="mini-grid">{shopping.map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div></section>
+      <section className="mini-section"><SectionTitle eyebrow="Go a little deeper" title="Guides & experiences" note="Meet the city through stories, walks and the river." href="/guides" /><div className="mini-grid">{experiences.map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div></section>
+      <section className="mini-section craft-mini"><SectionTitle eyebrow="Take a story home" title="Shopping in Kashi" note="Craft, colour and keepsakes with a sense of place." href="/shopping" /><div className="mini-grid">{shopping.map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div></section>
     </div>
     <div className="lower-discover travel-events page-shell">
-      <section className="mini-section"><SectionTitle eyebrow="Getting here, getting around" title="Travel & transport" note="A little orientation for arriving and moving through town." href="/explore?category=travel" /><div className="mini-grid">{transport.map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div></section>
-      <section className="mini-section events-mini"><SectionTitle eyebrow="The city in celebration" title="Events & festivals" note="Rituals and gatherings that give the calendar its rhythm." href="/explore?category=events" /><div className="mini-grid">{events.map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div></section>
+      <section className="mini-section"><SectionTitle eyebrow="Getting here, getting around" title="Travel & transport" note="A little orientation for arriving and moving through town." href="/travel" /><div className="mini-grid">{transport.map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div></section>
+      <section className="mini-section events-mini"><SectionTitle eyebrow="The city in celebration" title="Events & festivals" note="Rituals and gatherings that give the calendar its rhythm." href="/events" /><div className="mini-grid">{events.map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div></section>
     </div>
     <TrustAndPartner />
   </main><Footer /></>;

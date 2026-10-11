@@ -5,6 +5,10 @@
 __turbopack_context__.s([
     "ExplorePage",
     ()=>ExplorePage,
+    "Footer",
+    ()=>Footer,
+    "Header",
+    ()=>Header,
     "HomePage",
     ()=>HomePage,
     "PlanPreviewPage",
@@ -132,6 +136,7 @@ function Header() {
     const navGroups = [
         {
             name: 'Temples & Darshan',
+            route: '/temples',
             choices: [
                 'Kashi Vishwanath',
                 'Temple etiquette',
@@ -140,6 +145,7 @@ function Header() {
         },
         {
             name: 'Ghats & Ganga',
+            route: '/ghats',
             choices: [
                 'Explore the ghats',
                 'Ganga Aarti',
@@ -148,6 +154,7 @@ function Header() {
         },
         {
             name: 'Stay in Kashi',
+            route: '/stays',
             choices: [
                 'Budget rooms',
                 'Heritage stays',
@@ -156,6 +163,7 @@ function Header() {
         },
         {
             name: 'Food & Dining',
+            route: '/food',
             choices: [
                 'Street food',
                 'Traditional thali',
@@ -164,6 +172,7 @@ function Header() {
         },
         {
             name: 'Travel',
+            route: '/travel',
             choices: [
                 'Getting around',
                 'Railway connections',
@@ -172,6 +181,7 @@ function Header() {
         },
         {
             name: 'Shopping',
+            route: '/shopping',
             choices: [
                 'Banarasi sarees',
                 'Handicrafts',
@@ -180,6 +190,7 @@ function Header() {
         },
         {
             name: 'Spiritual Services',
+            route: '/spiritual-services',
             choices: [
                 'Puja & path',
                 'Pandit & purohit',
@@ -188,6 +199,7 @@ function Header() {
         },
         {
             name: 'Guides',
+            route: '/guides',
             choices: [
                 'Temple walks',
                 'Food walks',
@@ -196,6 +208,7 @@ function Header() {
         },
         {
             name: 'Events',
+            route: '/events',
             choices: [
                 'Festivals',
                 'Ganga Aarti',
@@ -204,14 +217,48 @@ function Header() {
         },
         {
             name: 'More',
+            route: '/local-businesses',
             choices: [
                 'Local directory',
-                'My Kashi Trip',
-                'About KashiNagri'
+                'Areas of Kashi',
+                'My Kashi Trip'
             ]
         }
     ];
-    const routeFor = (label)=>label === 'My Kashi Trip' ? '/plan-my-trip' : `/explore?q=${encodeURIComponent(label)}`;
+    const routeFor = (label)=>{
+        if (label === 'My Kashi Trip') return '/plan-my-trip';
+        const map = {
+            'Kashi Vishwanath': '/places/kashi-vishwanath',
+            'Temple etiquette': '/places/temple-etiquette',
+            'Darshan guide': '/temples',
+            'Explore the ghats': '/ghats',
+            'Ganga Aarti': '/events/daily-aarti-context',
+            'River journeys': '/travel/river-journey-context',
+            'Budget rooms': '/stays/value-rooms',
+            'Heritage stays': '/stays/heritage-inspired-stay',
+            'Homestays': '/stays/local-homestay',
+            'Street food': '/food/morning-kachori',
+            'Traditional thali': '/food',
+            'Cafés': '/food/chai-pause',
+            'Getting around': '/travel/moving-through-lanes',
+            'Railway connections': '/travel/arriving-by-rail',
+            'Airport arrivals': '/travel',
+            'Banarasi sarees': '/shopping/banarasi-weaving',
+            'Handicrafts': '/shopping',
+            'Local markets': '/shopping/market-wander',
+            'Puja & path': '/spiritual-services/puja-basics',
+            'Pandit & purohit': '/spiritual-services/finding-spiritual-guidance',
+            'Jyotish': '/spiritual-services/jyotish-context',
+            'Temple walks': '/guides/old-city-walk',
+            'Food walks': '/guides/food-culture-walk',
+            'Ghat stories': '/guides/river-stories',
+            'Festivals': '/events/dev-deepawali-context',
+            'Seasonal calendar': '/events',
+            'Local directory': '/local-businesses',
+            'Areas of Kashi': '/areas'
+        };
+        return map[label] ?? `/explore?q=${encodeURIComponent(label)}`;
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
         className: "site-header",
         children: [
@@ -228,23 +275,23 @@ function Header() {
                             size: 21
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 58,
+                            lineNumber: 75,
                             columnNumber: 21
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$lucide$2d$react$40$0$2e$545$2e$0_react$40$19$2e$1$2e$0$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__["Menu"], {
                             size: 21
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 58,
+                            lineNumber: 75,
                             columnNumber: 39
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 57,
+                        lineNumber: 74,
                         columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Brand, {}, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 60,
+                        lineNumber: 77,
                         columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -256,7 +303,7 @@ function Header() {
                                 size: 16
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 62,
+                                lineNumber: 79,
                                 columnNumber: 9
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -267,7 +314,7 @@ function Header() {
                                 "data-testid": "input-header-search"
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 63,
+                                lineNumber: 80,
                                 columnNumber: 9
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -278,18 +325,18 @@ function Header() {
                                     size: 16
                                 }, void 0, false, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 64,
+                                    lineNumber: 81,
                                     columnNumber: 86
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 64,
+                                lineNumber: 81,
                                 columnNumber: 9
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 61,
+                        lineNumber: 78,
                         columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -304,20 +351,20 @@ function Header() {
                                         size: 16
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 67,
+                                        lineNumber: 84,
                                         columnNumber: 83
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         children: "Explore on map"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 67,
+                                        lineNumber: 84,
                                         columnNumber: 103
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 67,
+                                lineNumber: 84,
                                 columnNumber: 9
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -332,7 +379,7 @@ function Header() {
                                             size: 15
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 69,
+                                            lineNumber: 86,
                                             columnNumber: 168
                                         }, this),
                                         " ",
@@ -342,18 +389,18 @@ function Header() {
                                             size: 12
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 69,
+                                            lineNumber: 86,
                                             columnNumber: 200
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 69,
+                                    lineNumber: 86,
                                     columnNumber: 11
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 68,
+                                lineNumber: 85,
                                 columnNumber: 9
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -366,32 +413,32 @@ function Header() {
                                         size: 19
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 71,
+                                        lineNumber: 88,
                                         columnNumber: 161
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         children: "Login / Register"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 71,
+                                        lineNumber: 88,
                                         columnNumber: 190
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 71,
+                                lineNumber: 88,
                                 columnNumber: 9
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 66,
+                        lineNumber: 83,
                         columnNumber: 7
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 56,
+                lineNumber: 73,
                 columnNumber: 5
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
@@ -408,7 +455,7 @@ function Header() {
                             children: "Home"
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 76,
+                            lineNumber: 93,
                             columnNumber: 9
                         }, this),
                         navGroups.map((group)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -425,13 +472,13 @@ function Header() {
                                                 size: 12
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 79,
+                                                lineNumber: 96,
                                                 columnNumber: 25
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 78,
+                                        lineNumber: 95,
                                         columnNumber: 11
                                     }, this),
                                     activeDropdown === group.name && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -442,7 +489,29 @@ function Header() {
                                                 children: "Discover in Kashi"
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 82,
+                                                lineNumber: 99,
+                                                columnNumber: 13
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                href: group.route,
+                                                onClick: ()=>{
+                                                    setActiveDropdown(null);
+                                                    setMenuOpen(false);
+                                                },
+                                                children: [
+                                                    "Browse all ",
+                                                    group.name,
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$lucide$2d$react$40$0$2e$545$2e$0_react$40$19$2e$1$2e$0$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
+                                                        size: 13
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
+                                                        lineNumber: 100,
+                                                        columnNumber: 126
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
+                                                lineNumber: 100,
                                                 columnNumber: 13
                                             }, this),
                                             group.choices.map((choice)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -458,25 +527,25 @@ function Header() {
                                                             size: 13
                                                         }, void 0, false, {
                                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                            lineNumber: 83,
+                                                            lineNumber: 101,
                                                             columnNumber: 229
                                                         }, this)
                                                     ]
                                                 }, choice, true, {
                                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                    lineNumber: 83,
+                                                    lineNumber: 101,
                                                     columnNumber: 42
                                                 }, this))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 81,
+                                        lineNumber: 98,
                                         columnNumber: 45
                                     }, this)
                                 ]
                             }, group.name, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 77,
+                                lineNumber: 94,
                                 columnNumber: 33
                             }, this)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -490,24 +559,24 @@ function Header() {
                                     size: 13
                                 }, void 0, false, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 86,
+                                    lineNumber: 104,
                                     columnNumber: 134
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 86,
+                            lineNumber: 104,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 75,
+                    lineNumber: 92,
                     columnNumber: 7
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 74,
+                lineNumber: 91,
                 columnNumber: 5
             }, this),
             activeDropdown && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -516,7 +585,7 @@ function Header() {
                 "aria-label": "Close navigation dropdown"
             }, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 89,
+                lineNumber: 107,
                 columnNumber: 24
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(InfoDialog, {
@@ -524,13 +593,13 @@ function Header() {
                 onClose: ()=>setAccountInfo(false)
             }, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 90,
+                lineNumber: 108,
                 columnNumber: 5
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 55,
+        lineNumber: 72,
         columnNumber: 10
     }, this);
 }
@@ -557,7 +626,7 @@ function SearchBox({ initial = '', onSearch, buttonLabel = 'Explore Kashi' }) {
                 className: "search-pin"
             }, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 98,
+                lineNumber: 116,
                 columnNumber: 5
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -568,7 +637,7 @@ function SearchBox({ initial = '', onSearch, buttonLabel = 'Explore Kashi' }) {
                 "data-testid": "input-discovery-search"
             }, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 99,
+                lineNumber: 117,
                 columnNumber: 5
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -579,26 +648,26 @@ function SearchBox({ initial = '', onSearch, buttonLabel = 'Explore Kashi' }) {
                         size: 16
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 100,
+                        lineNumber: 118,
                         columnNumber: 65
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                         children: buttonLabel
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 100,
+                        lineNumber: 118,
                         columnNumber: 85
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 100,
+                lineNumber: 118,
                 columnNumber: 5
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 97,
+        lineNumber: 115,
         columnNumber: 10
     }, this);
 }
@@ -632,7 +701,7 @@ function FinderResults({ query, onClear }) {
                                 children: "Your search"
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 112,
+                                lineNumber: 130,
                                 columnNumber: 42
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -643,13 +712,13 @@ function FinderResults({ query, onClear }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 112,
+                                lineNumber: 130,
                                 columnNumber: 86
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 112,
+                        lineNumber: 130,
                         columnNumber: 37
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -660,18 +729,18 @@ function FinderResults({ query, onClear }) {
                             size: 17
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 112,
+                            lineNumber: 130,
                             columnNumber: 214
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 112,
+                        lineNumber: 130,
                         columnNumber: 120
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 112,
+                lineNumber: 130,
                 columnNumber: 5
             }, this),
             results.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -692,31 +761,31 @@ function FinderResults({ query, onClear }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 113,
+                                        lineNumber: 131,
                                         columnNumber: 239
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 113,
+                                lineNumber: 131,
                                 columnNumber: 221
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$lucide$2d$react$40$0$2e$545$2e$0_react$40$19$2e$1$2e$0$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
                                 size: 15
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 113,
+                                lineNumber: 131,
                                 columnNumber: 294
                             }, this)
                         ]
                     }, item.id, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 113,
+                        lineNumber: 131,
                         columnNumber: 80
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 113,
+                lineNumber: 131,
                 columnNumber: 27
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "no-results",
@@ -725,27 +794,27 @@ function FinderResults({ query, onClear }) {
                         size: 20
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 113,
+                        lineNumber: 131,
                         columnNumber: 364
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
                         children: "No matches yet"
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 113,
+                        lineNumber: 131,
                         columnNumber: 384
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                         children: "Try “ghat”, “food”, “stay” or “saree”."
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 113,
+                        lineNumber: 131,
                         columnNumber: 415
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 113,
+                lineNumber: 131,
                 columnNumber: 336
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -753,13 +822,13 @@ function FinderResults({ query, onClear }) {
                 children: __TURBOPACK__imported__module__$5b$project$5d2f$artifacts$2f$kashi$2d$nagri$2f$src$2f$data$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["sampleNote"]
             }, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 114,
+                lineNumber: 132,
                 columnNumber: 5
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 111,
+        lineNumber: 129,
         columnNumber: 10
     }, this);
 }
@@ -788,14 +857,14 @@ function Hero() {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {}, void 0, false, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 124,
+                                    lineNumber: 142,
                                     columnNumber: 38
                                 }, this),
                                 " A city with a thousand stories"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 124,
+                            lineNumber: 142,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -803,20 +872,20 @@ function Hero() {
                                 "Experience the",
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 125,
+                                    lineNumber: 143,
                                     columnNumber: 27
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("em", {
                                     children: "Divine Kashi"
                                 }, void 0, false, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 125,
+                                    lineNumber: 143,
                                     columnNumber: 33
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 125,
+                            lineNumber: 143,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -826,21 +895,21 @@ function Hero() {
                                     className: "desktop-break"
                                 }, void 0, false, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 126,
+                                    lineNumber: 144,
                                     columnNumber: 58
                                 }, this),
                                 " Find your own way into the city."
                             ]
                         }, void 0, true, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 126,
+                            lineNumber: 144,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SearchBox, {
                             onSearch: setSearch
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 127,
+                            lineNumber: 145,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -858,12 +927,12 @@ function Hero() {
                                     children: chip
                                 }, chip, false, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 128,
+                                    lineNumber: 146,
                                     columnNumber: 95
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 128,
+                            lineNumber: 146,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FinderResults, {
@@ -871,13 +940,13 @@ function Hero() {
                             onClear: ()=>setSearch('')
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 129,
+                            lineNumber: 147,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 123,
+                    lineNumber: 141,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -887,19 +956,19 @@ function Hero() {
                             children: "25°18′N  83°00′E"
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 131,
+                            lineNumber: 149,
                             columnNumber: 37
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("i", {}, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 131,
+                            lineNumber: 149,
                             columnNumber: 71
                         }, this),
                         " Ganga riverfront, Varanasi"
                     ]
                 }, void 0, true, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 131,
+                    lineNumber: 149,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -907,24 +976,39 @@ function Hero() {
                     children: "KASHI · THE ETERNAL CITY"
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 132,
+                    lineNumber: 150,
                     columnNumber: 7
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-            lineNumber: 122,
+            lineNumber: 140,
             columnNumber: 5
         }, this)
     }, void 0, false, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 121,
+        lineNumber: 139,
         columnNumber: 10
     }, this);
 }
 _s3(Hero, "xMSft3/sbCidYXUzqinUsZIh+qY=");
 _c4 = Hero;
 function ShortcutStrip() {
+    const destination = (label)=>{
+        const routes = {
+            'Temples & Darshan': '/temples',
+            'Ghats & Ganga': '/ghats',
+            'Stay in Kashi': '/stays',
+            'Food & Dining': '/food',
+            'Travel & Transport': '/travel',
+            'Spiritual Services': '/spiritual-services',
+            'Guides & Experiences': '/guides',
+            'Shopping & Markets': '/shopping',
+            'Local Directory': '/local-businesses',
+            'Events & Festivals': '/events'
+        };
+        return routes[label] ?? '/areas';
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         className: "shortcut-section page-shell",
         "aria-label": "Explore by category",
@@ -937,7 +1021,7 @@ function ShortcutStrip() {
                         children: "Begin anywhere"
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 139,
+                        lineNumber: 166,
                         columnNumber: 37
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -945,27 +1029,27 @@ function ShortcutStrip() {
                             "Find your",
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 139,
+                                lineNumber: 166,
                                 columnNumber: 96
                             }, this),
                             "Kashi."
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 139,
+                        lineNumber: 166,
                         columnNumber: 84
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 139,
+                lineNumber: 166,
                 columnNumber: 5
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "shortcut-grid",
                 children: __TURBOPACK__imported__module__$5b$project$5d2f$artifacts$2f$kashi$2d$nagri$2f$src$2f$data$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["shortcuts"].map((item, index)=>{
                     const Icon = shortcutIcons[item.icon];
-                    const href = item.label === 'My Kashi Trip' ? '/plan-my-trip' : `/explore?q=${encodeURIComponent(item.query)}`;
+                    const href = item.label === 'My Kashi Trip' ? '/plan-my-trip' : destination(item.label);
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: href,
                         className: "shortcut-item",
@@ -978,37 +1062,37 @@ function ShortcutStrip() {
                                     strokeWidth: 1.65
                                 }, void 0, false, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 144,
+                                    lineNumber: 171,
                                     columnNumber: 61
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 144,
+                                lineNumber: 171,
                                 columnNumber: 9
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 children: item.label
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 144,
+                                lineNumber: 171,
                                 columnNumber: 105
                             }, this)
                         ]
                     }, item.label, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 143,
+                        lineNumber: 170,
                         columnNumber: 14
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 140,
+                lineNumber: 167,
                 columnNumber: 5
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 138,
+        lineNumber: 165,
         columnNumber: 10
     }, this);
 }
@@ -1024,7 +1108,7 @@ function SectionTitle({ eyebrow, title, note, href, action = 'View all' }) {
                         children: eyebrow
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 152,
+                        lineNumber: 179,
                         columnNumber: 10
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1032,20 +1116,20 @@ function SectionTitle({ eyebrow, title, note, href, action = 'View all' }) {
                         children: title
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 152,
+                        lineNumber: 179,
                         columnNumber: 52
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: note
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 152,
+                        lineNumber: 179,
                         columnNumber: 86
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 152,
+                lineNumber: 179,
                 columnNumber: 5
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1058,26 +1142,36 @@ function SectionTitle({ eyebrow, title, note, href, action = 'View all' }) {
                         size: 15
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 153,
+                        lineNumber: 180,
                         columnNumber: 123
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 153,
+                lineNumber: 180,
                 columnNumber: 5
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 151,
+        lineNumber: 178,
         columnNumber: 10
     }, this);
 }
 _c6 = SectionTitle;
 function DiscoveryCard({ item, number, compact = false }) {
+    const categoryRoutes = {
+        Stays: '/stays',
+        Food: '/food',
+        Spiritual: '/spiritual-services',
+        Areas: '/areas',
+        Experiences: '/guides',
+        Shopping: '/shopping',
+        Travel: '/travel',
+        Events: '/events'
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-        href: `/explore?q=${encodeURIComponent(item.title)}`,
+        href: categoryRoutes[item.category] ?? '/explore',
         className: `discovery-card ${compact ? 'compact-card' : ''}`,
         "data-testid": `card-discovery-${item.id}`,
         children: [
@@ -1092,7 +1186,7 @@ function DiscoveryCard({ item, number, compact = false }) {
                         children: String(number).padStart(2, '0')
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 160,
+                        lineNumber: 188,
                         columnNumber: 7
                     }, this),
                     item.label && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1100,7 +1194,7 @@ function DiscoveryCard({ item, number, compact = false }) {
                         children: item.label
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 161,
+                        lineNumber: 189,
                         columnNumber: 22
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1109,18 +1203,18 @@ function DiscoveryCard({ item, number, compact = false }) {
                             size: 15
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 162,
+                            lineNumber: 190,
                             columnNumber: 37
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 162,
+                        lineNumber: 190,
                         columnNumber: 7
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 159,
+                lineNumber: 187,
                 columnNumber: 5
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1130,26 +1224,26 @@ function DiscoveryCard({ item, number, compact = false }) {
                         children: item.title
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 164,
+                        lineNumber: 192,
                         columnNumber: 37
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: item.subtitle
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 164,
+                        lineNumber: 192,
                         columnNumber: 58
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 164,
+                lineNumber: 192,
                 columnNumber: 5
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 158,
+        lineNumber: 186,
         columnNumber: 10
     }, this);
 }
@@ -1168,7 +1262,7 @@ function CardSection({ id, eyebrow, title, note, items, href, columns = 4, varia
                     href: href
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 170,
+                    lineNumber: 198,
                     columnNumber: 33
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1178,12 +1272,12 @@ function CardSection({ id, eyebrow, title, note, items, href, columns = 4, varia
                             number: index + 1
                         }, item.id, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 171,
+                            lineNumber: 199,
                             columnNumber: 88
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 171,
+                    lineNumber: 199,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1191,18 +1285,18 @@ function CardSection({ id, eyebrow, title, note, items, href, columns = 4, varia
                     children: "Sample discovery inspiration · confirm details locally"
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 172,
+                    lineNumber: 200,
                     columnNumber: 7
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-            lineNumber: 170,
+            lineNumber: 198,
             columnNumber: 5
         }, this)
     }, void 0, false, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 169,
+        lineNumber: 197,
         columnNumber: 10
     }, this);
 }
@@ -1221,10 +1315,10 @@ function StaySection() {
                     eyebrow: "Stay a little longer",
                     title: "Stay in Kashi",
                     note: "A place to rest, from simple pilgrim stays to heritage homes.",
-                    href: "/explore?category=stays"
+                    href: "/stays"
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 181,
+                    lineNumber: 209,
                     columnNumber: 5
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1243,12 +1337,12 @@ function StaySection() {
                             children: type
                         }, type, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 182,
+                            lineNumber: 210,
                             columnNumber: 141
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 182,
+                    lineNumber: 210,
                     columnNumber: 5
                 }, this),
                 visible.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1258,12 +1352,12 @@ function StaySection() {
                             number: index + 1
                         }, item.id, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 183,
+                            lineNumber: 211,
                             columnNumber: 105
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 183,
+                    lineNumber: 211,
                     columnNumber: 23
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "filter-empty",
@@ -1276,13 +1370,13 @@ function StaySection() {
                             children: "See all stay types"
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 183,
+                            lineNumber: 211,
                             columnNumber: 264
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 183,
+                    lineNumber: 211,
                     columnNumber: 178
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1292,7 +1386,7 @@ function StaySection() {
                             children: "Also explore"
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 184,
+                            lineNumber: 212,
                             columnNumber: 33
                         }, this),
                         [
@@ -1309,19 +1403,19 @@ function StaySection() {
                                         size: 13
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 184,
+                                        lineNumber: 212,
                                         columnNumber: 291
                                     }, this)
                                 ]
                             }, label, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 184,
+                                lineNumber: 212,
                                 columnNumber: 142
                             }, this))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 184,
+                    lineNumber: 212,
                     columnNumber: 5
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1329,18 +1423,18 @@ function StaySection() {
                     children: "Stay categories are illustrative. No availability or rates are represented."
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 185,
+                    lineNumber: 213,
                     columnNumber: 5
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-            lineNumber: 180,
+            lineNumber: 208,
             columnNumber: 71
         }, this)
     }, void 0, false, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 180,
+        lineNumber: 208,
         columnNumber: 10
     }, this);
 }
@@ -1359,14 +1453,14 @@ function ItineraryCallout() {
                         className: "sun-disc"
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 191,
+                        lineNumber: 219,
                         columnNumber: 53
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "journey-river"
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 191,
+                        lineNumber: 219,
                         columnNumber: 82
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1374,7 +1468,7 @@ function ItineraryCallout() {
                         children: "काशी"
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 191,
+                        lineNumber: 219,
                         columnNumber: 115
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1383,20 +1477,20 @@ function ItineraryCallout() {
                             "A city best explored",
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 191,
+                                lineNumber: 219,
                                 columnNumber: 213
                             }, this),
                             "one moment at a time."
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 191,
+                        lineNumber: 219,
                         columnNumber: 158
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 191,
+                lineNumber: 219,
                 columnNumber: 5
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1407,7 +1501,7 @@ function ItineraryCallout() {
                         children: "The city, at your pace"
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 192,
+                        lineNumber: 220,
                         columnNumber: 35
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1416,27 +1510,27 @@ function ItineraryCallout() {
                             "Your Kashi.",
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 192,
+                                lineNumber: 220,
                                 columnNumber: 123
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("em", {
                                 children: "Your own rhythm."
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 192,
+                                lineNumber: 220,
                                 columnNumber: 129
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 192,
+                        lineNumber: 220,
                         columnNumber: 90
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: "Start with a day, stay for a while, or simply follow your curiosity. A few thoughtful itinerary ideas can help you find a beginning."
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 192,
+                        lineNumber: 220,
                         columnNumber: 159
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1455,18 +1549,18 @@ function ItineraryCallout() {
                                         size: 13
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 193,
+                                        lineNumber: 221,
                                         columnNumber: 256
                                     }, this)
                                 ]
                             }, label, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 193,
+                                lineNumber: 221,
                                 columnNumber: 103
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 193,
+                        lineNumber: 221,
                         columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1479,32 +1573,32 @@ function ItineraryCallout() {
                                 size: 16
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 194,
+                                lineNumber: 222,
                                 columnNumber: 129
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 194,
+                        lineNumber: 222,
                         columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("small", {
                         children: "Preview only · a personal trip planner is coming in a later release"
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 195,
+                        lineNumber: 223,
                         columnNumber: 7
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 192,
+                lineNumber: 220,
                 columnNumber: 5
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 190,
+        lineNumber: 218,
         columnNumber: 10
     }, this);
 }
@@ -1532,12 +1626,12 @@ function InfoDialog({ topic, onClose }) {
                         size: 18
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 213,
+                        lineNumber: 241,
                         columnNumber: 119
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 213,
+                    lineNumber: 241,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1545,7 +1639,7 @@ function InfoDialog({ topic, onClose }) {
                     children: "KashiNagri preview"
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 214,
+                    lineNumber: 242,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1554,14 +1648,14 @@ function InfoDialog({ topic, onClose }) {
                     children: topic
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 214,
+                    lineNumber: 242,
                     columnNumber: 58
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                     children: message
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 215,
+                    lineNumber: 243,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1574,24 +1668,24 @@ function InfoDialog({ topic, onClose }) {
                             size: 15
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 216,
+                            lineNumber: 244,
                             columnNumber: 104
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 216,
+                    lineNumber: 244,
                     columnNumber: 7
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-            lineNumber: 212,
+            lineNumber: 240,
             columnNumber: 5
         }, this)
     }, void 0, false, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 211,
+        lineNumber: 239,
         columnNumber: 10
     }, this);
 }
@@ -1635,12 +1729,12 @@ function TrustAndPartner() {
                                         size: 20
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 230,
+                                        lineNumber: 258,
                                         columnNumber: 169
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 230,
+                                    lineNumber: 258,
                                     columnNumber: 163
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1649,36 +1743,36 @@ function TrustAndPartner() {
                                             children: title
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 230,
+                                            lineNumber: 258,
                                             columnNumber: 199
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             children: text
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 230,
+                                            lineNumber: 258,
                                             columnNumber: 223
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 230,
+                                    lineNumber: 258,
                                     columnNumber: 194
                                 }, this)
                             ]
                         }, title, true, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 230,
+                            lineNumber: 258,
                             columnNumber: 123
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 230,
+                    lineNumber: 258,
                     columnNumber: 40
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 230,
+                lineNumber: 258,
                 columnNumber: 5
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -1691,12 +1785,12 @@ function TrustAndPartner() {
                             strokeWidth: 1.4
                         }, void 0, false, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 232,
+                            lineNumber: 260,
                             columnNumber: 37
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 232,
+                        lineNumber: 260,
                         columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1707,7 +1801,7 @@ function TrustAndPartner() {
                                 children: "For the people who make Kashi"
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 233,
+                                lineNumber: 261,
                                 columnNumber: 37
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1715,20 +1809,20 @@ function TrustAndPartner() {
                                 children: "Your local story belongs here."
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 233,
+                                lineNumber: 261,
                                 columnNumber: 99
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 children: "Are you a guide, maker or local business? Tell us what you do and help shape a more useful city guide."
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 233,
+                                lineNumber: 261,
                                 columnNumber: 156
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 233,
+                        lineNumber: 261,
                         columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1744,13 +1838,13 @@ function TrustAndPartner() {
                                         size: 15
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 234,
+                                        lineNumber: 262,
                                         columnNumber: 177
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 234,
+                                lineNumber: 262,
                                 columnNumber: 40
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1763,19 +1857,19 @@ function TrustAndPartner() {
                                         size: 15
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 234,
+                                        lineNumber: 262,
                                         columnNumber: 348
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 234,
+                                lineNumber: 262,
                                 columnNumber: 212
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 234,
+                        lineNumber: 262,
                         columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1783,13 +1877,13 @@ function TrustAndPartner() {
                         children: "Enquiries only · no listings are submitted or verified through this preview."
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 235,
+                        lineNumber: 263,
                         columnNumber: 7
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 231,
+                lineNumber: 259,
                 columnNumber: 5
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(InfoDialog, {
@@ -1797,13 +1891,13 @@ function TrustAndPartner() {
                 onClose: ()=>setDialog('')
             }, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 237,
+                lineNumber: 265,
                 columnNumber: 5
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 229,
+        lineNumber: 257,
         columnNumber: 10
     }, this);
 }
@@ -1827,14 +1921,14 @@ function Footer() {
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Brand, {}, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 244,
+                                            lineNumber: 272,
                                             columnNumber: 64
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             children: "A thoughtful starting point for discovering the many layers of Kashi."
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 244,
+                                            lineNumber: 272,
                                             columnNumber: 73
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1842,13 +1936,13 @@ function Footer() {
                                             children: "25°18′N   83°00′E"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 244,
+                                            lineNumber: 272,
                                             columnNumber: 149
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 244,
+                                    lineNumber: 272,
                                     columnNumber: 34
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1858,45 +1952,53 @@ function Footer() {
                                             children: "Discover"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 245,
+                                            lineNumber: 273,
                                             columnNumber: 38
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                            href: "/explore?q=temple",
-                                            children: "Temples & ghats"
+                                            href: "/temples",
+                                            children: "Temples"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 245,
+                                            lineNumber: 273,
                                             columnNumber: 63
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                            href: "/explore?q=food",
+                                            href: "/ghats",
+                                            children: "Ghats & Ganga"
+                                        }, void 0, false, {
+                                            fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
+                                            lineNumber: 273,
+                                            columnNumber: 99
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                            href: "/food",
                                             children: "Food & dining"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 245,
-                                            columnNumber: 116
+                                            lineNumber: 273,
+                                            columnNumber: 139
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                            href: "/explore?q=stay",
+                                            href: "/stays",
                                             children: "Places to stay"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 245,
-                                            columnNumber: 165
+                                            lineNumber: 273,
+                                            columnNumber: 178
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                            href: "/explore?q=shopping",
+                                            href: "/shopping",
                                             children: "Markets & craft"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 245,
-                                            columnNumber: 215
+                                            lineNumber: 273,
+                                            columnNumber: 219
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 245,
+                                    lineNumber: 273,
                                     columnNumber: 7
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1906,45 +2008,53 @@ function Footer() {
                                             children: "Plan a visit"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 246,
+                                            lineNumber: 274,
                                             columnNumber: 38
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                            href: "/explore?q=transport",
+                                            href: "/travel",
                                             children: "Getting around"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 246,
+                                            lineNumber: 274,
                                             columnNumber: 67
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                            href: "/explore?q=festival",
+                                            href: "/events",
                                             children: "Events & festivals"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 246,
-                                            columnNumber: 122
+                                            lineNumber: 274,
+                                            columnNumber: 109
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                            href: "/explore?q=guide",
+                                            href: "/guides",
                                             children: "Local experiences"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 246,
-                                            columnNumber: 180
+                                            lineNumber: 274,
+                                            columnNumber: 155
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                            href: "/areas",
+                                            children: "Explore by area"
+                                        }, void 0, false, {
+                                            fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
+                                            lineNumber: 274,
+                                            columnNumber: 200
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                             href: "/plan-my-trip",
                                             children: "My Kashi Trip"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 246,
-                                            columnNumber: 234
+                                            lineNumber: 274,
+                                            columnNumber: 242
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 246,
+                                    lineNumber: 274,
                                     columnNumber: 7
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1954,16 +2064,24 @@ function Footer() {
                                             children: "KashiNagri"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 247,
+                                            lineNumber: 275,
                                             columnNumber: 38
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                            href: "/explore?q=kashi",
-                                            children: "About the guide"
+                                            href: "/local-businesses",
+                                            children: "Local directory"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 247,
+                                            lineNumber: 275,
                                             columnNumber: 65
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                            href: "/spiritual-services",
+                                            children: "Spiritual services"
+                                        }, void 0, false, {
+                                            fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
+                                            lineNumber: 275,
+                                            columnNumber: 118
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                             onClick: ()=>setDialog('Contact KashiNagri'),
@@ -1971,8 +2089,8 @@ function Footer() {
                                             children: "Contact"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 247,
-                                            columnNumber: 117
+                                            lineNumber: 275,
+                                            columnNumber: 176
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                             onClick: ()=>setDialog('Privacy notice'),
@@ -1980,8 +2098,8 @@ function Footer() {
                                             children: "Privacy notice"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 247,
-                                            columnNumber: 225
+                                            lineNumber: 275,
+                                            columnNumber: 284
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                             onClick: ()=>setDialog('Terms of use'),
@@ -1989,19 +2107,19 @@ function Footer() {
                                             children: "Terms of use"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 247,
-                                            columnNumber: 329
+                                            lineNumber: 275,
+                                            columnNumber: 388
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 247,
+                                    lineNumber: 275,
                                     columnNumber: 7
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 244,
+                            lineNumber: 272,
                             columnNumber: 5
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2013,14 +2131,14 @@ function Footer() {
                                             children: "A note on information"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 249,
+                                            lineNumber: 277,
                                             columnNumber: 43
                                         }, this),
                                         " — KashiNagri is a discovery concept. Sample content is illustrative, not a verified listing or endorsement. Please confirm current details, timings, safety and prices directly with local providers."
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 249,
+                                    lineNumber: 277,
                                     columnNumber: 40
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2032,19 +2150,19 @@ function Footer() {
                                             size: 13
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 249,
+                                            lineNumber: 277,
                                             columnNumber: 387
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 249,
+                                    lineNumber: 277,
                                     columnNumber: 283
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 249,
+                            lineNumber: 277,
                             columnNumber: 5
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2054,14 +2172,14 @@ function Footer() {
                                     children: "© 2026 KashiNagri · Your Complete Guide to Kashi"
                                 }, void 0, false, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 250,
+                                    lineNumber: 278,
                                     columnNumber: 36
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                     children: "Made with respect for the city and its people."
                                 }, void 0, false, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 250,
+                                    lineNumber: 278,
                                     columnNumber: 97
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2073,7 +2191,7 @@ function Footer() {
                                             children: "Contact"
                                         }, void 0, false, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 250,
+                                            lineNumber: 278,
                                             columnNumber: 187
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2085,36 +2203,36 @@ function Footer() {
                                                     size: 11
                                                 }, void 0, false, {
                                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                    lineNumber: 250,
+                                                    lineNumber: 278,
                                                     columnNumber: 392
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                            lineNumber: 250,
+                                            lineNumber: 278,
                                             columnNumber: 295
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 250,
+                                    lineNumber: 278,
                                     columnNumber: 156
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                            lineNumber: 250,
+                            lineNumber: 278,
                             columnNumber: 5
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                    lineNumber: 243,
+                    lineNumber: 271,
                     columnNumber: 44
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 243,
+                lineNumber: 271,
                 columnNumber: 12
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(InfoDialog, {
@@ -2122,13 +2240,13 @@ function Footer() {
                 onClose: ()=>setDialog('')
             }, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 251,
+                lineNumber: 279,
                 columnNumber: 18
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 243,
+        lineNumber: 271,
         columnNumber: 10
     }, this);
 }
@@ -2139,24 +2257,24 @@ function HomePage() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Header, {}, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 255,
+                lineNumber: 283,
                 columnNumber: 12
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Hero, {}, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 255,
+                        lineNumber: 283,
                         columnNumber: 28
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ShortcutStrip, {}, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 255,
+                        lineNumber: 283,
                         columnNumber: 36
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StaySection, {}, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 255,
+                        lineNumber: 283,
                         columnNumber: 53
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2170,10 +2288,10 @@ function HomePage() {
                                         eyebrow: "Taste the city",
                                         title: "Food & Dining",
                                         note: "A morning bite, a long lunch, one more sweet.",
-                                        href: "/explore?category=food"
+                                        href: "/food"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 257,
+                                        lineNumber: 285,
                                         columnNumber: 51
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2184,26 +2302,26 @@ function HomePage() {
                                                 compact: true
                                             }, item.id, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 257,
-                                                columnNumber: 260
+                                                lineNumber: 285,
+                                                columnNumber: 243
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 257,
-                                        columnNumber: 197
+                                        lineNumber: 285,
+                                        columnNumber: 180
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                         className: "section-footnote",
                                         children: "Local discovery ideas · details may change"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 257,
-                                        columnNumber: 334
+                                        lineNumber: 285,
+                                        columnNumber: 317
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 257,
+                                lineNumber: 285,
                                 columnNumber: 7
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -2214,10 +2332,10 @@ function HomePage() {
                                         eyebrow: "Meaning & ritual",
                                         title: "Spiritual services",
                                         note: "Learn what is offered, and how to take part respectfully.",
-                                        href: "/explore?category=spiritual"
+                                        href: "/spiritual-services"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 258,
+                                        lineNumber: 286,
                                         columnNumber: 71
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2228,32 +2346,32 @@ function HomePage() {
                                                 compact: true
                                             }, item.id, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 258,
-                                                columnNumber: 296
+                                                lineNumber: 286,
+                                                columnNumber: 288
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 258,
-                                        columnNumber: 241
+                                        lineNumber: 286,
+                                        columnNumber: 233
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                         className: "section-footnote",
                                         children: "Sample categories · confirm arrangements directly"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 258,
-                                        columnNumber: 370
+                                        lineNumber: 286,
+                                        columnNumber: 362
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 258,
+                                lineNumber: 286,
                                 columnNumber: 7
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 256,
+                        lineNumber: 284,
                         columnNumber: 5
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(CardSection, {
@@ -2262,16 +2380,16 @@ function HomePage() {
                         title: "Explore Kashi by area",
                         note: "Every neighbourhood carries its own pace and point of view.",
                         items: __TURBOPACK__imported__module__$5b$project$5d2f$artifacts$2f$kashi$2d$nagri$2f$src$2f$data$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["areas"],
-                        href: "/explore?category=areas",
+                        href: "/areas",
                         columns: 6
                     }, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 260,
-                        columnNumber: 5
+                        lineNumber: 288,
+                        columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ItineraryCallout, {}, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 261,
+                        lineNumber: 289,
                         columnNumber: 5
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2284,10 +2402,10 @@ function HomePage() {
                                         eyebrow: "Go a little deeper",
                                         title: "Guides & experiences",
                                         note: "Meet the city through stories, walks and the river.",
-                                        href: "/explore?category=experiences"
+                                        href: "/guides"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 263,
+                                        lineNumber: 291,
                                         columnNumber: 41
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2298,18 +2416,18 @@ function HomePage() {
                                                 compact: true
                                             }, item.id, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 263,
-                                                columnNumber: 268
+                                                lineNumber: 291,
+                                                columnNumber: 246
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 263,
-                                        columnNumber: 211
+                                        lineNumber: 291,
+                                        columnNumber: 189
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 263,
+                                lineNumber: 291,
                                 columnNumber: 7
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -2319,10 +2437,10 @@ function HomePage() {
                                         eyebrow: "Take a story home",
                                         title: "Shopping in Kashi",
                                         note: "Craft, colour and keepsakes with a sense of place.",
-                                        href: "/explore?category=shopping"
+                                        href: "/shopping"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 264,
+                                        lineNumber: 292,
                                         columnNumber: 52
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2333,24 +2451,24 @@ function HomePage() {
                                                 compact: true
                                             }, item.id, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 264,
-                                                columnNumber: 268
+                                                lineNumber: 292,
+                                                columnNumber: 251
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 264,
-                                        columnNumber: 214
+                                        lineNumber: 292,
+                                        columnNumber: 197
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 264,
+                                lineNumber: 292,
                                 columnNumber: 7
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 262,
+                        lineNumber: 290,
                         columnNumber: 5
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2363,10 +2481,10 @@ function HomePage() {
                                         eyebrow: "Getting here, getting around",
                                         title: "Travel & transport",
                                         note: "A little orientation for arriving and moving through town.",
-                                        href: "/explore?category=travel"
+                                        href: "/travel"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 267,
+                                        lineNumber: 295,
                                         columnNumber: 41
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2377,18 +2495,18 @@ function HomePage() {
                                                 compact: true
                                             }, item.id, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 267,
-                                                columnNumber: 276
+                                                lineNumber: 295,
+                                                columnNumber: 259
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 267,
-                                        columnNumber: 221
+                                        lineNumber: 295,
+                                        columnNumber: 204
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 267,
+                                lineNumber: 295,
                                 columnNumber: 7
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -2398,10 +2516,10 @@ function HomePage() {
                                         eyebrow: "The city in celebration",
                                         title: "Events & festivals",
                                         note: "Rituals and gatherings that give the calendar its rhythm.",
-                                        href: "/explore?category=events"
+                                        href: "/events"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 268,
+                                        lineNumber: 296,
                                         columnNumber: 53
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2412,46 +2530,46 @@ function HomePage() {
                                                 compact: true
                                             }, item.id, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 268,
-                                                columnNumber: 279
+                                                lineNumber: 296,
+                                                columnNumber: 262
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 268,
-                                        columnNumber: 227
+                                        lineNumber: 296,
+                                        columnNumber: 210
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 268,
+                                lineNumber: 296,
                                 columnNumber: 7
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 266,
+                        lineNumber: 294,
                         columnNumber: 5
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TrustAndPartner, {}, void 0, false, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 270,
+                        lineNumber: 298,
                         columnNumber: 5
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 255,
+                lineNumber: 283,
                 columnNumber: 22
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Footer, {}, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 271,
+                lineNumber: 299,
                 columnNumber: 10
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 255,
+        lineNumber: 283,
         columnNumber: 10
     }, this);
 }
@@ -2508,7 +2626,7 @@ function ExplorePage() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Header, {}, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 294,
+                lineNumber: 322,
                 columnNumber: 12
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -2524,7 +2642,7 @@ function ExplorePage() {
                                         children: "Kashi, by your curiosity"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 295,
+                                        lineNumber: 323,
                                         columnNumber: 56
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -2533,33 +2651,33 @@ function ExplorePage() {
                                             "Explore the city",
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 295,
+                                                lineNumber: 323,
                                                 columnNumber: 151
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("em", {
                                                 children: "one discovery at a time."
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 295,
+                                                lineNumber: 323,
                                                 columnNumber: 157
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 295,
+                                        lineNumber: 323,
                                         columnNumber: 113
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                         children: "Browse sample ideas across neighbourhoods, flavours, stays and experiences. These are starting points—not verified listings."
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 295,
+                                        lineNumber: 323,
                                         columnNumber: 195
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 295,
+                                lineNumber: 323,
                                 columnNumber: 51
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2570,18 +2688,18 @@ function ExplorePage() {
                                     buttonLabel: "Search"
                                 }, query, false, {
                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                    lineNumber: 296,
+                                    lineNumber: 324,
                                     columnNumber: 44
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 296,
+                                lineNumber: 324,
                                 columnNumber: 7
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 295,
+                        lineNumber: 323,
                         columnNumber: 5
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -2597,7 +2715,7 @@ function ExplorePage() {
                                                 size: 16
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 299,
+                                                lineNumber: 327,
                                                 columnNumber: 65
                                             }, this),
                                             " Kashi, seen as a living map ",
@@ -2605,13 +2723,13 @@ function ExplorePage() {
                                                 children: "Illustrative map view"
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 299,
+                                                lineNumber: 327,
                                                 columnNumber: 111
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 299,
+                                        lineNumber: 327,
                                         columnNumber: 34
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2623,12 +2741,12 @@ function ExplorePage() {
                                                     children: "GANGA"
                                                 }, void 0, false, {
                                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                    lineNumber: 300,
+                                                    lineNumber: 328,
                                                     columnNumber: 66
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 300,
+                                                lineNumber: 328,
                                                 columnNumber: 36
                                             }, this),
                                             [
@@ -2673,25 +2791,25 @@ function ExplorePage() {
                                                                 fill: "currentColor"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                                lineNumber: 301,
+                                                                lineNumber: 329,
                                                                 columnNumber: 366
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                            lineNumber: 301,
+                                                            lineNumber: 329,
                                                             columnNumber: 340
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
                                                             children: name
                                                         }, void 0, false, {
                                                             fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                            lineNumber: 301,
+                                                            lineNumber: 329,
                                                             columnNumber: 413
                                                         }, this)
                                                     ]
                                                 }, name, true, {
                                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                    lineNumber: 301,
+                                                    lineNumber: 329,
                                                     columnNumber: 185
                                                 }, this)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2699,7 +2817,7 @@ function ExplorePage() {
                                                 children: "North ↑"
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 302,
+                                                lineNumber: 330,
                                                 columnNumber: 11
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2707,19 +2825,19 @@ function ExplorePage() {
                                                 children: "River bends. Stories gather."
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 302,
+                                                lineNumber: 330,
                                                 columnNumber: 54
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 300,
+                                        lineNumber: 328,
                                         columnNumber: 9
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 299,
+                                lineNumber: 327,
                                 columnNumber: 7
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2735,7 +2853,7 @@ function ExplorePage() {
                                                         children: "Browse discoveries"
                                                     }, void 0, false, {
                                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                        lineNumber: 305,
+                                                        lineNumber: 333,
                                                         columnNumber: 72
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2747,19 +2865,19 @@ function ExplorePage() {
                                                                 children: "ideas to begin with"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                                lineNumber: 305,
+                                                                lineNumber: 333,
                                                                 columnNumber: 163
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                        lineNumber: 305,
+                                                        lineNumber: 333,
                                                         columnNumber: 123
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 305,
+                                                lineNumber: 333,
                                                 columnNumber: 67
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -2776,32 +2894,32 @@ function ExplorePage() {
                                                                 children: "Curated ideas"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                                lineNumber: 305,
+                                                                lineNumber: 333,
                                                                 columnNumber: 369
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                 children: "A to Z"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                                lineNumber: 305,
+                                                                lineNumber: 333,
                                                                 columnNumber: 399
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                        lineNumber: 305,
+                                                        lineNumber: 333,
                                                         columnNumber: 240
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 305,
+                                                lineNumber: 333,
                                                 columnNumber: 202
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 305,
+                                        lineNumber: 333,
                                         columnNumber: 37
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2814,12 +2932,12 @@ function ExplorePage() {
                                                 children: item
                                             }, item, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 306,
+                                                lineNumber: 334,
                                                 columnNumber: 99
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 306,
+                                        lineNumber: 334,
                                         columnNumber: 9
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2840,19 +2958,19 @@ function ExplorePage() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                        lineNumber: 307,
+                                                        lineNumber: 335,
                                                         columnNumber: 145
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 307,
+                                                lineNumber: 335,
                                                 columnNumber: 133
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 307,
+                                        lineNumber: 335,
                                         columnNumber: 9
                                     }, this),
                                     filtered.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2862,12 +2980,12 @@ function ExplorePage() {
                                                 number: i + 1
                                             }, item.id, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 308,
+                                                lineNumber: 336,
                                                 columnNumber: 88
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 308,
+                                        lineNumber: 336,
                                         columnNumber: 28
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "empty-discover",
@@ -2877,26 +2995,26 @@ function ExplorePage() {
                                                     size: 24
                                                 }, void 0, false, {
                                                     fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                    lineNumber: 308,
+                                                    lineNumber: 336,
                                                     columnNumber: 195
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 308,
+                                                lineNumber: 336,
                                                 columnNumber: 189
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                                 children: "No discoveries found"
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 308,
+                                                lineNumber: 336,
                                                 columnNumber: 223
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 children: "Try a broader word, or clear filters to see more ways into Kashi."
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 308,
+                                                lineNumber: 336,
                                                 columnNumber: 252
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2911,19 +3029,19 @@ function ExplorePage() {
                                                         size: 15
                                                     }, void 0, false, {
                                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                        lineNumber: 308,
+                                                        lineNumber: 336,
                                                         columnNumber: 446
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 308,
+                                                lineNumber: 336,
                                                 columnNumber: 324
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 308,
+                                        lineNumber: 336,
                                         columnNumber: 157
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2931,19 +3049,19 @@ function ExplorePage() {
                                         children: __TURBOPACK__imported__module__$5b$project$5d2f$artifacts$2f$kashi$2d$nagri$2f$src$2f$data$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["sampleNote"]
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 309,
+                                        lineNumber: 337,
                                         columnNumber: 9
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 305,
+                                lineNumber: 333,
                                 columnNumber: 7
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 298,
+                        lineNumber: 326,
                         columnNumber: 5
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -2956,7 +3074,7 @@ function ExplorePage() {
                                         children: "Have a few days?"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 312,
+                                        lineNumber: 340,
                                         columnNumber: 59
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2964,20 +3082,20 @@ function ExplorePage() {
                                         children: "Make space for your own Kashi."
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 312,
+                                        lineNumber: 340,
                                         columnNumber: 108
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                         children: "Explore itinerary ideas before you decide on your pace."
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 312,
+                                        lineNumber: 340,
                                         columnNumber: 165
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 312,
+                                lineNumber: 340,
                                 columnNumber: 54
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2990,36 +3108,36 @@ function ExplorePage() {
                                         size: 16
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 312,
+                                        lineNumber: 340,
                                         columnNumber: 346
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 312,
+                                lineNumber: 340,
                                 columnNumber: 233
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 312,
+                        lineNumber: 340,
                         columnNumber: 5
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 294,
+                lineNumber: 322,
                 columnNumber: 22
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Footer, {}, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 313,
+                lineNumber: 341,
                 columnNumber: 10
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 294,
+        lineNumber: 322,
         columnNumber: 10
     }, this);
 }
@@ -3034,7 +3152,7 @@ function PlanPreviewPage() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Header, {}, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 317,
+                lineNumber: 345,
                 columnNumber: 12
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -3051,14 +3169,14 @@ function PlanPreviewPage() {
                                         size: 14
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 318,
+                                        lineNumber: 346,
                                         columnNumber: 76
                                     }, this),
                                     " Back to KashiNagri"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 318,
+                                lineNumber: 346,
                                 columnNumber: 32
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3066,13 +3184,13 @@ function PlanPreviewPage() {
                                 children: "A preview, not a planner—yet"
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 318,
+                                lineNumber: 346,
                                 columnNumber: 126
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 318,
+                        lineNumber: 346,
                         columnNumber: 5
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -3086,7 +3204,7 @@ function PlanPreviewPage() {
                                         children: "My Kashi Trip"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 319,
+                                        lineNumber: 347,
                                         columnNumber: 68
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -3095,27 +3213,27 @@ function PlanPreviewPage() {
                                             "Let the city",
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 319,
+                                                lineNumber: 347,
                                                 columnNumber: 148
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("em", {
                                                 children: "find its way in."
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 319,
+                                                lineNumber: 347,
                                                 columnNumber: 154
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 319,
+                                        lineNumber: 347,
                                         columnNumber: 114
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                         children: "A considered first outline for your time in Kashi. The complete personal trip builder is planned for a future release; for now, begin with a few sample rhythms."
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 319,
+                                        lineNumber: 347,
                                         columnNumber: 184
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -3128,19 +3246,19 @@ function PlanPreviewPage() {
                                                 size: 16
                                             }, void 0, false, {
                                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                                lineNumber: 319,
+                                                lineNumber: 347,
                                                 columnNumber: 484
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 319,
+                                        lineNumber: 347,
                                         columnNumber: 351
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 319,
+                                lineNumber: 347,
                                 columnNumber: 36
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3150,26 +3268,26 @@ function PlanPreviewPage() {
                                         children: "काशी"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 319,
+                                        lineNumber: 347,
                                         columnNumber: 549
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("small", {
                                         children: "Take your time."
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 319,
+                                        lineNumber: 347,
                                         columnNumber: 566
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 319,
+                                lineNumber: 347,
                                 columnNumber: 521
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 319,
+                        lineNumber: 347,
                         columnNumber: 5
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -3183,7 +3301,7 @@ function PlanPreviewPage() {
                                 action: "Browse all ideas"
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 320,
+                                lineNumber: 348,
                                 columnNumber: 36
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3193,18 +3311,18 @@ function PlanPreviewPage() {
                                         number: i + 1
                                     }, item.id, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 320,
+                                        lineNumber: 348,
                                         columnNumber: 303
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 320,
+                                lineNumber: 348,
                                 columnNumber: 241
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 320,
+                        lineNumber: 348,
                         columnNumber: 5
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3214,7 +3332,7 @@ function PlanPreviewPage() {
                                 size: 18
                             }, void 0, false, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 321,
+                                lineNumber: 349,
                                 columnNumber: 35
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3223,43 +3341,43 @@ function PlanPreviewPage() {
                                         children: "What this preview is"
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 321,
+                                        lineNumber: 349,
                                         columnNumber: 62
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                         children: "A small taste of itinerary inspiration. No booking, account, saved trip or live availability features are active here."
                                     }, void 0, false, {
                                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                        lineNumber: 321,
+                                        lineNumber: 349,
                                         columnNumber: 99
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                                lineNumber: 321,
+                                lineNumber: 349,
                                 columnNumber: 57
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                        lineNumber: 321,
+                        lineNumber: 349,
                         columnNumber: 5
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 317,
+                lineNumber: 345,
                 columnNumber: 22
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Footer, {}, void 0, false, {
                 fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-                lineNumber: 322,
+                lineNumber: 350,
                 columnNumber: 10
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 317,
+        lineNumber: 345,
         columnNumber: 10
     }, this);
 }
@@ -3267,7 +3385,7 @@ _c16 = PlanPreviewPage;
 function App() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$4$2e$0_$40$types$2b$node$40$25$2e$9$2e$6_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(HomePage, {}, void 0, false, {
         fileName: "[project]/artifacts/kashi-nagri/src/App.tsx",
-        lineNumber: 326,
+        lineNumber: 354,
         columnNumber: 10
     }, this);
 }
