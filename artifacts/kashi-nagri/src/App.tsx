@@ -22,7 +22,7 @@ const shortcutIcons: Record<string, typeof Compass> = {
 
 function Brand() {
   return <Link href="/" className="brand-lockup" aria-label="KashiNagri home" data-testid="link-brand">
-    <span className="brand-mark" aria-hidden="true"><span>क</span><i /></span>
+    <span className="brand-mark" aria-hidden="true"><span>क</span></span>
     <span className="brand-copy"><strong>KashiNagri</strong><small>Your Complete Guide to Kashi</small></span>
   </Link>;
 }

@@ -5254,17 +5254,6 @@ a {
   transform: rotate(25deg);
 }
 
-.brand-mark i {
-  border: 1px solid #b8904d;
-  border-bottom: 0;
-  border-radius: 10px 10px 0 0;
-  width: 14px;
-  height: 22px;
-  position: absolute;
-  bottom: -2px;
-  left: 13px;
-}
-
 .brand-copy {
   flex-direction: column;
   line-height: 1;
