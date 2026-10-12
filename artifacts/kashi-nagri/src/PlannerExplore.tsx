@@ -78,7 +78,7 @@ export function TripPlanner() {
   const shareHref = useMemo(() => `/plan-my-trip/?${encodePreferences(preferences)}`, [preferences]);
 
   useEffect(() => {
-    const urlValues = readPreferences(new URLSearchParams(searchParams.toString()));
+    const urlValues = readPreferences(new URLSearchParams(searchParams ? searchParams.toString() : ''));
     if (urlValues) {
       setPreferences(urlValues);
       setStatus('This plan was rebuilt from its shared preferences.');
@@ -209,16 +209,18 @@ const categories = ['All', ...Array.from(new Set(items.map((entry) => entry.cate
 
 export function ExploreDiscovery() {
   const searchParams = useSearchParams();
-  const initialQuery = searchParams.get('q') ?? '';
-  const initialCategory = searchParams.get('category') ?? '';
+  const initialQuery = searchParams?.get('q') ?? '';
+  const initialCategory = searchParams?.get('category') ?? '';
   const [query, setQuery] = useState(initialQuery);
   const [category, setCategory] = useState(categories.includes(initialCategory) ? initialCategory : 'All');
   const [selectedArea, setSelectedArea] = useState('');
   const [sort, setSort] = useState('Curated ideas');
 
   useEffect(() => {
-    setQuery(searchParams.get('q') ?? (categories.includes(searchParams.get('category') ?? '') ? '' : searchParams.get('category') ?? ''));
-    const routeCategory = searchParams.get('category') ?? '';
+    const qParam = searchParams?.get('q') ?? '';
+    const catParam = searchParams?.get('category') ?? '';
+    setQuery(qParam || (categories.includes(catParam) ? '' : catParam));
+    const routeCategory = catParam;
     setCategory(categories.includes(routeCategory) ? routeCategory : 'All');
   }, [searchParams]);
 
