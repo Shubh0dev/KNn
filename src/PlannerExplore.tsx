@@ -5,9 +5,10 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { ArrowRight, ArrowUpRight, Bookmark, Check, Compass, Copy, MapPin, Printer, RotateCcw, Search, Share2, Sparkles } from 'lucide-react';
 import { Footer, Header } from './App';
+import { asset } from './asset';
 import { demoNotice, items, type DiscoveryItem } from './discovery-data';
 import {
-  areaNeighbours, areaTitle, budgetLabels, detailHref, formatItinerary, interestOptions, itemsNearArea,
+  areaTitle, budgetLabels, detailHref, formatItinerary, interestOptions, itemsNearArea,
   lengthOptions, makeItinerary, tripAreas,
   type BudgetLens, type Interest, type TripLength, type TripPace, type TripPreferences,
 } from './planner-rules';
@@ -59,7 +60,7 @@ async function copyText(value: string) {
 
 function sampleCard(item: DiscoveryItem, index: number) {
   return <Link className="discovery-card" href={detailHref(item)} key={item.slug} data-testid={`card-explore-${item.slug}`}>
-    <div className="discovery-image" style={{ backgroundImage: `linear-gradient(0deg, rgba(31,20,16,.57), transparent 72%), url("${item.image}")` }}>
+    <div className="discovery-image" style={{ backgroundImage: `linear-gradient(0deg, rgba(31,20,16,.57), transparent 72%), url("${asset(item.image)}")` }}>
       <span className="card-index">{String(index + 1).padStart(2, '0')}</span><span className="card-label">Illustrative</span><span className="image-arrow"><ArrowUpRight size={15} /></span>
     </div>
     <div className="discovery-copy"><h3>{item.title}</h3><p>{item.subtitle}{item.area ? ` · ${item.area}` : ''}</p></div>
@@ -136,7 +137,7 @@ export function TripPlanner() {
   }
 
   async function sharePlan() {
-    const absoluteUrl = `${window.location.origin}${shareHref}`;
+    const absoluteUrl = `${window.location.origin}${asset(shareHref)}`;
     if (navigator.share) {
       try {
         await navigator.share({ title: 'My Kashi plan', text: 'A thoughtful starting outline for time in Varanasi.', url: absoluteUrl });

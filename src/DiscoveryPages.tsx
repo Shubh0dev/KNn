@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight, MapPin, Search, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { Footer, Header } from './App';
+import { asset } from './asset';
 import { demoNotice, getCategory, getItem, getItems, items, parentPath, type CategorySlug, type DiscoveryItem } from './discovery-data';
 
 function detailPath(item: DiscoveryItem) {
@@ -13,7 +14,7 @@ function detailPath(item: DiscoveryItem) {
 
 function ListingCard({ item }: { item: DiscoveryItem }) {
   return <article className="listing-card">
-    <Link href={detailPath(item)} className="listing-card-image" style={{ backgroundImage: `url("${item.image}")` }} aria-label={`Read about ${item.title}`}>
+    <Link href={detailPath(item)} className="listing-card-image" style={{ backgroundImage: `url("${asset(item.image)}")` }} aria-label={`Read about ${item.title}`}>
       <span className="demo-pill">Illustrative · unverified</span>
     </Link>
     <div className="listing-card-body">
@@ -53,7 +54,7 @@ export function CategoryPage({ slug }: { slug: CategorySlug }) {
   }, [slug, query, filter, sort]);
   const reset = () => { setQuery(''); setFilter('All ideas'); setSort('Curated'); };
   return <><Header /><main className="discovery-page">
-    <section className="discovery-hero" style={{ backgroundImage: `url("${category.image}")` }}>
+    <section className="discovery-hero" style={{ backgroundImage: `url("${asset(category.image)}")` }}>
       <div className="page-shell discovery-hero-inner"><span className="eyebrow">{category.eyebrow}</span><h1>{category.title}</h1><p>{category.intro}</p></div>
     </section>
     <section className="page-shell">
@@ -108,7 +109,7 @@ export function StaysDiscoveryPage() {
   }, [stays, query, type, area, band, room, amenity, sort]);
   const reset = () => { setQuery(''); setType('All stays'); setArea(''); setBand(''); setRoom(''); setAmenity(''); setSort('Curated'); };
   return <><Header /><main className="discovery-page stay-discovery">
-    <section className="discovery-hero" style={{ backgroundImage: 'url("/kashi-riverfront.jpg")' }}>
+    <section className="discovery-hero" style={{ backgroundImage: `url("${asset('/kashi-riverfront.jpg')}")` }}>
       <div className="page-shell discovery-hero-inner"><span className="eyebrow">Find your resting place</span><h1>Stay in Kashi</h1><p>From a simple base to a slower stay, explore accommodation styles and shape a search around the way you want to experience the city.</p></div>
     </section>
     <section className="page-shell">
@@ -138,7 +139,7 @@ export function DetailPage({ slug, allowed }: { slug: string; allowed: CategoryS
   return <><Header /><main className="page-shell detail-page">
     <Link href={parentPath(item.category)} className="detail-back"><ArrowLeft size={15} /> Back to {parent.title}</Link>
     <div className="detail-layout">
-      <div className="detail-gallery" role="img" aria-label={item.imageAlt} style={{ backgroundImage: `url("${item.image}")` }}><span className="detail-gallery-label">An illustrative view of Kashi</span></div>
+      <div className="detail-gallery" role="img" aria-label={item.imageAlt} style={{ backgroundImage: `url("${asset(item.image)}")` }}><span className="detail-gallery-label">An illustrative view of Kashi</span></div>
       <article className="detail-copy">
         <span className="eyebrow">{parent.eyebrow}</span><h1>{item.title}</h1>
         <p>{item.overview}</p>

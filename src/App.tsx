@@ -1,16 +1,16 @@
- 'use client';
+'use client';
 
-import { type FormEvent, useEffect, useMemo, useState } from 'react';
+import { type FormEvent, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import {
   ArrowRight, ArrowUpRight, BedDouble, BookOpen, CalendarDays,
-  Check, ChevronDown, Compass, Flower2, Globe2, HeartHandshake, Map, MapPin, Menu,
-  CircleUserRound,
+  Check, ChevronDown, CircleUserRound, Compass, Flower2, Globe2, HeartHandshake, MapPin, Menu,
   Navigation, Search, ShoppingBag, Sparkles, Store, TrainFront, Utensils, Waves, X,
 } from 'lucide-react';
+import { asset } from './asset';
 import {
-  allDiscoveries, areas, events, experiences, foods, itineraries, sampleNote, shortcuts,
+  allDiscoveries, areas, events, experiences, foods, sampleNote, shortcuts,
   shopping, spiritual, stays, transport, type Discovery,
 } from './data';
 
@@ -55,16 +55,16 @@ export function Header() {
     if (label === 'My Kashi Trip') return '/plan-my-trip';
     const map: Record<string, string> = {
       'Kashi Vishwanath': '/places/kashi-vishwanath', 'Temple etiquette': '/places/temple-etiquette',
-      'Darshan guide': '/temples', 'Explore the ghats': '/ghats', 'Ganga Aarti': '/events/daily-aarti-context',
-      'River journeys': '/travel/river-journey-context', 'Budget rooms': '/stays/value-rooms',
+      'Darshan guide': '/temples', 'Explore the ghats': '/ghats', 'Ganga Aarti': '/places/daily-aarti-context',
+      'River journeys': '/places/river-journey-context', 'Budget rooms': '/stays/value-rooms',
       'Heritage stays': '/stays/heritage-inspired-stay', 'Homestays': '/stays/local-homestay',
       'Street food': '/food/morning-kachori', 'Traditional thali': '/food', 'Cafés': '/food/chai-pause',
-      'Getting around': '/travel/moving-through-lanes', 'Railway connections': '/travel/arriving-by-rail',
-      'Airport arrivals': '/travel', 'Banarasi sarees': '/shopping/banarasi-weaving',
-      'Handicrafts': '/shopping', 'Local markets': '/shopping/market-wander', 'Puja & path': '/spiritual-services/puja-basics',
-      'Pandit & purohit': '/spiritual-services/finding-spiritual-guidance', 'Jyotish': '/spiritual-services/jyotish-context',
+      'Getting around': '/places/moving-through-lanes', 'Railway connections': '/places/arriving-by-rail',
+      'Airport arrivals': '/travel', 'Banarasi sarees': '/places/banarasi-weaving',
+      'Handicrafts': '/shopping', 'Local markets': '/places/market-wander', 'Puja & path': '/places/puja-basics',
+      'Pandit & purohit': '/places/finding-spiritual-guidance', 'Jyotish': '/places/jyotish-context',
       'Temple walks': '/guides/old-city-walk', 'Food walks': '/guides/food-culture-walk',
-      'Ghat stories': '/guides/river-stories', 'Festivals': '/events/dev-deepawali-context',
+      'Ghat stories': '/guides/river-stories', 'Festivals': '/places/dev-deepawali-context',
       'Seasonal calendar': '/events', 'Local directory': '/local-businesses', 'Areas of Kashi': '/areas',
     };
     return map[label] ?? `/explore?q=${encodeURIComponent(label)}`;
@@ -184,7 +184,7 @@ function SectionTitle({ eyebrow, title, note, href, action = 'View all' }: { eye
 function DiscoveryCard({ item, number, compact = false }: { item: Discovery; number: number; compact?: boolean }) {
   const categoryRoutes: Record<string, string> = { Stays: '/stays', Food: '/food', Spiritual: '/spiritual-services', Areas: '/areas', Experiences: '/guides', Shopping: '/shopping', Travel: '/travel', Events: '/events' };
   return <Link href={categoryRoutes[item.category] ?? '/explore'} className={`discovery-card ${compact ? 'compact-card' : ''}`} data-testid={`card-discovery-${item.id}`}>
-    <div className="discovery-image" style={{ backgroundImage: `linear-gradient(0deg, rgba(31,20,16,.57), transparent 72%), url("${item.image ?? '/kashi-lanes.jpg'}")` }}>
+    <div className="discovery-image" style={{ backgroundImage: `linear-gradient(0deg, rgba(31,20,16,.57), transparent 72%), url("${asset(item.image ?? '/kashi-lanes.jpg')}")` }}>
       <span className="card-index">{String(number).padStart(2, '0')}</span>
       {item.label && <span className="card-label">{item.label}</span>}
       <span className="image-arrow"><ArrowUpRight size={15} /></span>
@@ -220,7 +220,7 @@ function ItineraryCallout() {
     <div className="journey-copy"><span className="eyebrow">The city, at your pace</span><h2 className="serif">Your Kashi.<br /><em>Your own rhythm.</em></h2><p>Start with a day, stay for a while, or simply follow your curiosity. A few thoughtful itinerary ideas can help you find a beginning.</p>
       <div className="journey-tags">{['1 day', '2 days', '3 days', 'Make it yours'].map((label, i) => <Link href={i === 3 ? '/plan-my-trip' : `/explore?q=${encodeURIComponent(label + ' itinerary')}`} key={label} data-testid={`link-itinerary-${i}`}>{label}<ArrowUpRight size={13} /></Link>)}</div>
       <Link href="/plan-my-trip" className="button-primary journey-cta" data-testid="link-plan-your-trip">Explore My Kashi Trip <ArrowRight size={16} /></Link>
-      <small>Preview only · a personal trip planner is coming in a later release</small>
+      <small>Build, save and share a flexible outline · no booking or account needed</small>
     </div>
   </section>;
 }
@@ -297,59 +297,4 @@ export function HomePage() {
     </div>
     <TrustAndPartner />
   </main><Footer /></>;
-}
-
-export function ExplorePage() {
-  const searchParams = useSearchParams();
-  const routeQuery = searchParams?.get('q') ?? searchParams?.get('category') ?? '';
-  const [query, setQuery] = useState(routeQuery);
-  useEffect(() => {
-    setQuery(routeQuery);
-  }, [routeQuery]);
-  const [category, setCategory] = useState('All');
-  const [sort, setSort] = useState('Curated ideas');
-  const categories = ['All', 'Stays', 'Food', 'Spiritual', 'Areas', 'Itineraries', 'Experiences', 'Shopping', 'Travel', 'Events'];
-  const filtered = useMemo(() => {
-    const matches = allDiscoveries.filter(item => {
-      const categoryMatch = category === 'All' || item.category.toLowerCase() === category.toLowerCase();
-      const q = query.trim().toLowerCase();
-      const queryMatch = !q || `${item.title} ${item.subtitle} ${item.category} ${item.id}`.toLowerCase().includes(q);
-      return categoryMatch && queryMatch;
-    });
-    return sort === 'A to Z' ? [...matches].sort((a, b) => a.title.localeCompare(b.title)) : matches;
-  }, [category, query, sort]);
-  const submit = (value: string) => setQuery(value);
-  return <><Header /><main className="explore-page">
-    <section className="explore-intro page-shell"><div><span className="eyebrow">Kashi, by your curiosity</span><h1 className="serif">Explore the city<br /><em>one discovery at a time.</em></h1><p>Browse sample ideas across neighbourhoods, flavours, stays and experiences. These are starting points—not verified listings.</p></div>
-      <div className="explore-search-wrap"><SearchBox key={query} initial={query} onSearch={submit} buttonLabel="Search" /></div>
-    </section>
-    <section className="explore-body page-shell">
-      <div className="map-panel"><div className="map-top-label"><Map size={16} /> Kashi, seen as a living map <span>Illustrative map view</span></div>
-        <div className="map-paper"><div className="river-ribbon"><span>GANGA</span></div>
-          {[['Vishwanath Gali','24%','28%'], ['Godowlia','53%','43%'], ['Assi Ghat','34%','76%'], ['Lanka & BHU','72%','72%'], ['Cantt','75%','20%']].map(([name, left, top], index) => <Link href={`/explore?q=${encodeURIComponent(name)}`} key={name} className={`map-pin pin-${index}`} style={{ left, top }} data-testid={`map-pin-${index}`}><span className="pin-dot"><MapPin size={15} fill="currentColor" /></span><strong>{name}</strong></Link>)}
-          <span className="map-legend">North ↑</span><span className="map-mapnote">River bends. Stories gather.</span>
-        </div>
-      </div>
-      <div className="results-side"><div className="results-head"><div><span className="eyebrow">Browse discoveries</span><h2 className="serif">{filtered.length} <em>ideas to begin with</em></h2></div><label className="sort-label">Showing <select aria-label="Sort discovery ideas" value={sort} onChange={event => setSort(event.target.value)} data-testid="select-sort"><option>Curated ideas</option><option>A to Z</option></select></label></div>
-        <div className="category-filters" aria-label="Filter by category">{categories.map(item => <button className={category === item ? 'selected' : ''} key={item} onClick={() => setCategory(item)} data-testid={`filter-explore-${item.toLowerCase()}`}>{item}</button>)}</div>
-        <p className="result-count" aria-live="polite">{filtered.length} sample {filtered.length === 1 ? 'idea' : 'ideas'}{query && <> matching <strong>“{query}”</strong></>}</p>
-        {filtered.length ? <div className="explore-results">{filtered.map((item, i) => <DiscoveryCard item={item} number={i + 1} key={item.id} />)}</div> : <div className="empty-discover"><span><Compass size={24} /></span><h3>No discoveries found</h3><p>Try a broader word, or clear filters to see more ways into Kashi.</p><button onClick={() => { setQuery(''); setCategory('All'); }} data-testid="button-clear-filters">Clear search and filters <ArrowRight size={15} /></button></div>}
-        <p className="sample-disclaimer explore-disclaimer">{sampleNote}</p>
-      </div>
-    </section>
-    <section className="explore-trip-cta page-shell"><div><span className="eyebrow">Have a few days?</span><h2 className="serif">Make space for your own Kashi.</h2><p>Explore itinerary ideas before you decide on your pace.</p></div><Link href="/plan-my-trip" className="button-primary" data-testid="link-explore-plan-trip">Preview My Kashi Trip <ArrowRight size={16} /></Link></section>
-  </main><Footer /></>;
-}
-
-export function PlanPreviewPage() {
-  return <><Header /><main className="plan-preview page-shell">
-    <div className="plan-back"><Link href="/" data-testid="link-back-home"><ArrowRight size={14} /> Back to KashiNagri</Link><span className="eyebrow">A preview, not a planner—yet</span></div>
-    <section className="plan-hero"><div className="plan-hero-copy"><span className="eyebrow">My Kashi Trip</span><h1 className="serif">Let the city<br /><em>find its way in.</em></h1><p>A considered first outline for your time in Kashi. The complete personal trip builder is planned for a future release; for now, begin with a few sample rhythms.</p><Link href="/explore?category=itineraries" className="button-primary" data-testid="link-see-itinerary-ideas">Explore itinerary ideas <ArrowRight size={16} /></Link></div><div className="plan-image"><span>काशी</span><small>Take your time.</small></div></section>
-    <section className="plan-days"><SectionTitle eyebrow="Choose a starting point" title="A few ways to begin" note="Illustrative day shapes—not fixed schedules or promises." href="/explore?category=itineraries" action="Browse all ideas" /><div className="plan-card-grid">{itineraries.map((item, i) => <DiscoveryCard item={item} number={i + 1} key={item.id} />)}</div></section>
-    <div className="preview-note"><Sparkles size={18} /><div><strong>What this preview is</strong><p>A small taste of itinerary inspiration. No booking, account, saved trip or live availability features are active here.</p></div></div>
-  </main><Footer /></>;
-}
-
-export default function App() {
-  return <HomePage />;
 }
