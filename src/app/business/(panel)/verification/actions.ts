@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { getBusinessContext } from '@/lib/business/context';
 import { DOCUMENT_TYPES } from '@/lib/business/constants';
 import { friendlyDbError, isUuid } from '@/lib/business/state';
+import { DOCUMENT_MIME, sniffMime } from '@/lib/files';
 
 type Result = { ok: true } | { ok: false; error: string };
 const go = (key: 'notice' | 'error', value: string) => redirect(`/business/verification/?${key}=${encodeURIComponent(value)}`);
@@ -20,8 +21,14 @@ export async function addVerificationDocument(input: { documentType: string; pat
   if (!path.startsWith(`${active.id}/`) || path.includes('..') || !/\.(pdf|jpe?g|png)$/i.test(path)) {
     return { ok: false, error: 'Invalid document path.' };
   }
-  const { data: exists } = await supabase.storage.from('verification-documents').exists(path);
-  if (!exists) return { ok: false, error: 'The uploaded file could not be found. Please try again.' };
+  // Server-side content check (the browser check can be bypassed).
+  const { data: blob } = await supabase.storage.from('verification-documents').download(path);
+  if (!blob) return { ok: false, error: 'The uploaded file could not be found. Please try again.' };
+  const mime = sniffMime(new Uint8Array(await blob.slice(0, 16).arrayBuffer()));
+  if (!mime || !DOCUMENT_MIME.includes(mime)) {
+    await supabase.storage.from('verification-documents').remove([path]);
+    return { ok: false, error: 'Only PDF, JPEG or PNG files are accepted.' };
+  }
 
   const { error } = await supabase.from('business_verification_documents').insert({
     business_id: active.id,

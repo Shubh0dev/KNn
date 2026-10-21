@@ -2,6 +2,7 @@ import 'server-only';
 
 import type { createClient } from '../supabase/server';
 import { friendlyDbError, isUuid } from '../business/state';
+import { IMAGE_MIME, sniffMime } from '../files';
 
 type Client = Awaited<ReturnType<typeof createClient>>;
 export type ImageResult = { ok: true } | { ok: false; error: string };
@@ -15,8 +16,15 @@ export async function registerImage(supabase: Client, listingId: string, path: s
   if (!path.startsWith(`${listingId}/`) || path.includes('..') || !/\.(jpe?g|png|webp|avif)$/i.test(path)) {
     return { ok: false, error: 'Invalid image path.' };
   }
-  const { data: exists } = await supabase.storage.from('listing-images').exists(path);
-  if (!exists) return { ok: false, error: 'The uploaded file could not be found. Please try again.' };
+  // Verify the stored bytes really are an image: the browser check can be bypassed
+  // by calling the Storage API directly with a fake Content-Type.
+  const { data: blob } = await supabase.storage.from('listing-images').download(path);
+  if (!blob) return { ok: false, error: 'The uploaded file could not be found. Please try again.' };
+  const mime = sniffMime(new Uint8Array(await blob.slice(0, 16).arrayBuffer()));
+  if (!mime || !IMAGE_MIME.includes(mime)) {
+    await supabase.storage.from('listing-images').remove([path]);
+    return { ok: false, error: 'That file is not a supported image (JPEG, PNG, WebP or AVIF).' };
+  }
 
   const { data: existing } = await supabase.from('listing_images').select('sort_order, is_cover').eq('listing_id', listingId);
   const rows = (existing ?? []) as { sort_order: number; is_cover: boolean }[];

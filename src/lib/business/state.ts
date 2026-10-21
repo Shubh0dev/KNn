@@ -12,6 +12,8 @@ export function friendlyDbError(error: DbError, fallback: string): string {
   if (error.code === 'P0001' || error.code === '42501') return error.message;
   if (error.code === '23505') return 'That value is already in use. Please choose another.';
   if (error.code === '23514') return 'One of the values is not allowed. Please check the form.';
+  // Unexpected: log for the server logs (Vercel), show only the generic message.
+  console.error('[db]', error.code ?? 'unknown', error.message);
   return fallback;
 }
 

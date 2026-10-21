@@ -7,6 +7,8 @@ import { ArrowRight, ArrowUpRight, Bookmark, Check, Compass, Copy, MapPin, Print
 import { Footer, Header } from './App';
 import { asset } from './asset';
 import { demoNotice, items, type DiscoveryItem } from './discovery-data';
+import { trackEvent } from './lib/analytics/client';
+import { DirectorySearch } from './components/public/DirectorySearch';
 import {
   areaTitle, budgetLabels, detailHref, formatItinerary, interestOptions, itemsNearArea,
   lengthOptions, makeItinerary, tripAreas,
@@ -110,6 +112,7 @@ export function TripPlanner() {
     const stamp = new Date().toISOString();
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ preferences, savedAt: stamp }));
+      trackEvent('trip_saved');
       setSavedAt(stamp);
       setHasSavedPlan(true);
       setStatus('Plan saved on this browser and device only. It is not synced or backed up.');
@@ -137,6 +140,7 @@ export function TripPlanner() {
   }
 
   async function sharePlan() {
+    trackEvent('trip_shared');
     const absoluteUrl = `${window.location.origin}${asset(shareHref)}`;
     if (navigator.share) {
       try {
@@ -180,7 +184,7 @@ export function TripPlanner() {
         <div className="planner-field"><label htmlFor="trip-area">Starting area <span>(optional)</span></label><select id="trip-area" value={preferences.area} onChange={(event) => updatePreference('area', event.target.value)} data-testid="select-trip-area"><option value="">No preference</option>{tripAreas.map((area) => <option value={area.slug} key={area.slug}>{area.title}</option>)}</select></div>
         <fieldset className="planner-field"><legend>Daily pace</legend><div className="planner-options"><button type="button" className="planner-choice" aria-pressed={preferences.pace === 'relaxed'} onClick={() => updatePreference('pace', 'relaxed')} data-testid="button-pace-relaxed">Relaxed</button><button type="button" className="planner-choice" aria-pressed={preferences.pace === 'packed'} onClick={() => updatePreference('pace', 'packed')} data-testid="button-pace-packed">More to explore</button></div></fieldset>
         <p className="planner-editor-note">Budget is only a planning lens: this sample contains no verified prices, costs or trip total. “More to explore” adds ideas, not travel-time promises.</p>
-        <button type="button" className="button-primary planner-generate" onClick={() => { setStatus('Your outline is refreshed from the preferences above.'); }} data-testid="button-generate-itinerary"><Sparkles size={15} /> Refresh my outline <ArrowRight size={15} /></button>
+        <button type="button" className="button-primary planner-generate" onClick={() => { trackEvent('trip_created'); setStatus('Your outline is refreshed from the preferences above.'); }} data-testid="button-generate-itinerary"><Sparkles size={15} /> Refresh my outline <ArrowRight size={15} /></button>
       </aside>
       <section className="planner-result" aria-labelledby="itinerary-title">
         <div className="planner-result-head"><div><span className="eyebrow">A flexible outline</span><h2 id="itinerary-title">{titleForLength}<em> in Kashi</em></h2></div><div className="planner-meta"><strong>{preferences.pace === 'relaxed' ? 'Room to pause' : 'A fuller rhythm'}</strong>{preferences.area ? `Beginning around ${areaTitle(preferences.area)}` : 'Starting area is open'}</div></div>
@@ -247,6 +251,7 @@ export function ExploreDiscovery() {
   }
   function submitSearch(event: FormEvent) {
     event.preventDefault();
+    trackEvent('search', { term: query });
     updateUrl(query);
   }
   const resetFilters = () => { setQuery(''); setCategory('All'); setSelectedArea(''); setSort('Curated ideas'); updateUrl(''); };
@@ -272,6 +277,7 @@ export function ExploreDiscovery() {
         <div className="explore-area-filter" aria-label="Filter by area"><span className="explore-category-label">Area notes</span><button type="button" aria-pressed={!selectedArea} onClick={() => setSelectedArea('')} data-testid="filter-area-all">All areas</button>{tripAreas.map((area) => <button type="button" key={area.slug} aria-pressed={selectedArea === area.slug} onClick={() => setSelectedArea(selectedArea === area.slug ? '' : area.slug)} data-testid={`filter-area-${area.slug}`}>{area.title}</button>)}</div>
         <p className="result-count" aria-live="polite">{filtered.length} sample {filtered.length === 1 ? 'idea' : 'ideas'}{query && <> matching <strong>“{query}”</strong></>}{selectedArea && <> around <strong>{areaTitle(selectedArea)}</strong></>}</p>
         {selectedArea && <button type="button" className="explore-area-clear" onClick={() => setSelectedArea('')}>Clear area filter</button>}
+        <DirectorySearch query={query} />
         {filtered.length ? <div className="explore-results">{filtered.map((entry, index) => sampleCard(entry, index))}</div> : <div className="empty-discover"><span><Compass size={24} /></span><h3>No discoveries found</h3><p>Try a broader search, another area, or clear filters to browse the full sample guide.</p><button type="button" onClick={resetFilters} data-testid="button-clear-explore-filters">Clear search and filters <ArrowRight size={15} /></button></div>}
         <p className="explore-sample-note">{demoNotice} The source collection has no known venue coordinates, exact distances, opening times, travel routes, travel-time accuracy or visit-duration estimates. Area relationships are curated editorial suggestions only.</p>
       </div>

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { DM_Sans, Playfair_Display } from 'next/font/google';
 import '../index.css';
+import { Analytics } from '@/components/analytics/Analytics';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -19,6 +20,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.kashinagri.com'),
   title: 'KashiNagri — Your Complete Guide to Kashi',
   description:
     'Find your way into Varanasi with thoughtful discovery ideas for ghats, temples, stays, food, local experiences and trip planning.',
@@ -38,7 +40,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${dmSans.variable} ${playfair.variable}`}>
-      <body>{children}</body>
+      <body>{children}<Analytics /></body>
     </html>
   );
 }

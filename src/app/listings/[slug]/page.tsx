@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { BadgeCheck, Clock, Flag, Globe, Mail, MapPin, Navigation, Phone } from 'lucide-react';
+import { BadgeCheck, Clock, Flag, Globe, Mail, MapPin, MessageSquare, Navigation, Phone } from 'lucide-react';
 import { Footer, Header } from '../../../App';
 import { TrackedLink, ViewTracker } from '@/components/public/ListingTracking';
 import { PRICE_BANDS, type BusinessHours } from '@/lib/business/constants';
@@ -52,7 +52,8 @@ export default async function Page({ params }: Props) {
         {(band || price) && <p><strong>{[band, price].filter(Boolean).join(' · ')}</strong></p>}
         {hours.length > 0 && <div><h2><Clock size={14} /> Opening hours</h2><dl className="bp-hours-list">{hours.map(r => <div key={r.label}><dt>{r.label}</dt><dd>{r.value}</dd></div>)}</dl></div>}
         <div className="public-listing-actions">
-          {listing.contact_phone && <TrackedLink listingId={listing.id} type="contact_click" href={`tel:${listing.contact_phone.replace(/[^+\d]/g, '')}`} className="button-primary"><Phone size={15} /> Call</TrackedLink>}
+          {listing.businessName && <Link href={`/listings/${listing.slug}/enquire/`} className="button-primary" data-testid="link-enquire"><MessageSquare size={15} /> Send an enquiry</Link>}
+          {listing.contact_phone && <TrackedLink listingId={listing.id} type="contact_click" href={`tel:${listing.contact_phone.replace(/[^+\d]/g, '')}`} className="partner-secondary"><Phone size={15} /> Call</TrackedLink>}
           {listing.contact_email && <TrackedLink listingId={listing.id} type="contact_click" href={`mailto:${listing.contact_email}`} className="partner-secondary"><Mail size={15} /> Email</TrackedLink>}
           {listing.website && <TrackedLink listingId={listing.id} type="website_click" href={listing.website} className="partner-secondary"><Globe size={15} /> Website</TrackedLink>}
           {directions && <TrackedLink listingId={listing.id} type="direction_click" href={directions} className="partner-secondary"><Navigation size={15} /> Directions</TrackedLink>}

@@ -10,5 +10,5 @@ export const revalidate = 300;
 
 export default async function Page() {
   const cards = await getDirectory(['ghats']);
-  return <CategoryPage slug="ghats" directory={<DirectorySection cards={cards} />} />;
+  return <CategoryPage slug="ghats" directory={<DirectorySection cards={cards} showEmpty />} />;
 }

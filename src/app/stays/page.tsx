@@ -12,5 +12,5 @@ export const revalidate = 300;
 
 export default async function Page() {
   const cards = await getDirectory(['stays']);
-  return <StaysDiscoveryPage directory={<DirectorySection cards={cards} title="Verified stays on KashiNagri" />} />;
+  return <StaysDiscoveryPage directory={<DirectorySection cards={cards} title="Verified stays on KashiNagri" showEmpty />} />;
 }

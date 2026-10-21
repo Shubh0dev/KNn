@@ -821,3 +821,28 @@ a { color: inherit; text-decoration: none; }
   .public-listing-grid { grid-template-columns: minmax(0, 1fr); }
   .public-listing-aside { position: static; }
 }
+
+/* ===== Part 4: analytics, search, consent ===== */
+.consent-banner { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 80; max-width: 560px; margin-inline: auto; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding: 16px 18px; background: #fffdf7; border: 1px solid #ddc8a4; border-radius: 4px; box-shadow: 0 14px 40px rgba(27,17,14,.18); font-size: 12.5px; color: #4c3028; }
+.consent-banner p { margin: 0; flex: 1 1 260px; line-height: 1.6; }
+.consent-banner div { display: flex; gap: 10px; }
+.consent-banner .partner-secondary { border: 1px solid #e0d3bd; padding: 10px 14px; border-radius: 3px; background: transparent; font: inherit; font-size: 11px; font-weight: 700; color: #792638; cursor: pointer; }
+.directory-empty { padding: 22px 0 6px; }
+.directory-empty p { margin: 6px 0 8px; color: #786957; font-size: 13px; }
+.directory-search { margin: 0 0 20px; padding: 16px; background: #fffdf7; border: 1px solid #e6dccb; border-radius: 4px; }
+.directory-search-head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; font-size: 13px; color: #482b26; }
+.directory-search-list { display: flex; flex-direction: column; gap: 8px; }
+.directory-search-item { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 4px; color: #4c3028; }
+.directory-search-item:hover { background: #f6efe2; }
+.directory-search-thumb { width: 56px; height: 44px; flex: none; border-radius: 3px; background: #efe5d3 center / cover no-repeat; }
+.directory-search-copy { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.directory-search-copy strong { font-size: 13px; color: #772337; }
+.directory-search-copy small { display: inline-flex; align-items: center; gap: 4px; color: #786957; font-size: 11px; }
+.directory-search-trust { color: #38591f !important; font-weight: 700; }
+.cc-range { margin: 0; }
+.cc-range input[type=date] { max-width: 150px; }
+.cc-sources { margin-bottom: 18px; }
+.cc-sources li { display: block; line-height: 1.6; }
+.cc-setup { border-style: dashed; margin-bottom: 18px; }
+.cc-setup h3 { margin: 0 0 6px; font-size: 15px; color: #8a5a0c; }
+.bp-card h3 { margin: 0 0 8px; font-size: 15px; color: #482b26; }

@@ -67,6 +67,23 @@ export async function getDirectory(categorySlugs: string[] | 'all-businesses', l
   }
 }
 
+/** Text search over published listings (title, summary, area, type). Never throws. */
+export async function searchListings(rawQuery: string, limit = 12): Promise<PublicCard[]> {
+  const q = rawQuery.replace(/[%_,()*\\.:"']/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 60);
+  if (!isSupabaseConfigured() || q.length < 2) return [];
+  try {
+    const client = publicClient();
+    const pattern = `%${q}%`;
+    const { data, error } = await client.from('listings').select(CARD_SELECT).eq('status', 'published')
+      .or(`title.ilike.${pattern},summary.ilike.${pattern},area.ilike.${pattern},subtype.ilike.${pattern}`)
+      .order('published_at', { ascending: false }).limit(limit);
+    if (error || !data) return [];
+    return data.map(row => toCard(row, client));
+  } catch {
+    return [];
+  }
+}
+
 /** Homepage featured placements (active window, public listings only). Never throws. */
 export async function getHomeFeatured(): Promise<PublicCard[]> {
   if (!isSupabaseConfigured()) return [];
@@ -98,7 +115,10 @@ export async function getPublicListing(slug: string): Promise<PublicListing | nu
   try {
     const client = publicClient();
     const { data } = await client.from('listings')
-      .select(`*, listing_categories ( slug, name ), businesses ( name, verification_status ), listing_images ( storage_path, alt_text, is_cover, sort_order )`)
+      // Explicit columns: the anonymous role is not granted internal ids such as created_by.
+      .select(`id, slug, title, summary, subtype, area, description, address, latitude, longitude, contact_phone, contact_email, website,
+        price_band, price_from, price_to, price_note, amenities, business_hours, business_id,
+        listing_categories ( slug, name ), businesses ( name, verification_status ), listing_images ( storage_path, alt_text, is_cover, sort_order )`)
       .eq('slug', slug).eq('status', 'published').maybeSingle();
     if (!data) return null;
     const card = toCard({ ...data, listing_categories: data.listing_categories }, client);

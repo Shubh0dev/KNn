@@ -24,18 +24,30 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
   const { supabase, active } = await getBusinessContext();
   const raw = (await searchParams).days;
   const days = PERIODS.includes(Number(raw)) ? Number(raw) : 30;
-  const since = new Date(Date.now() - days * 86_400_000).toISOString();
+  // Fetch twice the range so the current period can be compared with the one before it.
+  const since = new Date(Date.now() - 2 * days * 86_400_000).toISOString();
 
   const [eventsResult, listingsResult, enquiriesResult] = await Promise.all([
-    supabase.rpc('business_engagement_summary', { p_business_id: active.id, p_days: days }),
+    supabase.rpc('business_engagement_summary', { p_business_id: active.id, p_days: days * 2 }),
     supabase.from('listings').select('id, title').eq('business_id', active.id),
     supabase.from('enquiries').select('created_at').eq('business_id', active.id).gte('created_at', since).limit(5000),
   ]);
 
-  const events = (eventsResult.data ?? []) as Row[];
+  const currentStart = lastDays(days)[0];
+  const allEvents = (eventsResult.data ?? []) as Row[];
+  const events = allEvents.filter(r => r.day >= currentStart);
+  const previous = allEvents.filter(r => r.day < currentStart);
   const titles = new Map((listingsResult.data ?? []).map(l => [l.id as string, l.title as string]));
-  const enquiryDates = (enquiriesResult.data ?? []).map(e => (e.created_at as string).slice(0, 10));
+  const allEnquiryDates = (enquiriesResult.data ?? []).map(e => (e.created_at as string).slice(0, 10));
+  const enquiryDates = allEnquiryDates.filter(d => d >= currentStart);
+  const previousEnquiries = allEnquiryDates.length - enquiryDates.length;
   const sum = (types: string[], rows = events) => rows.filter(r => types.includes(r.event_type)).reduce((n, r) => n + Number(r.event_count), 0);
+  // Comparison only when the previous period actually had activity.
+  const compare = (current: number, before: number) => {
+    if (before === 0) return `Last ${days} days`;
+    const change = Math.round(((current - before) / before) * 100);
+    return `${change >= 0 ? '+' : ''}${change}% vs previous ${days} days (${before})`;
+  };
 
   const series = lastDays(days).map(day => ({
     day,
@@ -62,16 +74,16 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
     />
 
     <section className="bp-stats" aria-label={`Summary, last ${days} days`}>
-      <StatCard label="Listing views" value={events.length ? sum(['view']) : '–'} hint={events.length ? `Last ${days} days` : 'No tracked views yet'} />
-      <StatCard label="Contact and direction clicks" value={events.length ? sum(CLICK_TYPES) : '–'} hint={events.length ? `Last ${days} days` : 'No tracked clicks yet'} />
-      <StatCard label="Enquiries received" value={enquiryDates.length} hint={`Last ${days} days`} href="/business/enquiries/" />
+      <StatCard label="Listing views" value={events.length ? sum(['view']) : '–'} hint={events.length ? compare(sum(['view']), sum(['view'], previous)) : 'No tracked views yet'} />
+      <StatCard label="Contact and direction clicks" value={events.length ? sum(CLICK_TYPES) : '–'} hint={events.length ? compare(sum(CLICK_TYPES), sum(CLICK_TYPES, previous)) : 'No tracked clicks yet'} />
+      <StatCard label="Enquiries received" value={enquiryDates.length} hint={compare(enquiryDates.length, previousEnquiries)} href="/business/enquiries/" />
       <StatCard label="Saves" value={events.length ? sum(['favourite']) : '–'} hint={events.length ? `Last ${days} days` : 'No tracked saves yet'} />
     </section>
 
     {events.length === 0
       ? <section className="bp-card bp-no-data">
           <h2 className="serif">No activity recorded yet</h2>
-          <p>Views and clicks are recorded when travellers open a <strong>published</strong> listing, through the <code>track_listing_event</code> database function. Until your listings are approved and the public listing pages send those events, these numbers stay empty rather than showing made-up values.</p>
+          <p>Views and clicks are recorded when travellers open a <strong>published</strong> listing, through the <code>track_listing_event</code> database function. Until one of your listings is published and visited, these numbers stay empty rather than showing made-up values. Visitors who use Do Not Track or Global Privacy Control are not counted.</p>
           <p className="bp-muted">Enquiry counts above are always real, because they come directly from the enquiry inbox.</p>
         </section>
       : <>

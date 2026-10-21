@@ -7,6 +7,8 @@ export const metadata: Metadata = { title: 'Super Admin | KashiNagri', robots: {
 
 const NAV: ConsoleNavItem[] = [
   { href: '/superadmin/', label: 'Overview', icon: 'dashboard', exact: true },
+  { href: '/superadmin/analytics/', label: 'Analytics', icon: 'analytics' },
+  { href: '/superadmin/revenue/', label: 'Revenue', icon: 'documents' },
   { href: '/superadmin/users/', label: 'Users', icon: 'users' },
   { href: '/superadmin/admins/', label: 'Admins', icon: 'admins' },
   { href: '/superadmin/businesses/', label: 'Businesses', icon: 'businesses' },

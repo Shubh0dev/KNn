@@ -12,6 +12,7 @@ import { asset } from './asset';
 import { createClient } from './lib/supabase/client';
 import { isSupabaseConfigured } from './lib/supabase/env';
 import type { PublicCard } from './lib/public/listings';
+import { trackEvent } from './lib/analytics/client';
 import {
   allDiscoveries, areas, events, experiences, foods, sampleNote, shortcuts,
   shopping, spiritual, stays, transport, type Discovery,
@@ -38,6 +39,7 @@ export function Header() {
   const [topQuery, setTopQuery] = useState('');
   const submit = (event: FormEvent) => {
     event.preventDefault();
+    trackEvent('search', { term: topQuery });
     router.push(`/explore?q=${encodeURIComponent(topQuery.trim())}`);
     setMenuOpen(false);
   };
@@ -127,7 +129,7 @@ function AccountLink() {
 
 function SearchBox({ initial = '', onSearch, buttonLabel = 'Explore Kashi' }: { initial?: string; onSearch: (value: string) => void; buttonLabel?: string }) {
   const [query, setQuery] = useState(initial);
-  const submit = (event: FormEvent) => { event.preventDefault(); onSearch(query.trim()); };
+  const submit = (event: FormEvent) => { event.preventDefault(); trackEvent('search', { term: query }); onSearch(query.trim()); };
   return <form className="hero-search" role="search" onSubmit={submit}>
     <MapPin size={18} className="search-pin" />
     <input aria-label="Search places, food and experiences" placeholder="What would you like to discover in Kashi?" value={query} onChange={e => setQuery(e.target.value)} data-testid="input-discovery-search" />
@@ -183,7 +185,7 @@ function ShortcutStrip() {
     <div className="shortcut-grid">{shortcuts.map((item, index) => {
       const Icon = shortcutIcons[item.icon];
       const href = item.label === 'My Kashi Trip' ? '/plan-my-trip' : destination(item.label);
-      return <Link href={href} className="shortcut-item" key={item.label} data-testid={`shortcut-${item.icon}`}>
+      return <Link href={href} className="shortcut-item" key={item.label} data-testid={`shortcut-${item.icon}`} onClick={() => trackEvent('category_click', { category: href.replace(/\//g, '') })}>
         <span className={`shortcut-icon tone-${index % 4}`}><Icon size={19} strokeWidth={1.65} /></span><span>{item.label}</span>
       </Link>;
     })}</div>
@@ -244,7 +246,7 @@ function ItineraryCallout() {
 function InfoDialog({ topic, onClose }: { topic: string; onClose: () => void }) {
   if (!topic) return null;
   const message = topic === 'Privacy notice'
-    ? 'Browsing needs no account. If you choose to register, we store your email, name and the details you add to your profile or business, protected so only you and authorised KashiNagri staff can access them. Search and filters are handled in your browser; there are no booking or payment flows.'
+    ? 'Browsing needs no account. If you choose to register, we store your email, name and the details you add to your profile or business, protected so only you and authorised KashiNagri staff can access them. We count visits anonymously (pages viewed, searches with emails and numbers removed, clicks on listing contacts) without cookies or personal identifiers; Do Not Track and Global Privacy Control switch this off. Google Analytics cookies are used only if you accept them. There are no booking or payment flows.'
     : topic === 'Terms of use'
       ? 'Sample content is provided as discovery inspiration only. It is not a verified listing, travel guarantee, endorsement or substitute for confirming current information locally.'
       : topic === 'Social links'

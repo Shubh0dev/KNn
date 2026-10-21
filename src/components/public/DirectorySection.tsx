@@ -7,8 +7,14 @@ import type { PublicCard } from '@/lib/public/listings';
  * there are no published listings, so the existing page is unchanged until
  * real content is approved.
  */
-export function DirectorySection({ cards, title = 'Listed on KashiNagri' }: { cards: PublicCard[]; title?: string }) {
-  if (cards.length === 0) return null;
+export function DirectorySection({ cards, title = 'Listed on KashiNagri', showEmpty = false }: { cards: PublicCard[]; title?: string; showEmpty?: boolean }) {
+  if (cards.length === 0) {
+    return showEmpty ? <section className="directory-band directory-empty" aria-label="Verified listings">
+      <span className="eyebrow">Verified listings</span>
+      <p>No verified businesses are listed in this section yet. The ideas above are illustrative.</p>
+      <Link href="/business/onboarding/" className="listing-card-link" data-testid="link-directory-empty-cta">Run a business here? List it on KashiNagri <ArrowRight size={14} /></Link>
+    </section> : null;
+  }
   return <section className="directory-band" aria-labelledby="directory-title">
     <div className="directory-head">
       <span className="eyebrow">Reviewed by our team</span>
