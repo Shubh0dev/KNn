@@ -1,8 +1,21 @@
 'use client';
 
-import { useActionState } from 'react';
+import { startTransition, useActionState, type FormEvent } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { requestPasswordReset, signIn, signUp, updatePassword, type FormState } from '../auth/actions';
+
+/**
+ * Submit through a handler instead of <form action>: React 19 resets an
+ * action form after it runs, which would wipe the email and name the visitor
+ * typed whenever validation fails.
+ */
+function submitWith(action: (formData: FormData) => void) {
+  return (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    startTransition(() => action(data));
+  };
+}
 
 function Notice({ state }: { state: FormState }) {
   if (state?.error) return <p className="auth-notice auth-error" role="alert">{state.error}</p>;
@@ -18,7 +31,7 @@ function Submit({ pending, label }: { pending: boolean; label: string }) {
 
 export function LoginForm({ next }: { next?: string }) {
   const [state, action, pending] = useActionState(signIn, undefined);
-  return <form action={action} className="auth-form" noValidate>
+  return <form onSubmit={submitWith(action)} className="auth-form" noValidate>
     <Notice state={state} />
     <input type="hidden" name="next" value={next ?? ''} />
     <label>Email<input name="email" type="email" autoComplete="email" required data-testid="input-email" /></label>
@@ -30,7 +43,7 @@ export function LoginForm({ next }: { next?: string }) {
 export function RegisterForm({ next }: { next?: string }) {
   const [state, action, pending] = useActionState(signUp, undefined);
   if (state?.message) return <Notice state={state} />;
-  return <form action={action} className="auth-form" noValidate>
+  return <form onSubmit={submitWith(action)} className="auth-form" noValidate>
     <Notice state={state} />
     <input type="hidden" name="next" value={next ?? ''} />
     <label>Your name<input name="full_name" autoComplete="name" maxLength={120} required data-testid="input-full-name" /></label>
@@ -43,7 +56,7 @@ export function RegisterForm({ next }: { next?: string }) {
 
 export function ForgotPasswordForm() {
   const [state, action, pending] = useActionState(requestPasswordReset, undefined);
-  return <form action={action} className="auth-form" noValidate>
+  return <form onSubmit={submitWith(action)} className="auth-form" noValidate>
     <Notice state={state} />
     <label>Email<input name="email" type="email" autoComplete="email" required data-testid="input-email" /></label>
     <Submit pending={pending} label="Send reset link" />
@@ -52,7 +65,7 @@ export function ForgotPasswordForm() {
 
 export function ResetPasswordForm() {
   const [state, action, pending] = useActionState(updatePassword, undefined);
-  return <form action={action} className="auth-form" noValidate>
+  return <form onSubmit={submitWith(action)} className="auth-form" noValidate>
     <Notice state={state} />
     <label>New password<input name="password" type="password" autoComplete="new-password" minLength={8} maxLength={72} required data-testid="input-password" /></label>
     <label>Confirm new password<input name="confirm_password" type="password" autoComplete="new-password" required data-testid="input-confirm-password" /></label>

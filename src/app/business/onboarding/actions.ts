@@ -1,41 +1,65 @@
 'use server';
 
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { requireSignedIn } from '@/lib/auth/session';
 import { createClient } from '@/lib/supabase/server';
-import type { FormState } from '@/app/auth/actions';
+import { ACTIVE_BUSINESS_COOKIE } from '@/lib/business/context';
+import { friendlyDbError, type ActionState } from '@/lib/business/state';
+import { parseBusinessProfile, parsePrivateDetails, parseSlug } from '@/lib/business/validation';
 
-const SLUG_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-
-export async function createBusiness(_prev: FormState, formData: FormData): Promise<FormState> {
+export async function createBusiness(_prev: ActionState, formData: FormData): Promise<ActionState> {
   await requireSignedIn('/business/onboarding/');
 
-  const name = String(formData.get('name') ?? '').trim();
-  const slug = String(formData.get('slug') ?? '').trim().toLowerCase();
-  const area = String(formData.get('area') ?? '').trim();
-  const description = String(formData.get('description') ?? '').trim();
-
-  if (name.length < 2 || name.length > 120) return { error: 'Business name should be 2–120 characters.' };
-  if (!SLUG_PATTERN.test(slug) || slug.length > 80) return { error: 'Web address may use lowercase letters, numbers and single hyphens.' };
-  if (area.length > 80) return { error: 'Area should be at most 80 characters.' };
-  if (description.length > 2000) return { error: 'Description should be at most 2000 characters.' };
+  const profile = parseBusinessProfile(formData);
+  if (!profile.ok) return { error: profile.error, fieldErrors: profile.fieldErrors };
+  const slug = parseSlug(String(formData.get('slug') ?? ''));
+  if (!slug.ok) return { error: slug.error, fieldErrors: { slug: slug.error } };
+  const details = parsePrivateDetails(formData);
+  if (!details.ok) return { error: details.error, fieldErrors: details.fieldErrors };
 
   const supabase = await createClient();
-  // The RPC re-checks the session, creates the business as `unverified`,
-  // makes the caller its owner and grants the business_owner role.
-  const { error } = await supabase.rpc('create_business', {
-    p_name: name,
-    p_slug: slug,
-    p_description: description || undefined,
-    p_area: area || undefined,
-  });
 
-  if (error) {
-    if (error.code === '23505') return { error: 'That web address is already taken. Try another.' };
-    if (error.code === '42501') return { error: 'Your account is not able to register a business.' };
-    if (error.message.includes('Business limit')) return { error: 'You have reached the limit of businesses for one account.' };
-    return { error: 'We could not save your business. Please check the details and try again.' };
+  // The function re-checks the session, creates the business as `unverified`,
+  // makes the caller its owner and grants the business_owner role.
+  const { data: businessId, error } = await supabase.rpc('create_business', {
+    p_name: profile.data.name,
+    p_slug: slug.data,
+    p_description: profile.data.description,
+    p_area: profile.data.area,
+  });
+  if (error || !businessId) {
+    if (error?.code === '23505') return { error: 'That web address is already taken. Try another.', fieldErrors: { slug: 'That web address is already taken.' } };
+    if (error?.message?.includes('Business limit')) return { error: 'You have reached the limit of businesses for one account.' };
+    return { error: friendlyDbError(error, 'We could not create your business. Please check the details and try again.') };
   }
 
-  redirect('/business/');
+  // Remaining profile details. Failure here is not fatal: the business exists.
+  const p = profile.data;
+  const d = details.data;
+  const [extras, privateResult] = await Promise.all([
+    supabase.from('businesses').update({
+      business_type: p.business_type,
+      address: p.address ?? null,
+      website: p.website ?? null,
+      public_phone: p.public_phone ?? null,
+      public_email: p.public_email ?? null,
+      latitude: p.latitude ?? null,
+      longitude: p.longitude ?? null,
+    }).eq('id', businessId).select('id'),
+    supabase.from('business_private_details').update({
+      legal_name: d.legal_name ?? null,
+      registration_number: d.registration_number ?? null,
+      gst_number: d.gst_number ?? null,
+    }).eq('business_id', businessId).select('business_id'),
+  ]);
+
+  (await cookies()).set(ACTIVE_BUSINESS_COOKIE, businessId, {
+    httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', path: '/business', maxAge: 60 * 60 * 24 * 365,
+  });
+
+  if (extras.error || privateResult.error) {
+    redirect(`/business/settings/?error=${encodeURIComponent('Your business was created, but some details could not be saved. Please review them here.')}`);
+  }
+  redirect('/business/verification/?notice=business-created');
 }

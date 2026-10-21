@@ -11,7 +11,7 @@ export default async function Page() {
     <div className="onboarding">
       <span className="eyebrow">For the people who make Kashi</span>
       <h1 className="serif panel-title">Register your business</h1>
-      <p className="auth-lede">Your business starts as unverified. Our team reviews it before any of its listings can appear publicly.</p>
+      <p className="auth-lede">It takes about two minutes. Your business starts as unverified. Our team reviews it before any of its listings can appear publicly.</p>
       <OnboardingForm />
     </div>
   </PanelShell>;

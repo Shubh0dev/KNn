@@ -6,7 +6,7 @@
 -- super_admin itself can never be granted here: see the
 -- user_roles_guard_super_admin trigger and supabase/bootstrap/.
 
-create function public.superadmin_set_admin_role(p_user_id uuid, p_grant boolean)
+create or replace function public.superadmin_set_admin_role(p_user_id uuid, p_grant boolean)
 returns void
 language plpgsql
 security definer
@@ -39,7 +39,7 @@ begin
 end;
 $$;
 
-create function public.superadmin_set_admin_permission(
+create or replace function public.superadmin_set_admin_permission(
   p_user_id uuid,
   p_permission public.admin_permission,
   p_grant boolean
