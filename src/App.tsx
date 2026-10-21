@@ -1,6 +1,6 @@
 'use client';
 
-import { type FormEvent, useMemo, useState } from 'react';
+import { type FormEvent, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
@@ -9,6 +9,8 @@ import {
   Navigation, Search, ShoppingBag, Sparkles, Store, TrainFront, Utensils, Waves, X,
 } from 'lucide-react';
 import { asset } from './asset';
+import { createClient } from './lib/supabase/client';
+import { isSupabaseConfigured } from './lib/supabase/env';
 import {
   allDiscoveries, areas, events, experiences, foods, sampleNote, shortcuts,
   shopping, spiritual, stays, transport, type Discovery,
@@ -31,7 +33,6 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [language, setLanguage] = useState<'EN' | 'हिं'>('EN');
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [accountInfo, setAccountInfo] = useState(false);
   const router = useRouter();
   const [topQuery, setTopQuery] = useState('');
   const submit = (event: FormEvent) => {
@@ -85,7 +86,7 @@ export function Header() {
         <div className="language-wrap">
           <button className="language-button" onClick={() => setLanguage(language === 'EN' ? 'हिं' : 'EN')} aria-label="Change language" data-testid="button-language"><Globe2 size={15} /> {language} <ChevronDown size={12} /></button>
         </div>
-        <button className="account-link account-button" onClick={() => setAccountInfo(true)} aria-label="Login or register" data-testid="button-login-register"><CircleUserRound size={19} /><span>Login / Register</span></button>
+        <AccountLink />
       </div>
     </div>
     <nav className={`desktop-nav ${menuOpen ? 'mobile-open' : ''}`} aria-label="Main navigation">
@@ -105,8 +106,22 @@ export function Header() {
       </div>
     </nav>
     {activeDropdown && <button className="menu-scrim" onClick={() => setActiveDropdown(null)} aria-label="Close navigation dropdown" />}
-    <InfoDialog topic={accountInfo ? 'Login / Register' : ''} onClose={() => setAccountInfo(false)} />
   </header>;
+}
+
+/** Display-only: reads the local session cookie to pick a label. Access control happens on the server. */
+function AccountLink() {
+  const [signedIn, setSignedIn] = useState(false);
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return;
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data }) => setSignedIn(Boolean(data.session)));
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => setSignedIn(Boolean(session)));
+    return () => data.subscription.unsubscribe();
+  }, []);
+  return signedIn
+    ? <Link href="/account/" className="account-link" data-testid="link-my-account"><CircleUserRound size={19} /><span>My account</span></Link>
+    : <Link href="/login/" className="account-link" data-testid="button-login-register"><CircleUserRound size={19} /><span>Login / Register</span></Link>;
 }
 
 function SearchBox({ initial = '', onSearch, buttonLabel = 'Explore Kashi' }: { initial?: string; onSearch: (value: string) => void; buttonLabel?: string }) {
@@ -227,10 +242,8 @@ function ItineraryCallout() {
 
 function InfoDialog({ topic, onClose }: { topic: string; onClose: () => void }) {
   if (!topic) return null;
-  const message = topic === 'Login / Register'
-    ? 'Account access is not part of this preview. There is no sign-in, registration, or personal profile data collected here.'
-    : topic === 'Privacy notice'
-    ? 'This preview stores no account or personal profile data. Search and filters are handled in your browser; there are no booking, payment or sign-in flows.'
+  const message = topic === 'Privacy notice'
+    ? 'Browsing needs no account. If you choose to register, we store your email, name and the details you add to your profile or business, protected so only you and authorised KashiNagri staff can access them. Search and filters are handled in your browser; there are no booking or payment flows.'
     : topic === 'Terms of use'
       ? 'Sample content is provided as discovery inspiration only. It is not a verified listing, travel guarantee, endorsement or substitute for confirming current information locally.'
       : topic === 'Social links'
@@ -259,8 +272,8 @@ function TrustAndPartner() {
     <section className="partner-section page-shell">
       <div className="partner-mark"><Store size={26} strokeWidth={1.4} /></div>
       <div className="partner-copy"><span className="eyebrow">For the people who make Kashi</span><h2 className="serif">Your local story belongs here.</h2><p>Are you a guide, maker or local business? Tell us what you do and help shape a more useful city guide.</p></div>
-      <div className="partner-actions"><button onClick={() => setDialog('List your business')} className="button-primary" data-testid="button-list-business">List your business <ArrowUpRight size={15} /></button><button onClick={() => setDialog('Partner with KashiNagri')} className="partner-secondary" data-testid="button-partner">Partner with us <ArrowRight size={15} /></button></div>
-      <span className="partner-disclaimer">Enquiries only · no listings are submitted or verified through this preview.</span>
+      <div className="partner-actions"><Link href="/business/onboarding/" className="button-primary" data-testid="button-list-business">List your business <ArrowUpRight size={15} /></Link><button onClick={() => setDialog('Partner with KashiNagri')} className="partner-secondary" data-testid="button-partner">Partner with us <ArrowRight size={15} /></button></div>
+      <span className="partner-disclaimer">Free account · every business is verified by our team before it appears publicly.</span>
     </section>
     <InfoDialog topic={dialog} onClose={() => setDialog('')} />
   </>;

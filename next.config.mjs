@@ -1,4 +1,4 @@
-// Set BASE_PATH when the site is served from a sub-folder (e.g. GitHub Pages at /KNn).
+// Set BASE_PATH only when the site is served from a sub-folder.
 const configuredBasePath = process.env.BASE_PATH;
 const basePath =
   configuredBasePath && configuredBasePath !== '/'
@@ -7,7 +7,8 @@ const basePath =
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // Runs as a Next.js server (not a static export) so that Supabase Auth can use
+  // cookie-based sessions, the proxy, Server Actions and server-side route guards.
   trailingSlash: true,
   basePath,
   env: {
@@ -22,6 +23,19 @@ const nextConfig = {
     root: import.meta.dirname,
   },
   agentRules: false,
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
