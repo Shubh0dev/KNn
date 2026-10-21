@@ -6,6 +6,9 @@
 -- user_roles_guard_super_admin trigger rejects super_admin grants made with a
 -- user session.
 --
+-- Status: already run on 2026-10-21 for shubhtgs@gmail.com, so it will now
+-- refuse to run ("A super admin already exists"). Kept for disaster recovery.
+--
 -- Steps
 --   1. Register your own account on the site (/register) and confirm the email.
 --   2. Replace the email below with that exact address.
@@ -15,10 +18,10 @@
 
 do $$
 declare
-  v_email constant text := 'REPLACE_WITH_YOUR_CONFIRMED_EMAIL';
+  v_email constant text := 'shubhtgs@gmail.com';
   v_user_id uuid;
 begin
-  if v_email = 'REPLACE_WITH_YOUR_CONFIRMED_EMAIL' then
+  if v_email = '' or v_email like 'REPLACE_WITH_%' then
     raise exception 'Edit v_email before running this script';
   end if;
 

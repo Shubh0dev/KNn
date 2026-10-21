@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { homeForRoles, safeNextPath } from '@/lib/auth/roles';
+import { isGoogleSignInEnabled } from '@/lib/auth/providers';
 import { siteUrl } from '@/lib/site-url';
 
 export type FormState = { error?: string; message?: string } | undefined;
@@ -113,7 +114,7 @@ export async function updatePassword(_prev: FormState, formData: FormData): Prom
 }
 
 export async function signInWithGoogle(formData: FormData) {
-  if (process.env.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED !== 'true') redirect('/login/?error=provider');
+  if (!(await isGoogleSignInEnabled())) redirect('/login/?error=provider');
 
   const next = safeNextPath(formData.get('next'));
   const callback = new URL('/auth/callback/', siteUrl());
