@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight, MapPin, Search, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { Footer, Header } from './App';
@@ -37,7 +37,7 @@ function RelatedCategories({ slugs, title = 'Keep exploring' }: { slugs: Categor
   </section>;
 }
 
-export function CategoryPage({ slug }: { slug: CategorySlug }) {
+export function CategoryPage({ slug, directory }: { slug: CategorySlug; directory?: ReactNode }) {
   const category = getCategory(slug)!;
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState('All ideas');
@@ -74,6 +74,7 @@ export function CategoryPage({ slug }: { slug: CategorySlug }) {
       <div className="discovery-listing-grid">
         {filtered.length ? filtered.map((item) => <ListingCard key={item.slug} item={item} />) : <div className="empty-discover"><span><Search size={22} /></span><h3>No ideas match those filters</h3><p>Try another word or reset the filters to browse all sample discoveries.</p><button type="button" onClick={reset}>Reset search and filters <ArrowRight size={15} /></button></div>}
       </div>
+      {directory}
       <RelatedCategories slugs={category.related} />
       <p className="stay-notice">{demoNotice}</p>
     </section>
@@ -86,7 +87,7 @@ const stayBands = ['Value', 'Comfort', 'Premium'];
 const roomOptions = ['Single', 'Double', 'Family'];
 const amenityOptions = ['Wi-Fi', 'Air conditioning', 'Breakfast', 'River view'];
 
-export function StaysDiscoveryPage() {
+export function StaysDiscoveryPage({ directory }: { directory?: ReactNode }) {
   const [query, setQuery] = useState('');
   const [type, setType] = useState('All stays');
   const [area, setArea] = useState('');
@@ -125,6 +126,7 @@ export function StaysDiscoveryPage() {
       <div className="stay-filter-block"><strong>Amenities</strong><div className="stay-feature-filters">{amenityOptions.map((value) => <button key={value} type="button" className={amenity === value ? 'active' : ''} onClick={() => setAmenity(amenity === value ? '' : value)}>{value}</button>)}</div></div>
       <div className="discovery-result-note"><span aria-live="polite">{filtered.length} sample stay {filtered.length === 1 ? 'idea' : 'ideas'}</span><span className="demo-pill">Attributes are illustrative</span></div>
       <div className="discovery-listing-grid">{filtered.length ? filtered.map((stay) => <ListingCard key={stay.slug} item={stay} />) : <div className="empty-discover"><span><Search size={22} /></span><h3>No stay ideas match just yet</h3><p>Clear the selected filters to return to all accommodation categories.</p><button type="button" onClick={reset}>Reset stay filters <ArrowRight size={15} /></button></div>}</div>
+      {directory}
       <p className="stay-notice">Value, Comfort and Premium are non-numeric demo bands only. Room types, amenity tags and area shortcuts are illustrative filter examples, not property claims. No prices, availability, ratings, reviews, contacts or verified accommodation listings are shown.</p>
       <RelatedCategories slugs={['areas', 'travel', 'guides']} title="Plan the rest of your stay" />
     </section>

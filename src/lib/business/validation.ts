@@ -200,6 +200,30 @@ export function parseListing(formData: FormData): ParseResult<ListingInput> {
   return toResult(listingSchema.safeParse(raw));
 }
 
+/** Maps validated form input to listing columns (undefined -> null so fields can be cleared). */
+export function listingRow(input: ListingInput) {
+  return {
+    category_id: input.category_id,
+    title: input.title,
+    subtype: input.subtype ?? null,
+    summary: input.summary ?? null,
+    description: input.description ?? null,
+    area: input.area ?? null,
+    address: input.address ?? null,
+    latitude: input.latitude ?? null,
+    longitude: input.longitude ?? null,
+    contact_phone: input.contact_phone ?? null,
+    contact_email: input.contact_email ?? null,
+    website: input.website ?? null,
+    price_band: input.price_band ?? null,
+    price_from: input.price_from ?? null,
+    price_to: input.price_to ?? null,
+    price_note: input.price_note ?? null,
+    amenities: input.amenities,
+    business_hours: input.business_hours ?? null,
+  };
+}
+
 export const slugify = (value: string) =>
   value
     .toLowerCase()

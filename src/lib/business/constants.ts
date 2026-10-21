@@ -87,6 +87,7 @@ export const VERIFICATION_STATUS: Record<string, { label: string; tone: Tone; he
   unverified: { label: 'Not verified', tone: 'neutral', help: 'Upload a document, then request verification.' },
   pending: { label: 'Verification in review', tone: 'info', help: 'Our team is reviewing your documents.' },
   verified: { label: 'Verified', tone: 'good', help: 'Your business is verified. Approved listings can go public.' },
+  changes_requested: { label: 'Corrections requested', tone: 'warn', help: 'Our team asked for corrections. Read the note, update your details or documents, then request verification again.' },
   rejected: { label: 'Verification declined', tone: 'bad', help: 'See the note below, upload corrected documents and request again.' },
   suspended: { label: 'Suspended', tone: 'bad', help: 'Your business is suspended. Contact support.' },
 };

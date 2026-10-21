@@ -34,8 +34,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
 
   const isOwner = active.member_role === 'owner';
   const status = VERIFICATION_STATUS[active.verification_status];
-  const canUpload = isOwner && ['unverified', 'rejected', 'pending'].includes(active.verification_status);
-  const canRequest = isOwner && ['unverified', 'rejected'].includes(active.verification_status);
+  const canUpload = isOwner && ['unverified', 'rejected', 'pending', 'changes_requested'].includes(active.verification_status);
+  const canRequest = isOwner && ['unverified', 'rejected', 'changes_requested'].includes(active.verification_status);
   const decisionNote = events.find(e => e.to_status === active.verification_status && e.note);
 
   return <>
@@ -54,7 +54,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
       {decisionNote && <p className="bp-review-note-inline"><strong>Note from our team:</strong> {decisionNote.note}</p>}
       <ol className="bp-steps bp-steps-plain">
         <li className={docs.length ? 'is-done' : ''}>Upload at least one document that shows who runs the business.</li>
-        <li className={active.verification_status !== 'unverified' && active.verification_status !== 'rejected' ? 'is-done' : ''}>Request verification.</li>
+        <li className={!['unverified', 'rejected', 'changes_requested'].includes(active.verification_status) ? 'is-done' : ''}>Request verification.</li>
         <li className={active.verification_status === 'verified' ? 'is-done' : ''}>Our team reviews it. You will see the result on this page.</li>
       </ol>
     </section>

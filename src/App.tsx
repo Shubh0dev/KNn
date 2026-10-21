@@ -11,6 +11,7 @@ import {
 import { asset } from './asset';
 import { createClient } from './lib/supabase/client';
 import { isSupabaseConfigured } from './lib/supabase/env';
+import type { PublicCard } from './lib/public/listings';
 import {
   allDiscoveries, areas, events, experiences, foods, sampleNote, shortcuts,
   shopping, spiritual, stays, transport, type Discovery,
@@ -292,8 +293,24 @@ export function Footer() {
   </div></footer><InfoDialog topic={dialog} onClose={() => setDialog('')} /></>;
 }
 
-export function HomePage() {
-  return <><Header /><main><Hero /><ShortcutStrip /><StaySection />
+/** Listings a super admin featured on the homepage. Renders nothing when none are featured. */
+function FeaturedSection({ items }: { items: PublicCard[] }) {
+  if (!items.length) return null;
+  return <section className="content-section featured-section" id="featured"><div className="page-shell">
+    <SectionTitle eyebrow="Reviewed by our team" title="Featured on KashiNagri" note="Verified local businesses and places our editors recommend." href="/local-businesses" action="Browse the directory" />
+    <div className="discovery-grid columns-4">{items.map((item, index) => <Link href={`/listings/${item.slug}/`} className="discovery-card" key={item.id} data-testid={`card-featured-${item.slug}`}>
+      <div className="discovery-image" style={{ backgroundImage: `linear-gradient(0deg, rgba(31,20,16,.57), transparent 72%)${item.cover ? `, url("${item.cover}")` : `, url("${asset('/kashi-lanes.jpg')}")`}` }}>
+        <span className="card-index">{String(index + 1).padStart(2, '0')}</span>
+        <span className="card-label">{item.sponsoredLabel ?? (item.businessName ? 'Verified' : 'Curated')}</span>
+        <span className="image-arrow"><ArrowUpRight size={15} /></span>
+      </div>
+      <div className="discovery-copy"><h3>{item.title}</h3><p>{item.summary ?? [item.subtype, item.area].filter(Boolean).join(' · ')}</p></div>
+    </Link>)}</div>
+  </div></section>;
+}
+
+export function HomePage({ featured = [] }: { featured?: PublicCard[] }) {
+  return <><Header /><main><Hero /><ShortcutStrip /><FeaturedSection items={featured} /><StaySection />
     <div className="split-sections page-shell">
       <section className="mini-section" id="food"><SectionTitle eyebrow="Taste the city" title="Food & Dining" note="A morning bite, a long lunch, one more sweet." href="/food" /><div className="mini-grid">{foods.slice(0, 4).map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div><p className="section-footnote">Local discovery ideas · details may change</p></section>
       <section className="mini-section spiritual-mini" id="spiritual"><SectionTitle eyebrow="Meaning & ritual" title="Spiritual services" note="Learn what is offered, and how to take part respectfully." href="/spiritual-services" /><div className="mini-grid">{spiritual.map((item, i) => <DiscoveryCard item={item} number={i + 1} compact key={item.id} />)}</div><p className="section-footnote">Sample categories · confirm arrangements directly</p></section>

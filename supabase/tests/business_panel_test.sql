@@ -32,7 +32,7 @@ begin
                (u_c, 'bp-c@example.test', 'Visitor C'), (u_m, 'bp-m@example.test', 'Moderator M')) t(id, email, name);
   insert into public.user_roles (user_id, role) values (u_m, 'admin');
   insert into public.admin_permissions (user_id, permission)
-  values (u_m, 'listings.moderate'), (u_m, 'businesses.verify');
+  values (u_m, 'listings.moderate'), (u_m, 'businesses.verify'), (u_m, 'listings.suspend');
   select id into cat from public.listing_categories where slug = 'stays';
 
   -- ------------------------------------------------------------ onboarding
@@ -89,6 +89,8 @@ begin
   ok := msg like '%must be verified%'; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'cannot publish while the business is unverified\n'; if not ok then fails := fails + 1; end if;
   msg := null; begin perform public.admin_moderate_listing(l_a, 'rejected', ' '); exception when others then msg := sqlerrm; end;
   ok := msg like '%note is required%'; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'rejection requires a reason\n'; if not ok then fails := fails + 1; end if;
+  -- Part 3: a document must be accepted before the business can be verified.
+  perform public.admin_review_verification_document((select d.id from public.business_verification_documents d where d.business_id = biz_a limit 1), 'accepted', null);
   perform public.admin_set_business_verification(biz_a, 'verified', null);
   perform public.admin_moderate_listing(l_a, 'published', null);
   select status::text into v_status from public.listings where id = l_a;

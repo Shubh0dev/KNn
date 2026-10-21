@@ -1,6 +1,14 @@
 import type { Metadata } from 'next';
 import { CategoryPage } from '../../DiscoveryPages';
+import { DirectorySection } from '@/components/public/DirectorySection';
+import { getDirectory } from '@/lib/public/listings';
 import { categoryMetadata } from '../../discovery-data';
 
 export const metadata: Metadata = categoryMetadata('temples');
-export default function Page() { return <CategoryPage slug="temples" />; }
+// Re-generated at most every 5 minutes (and on demand after admin changes).
+export const revalidate = 300;
+
+export default async function Page() {
+  const cards = await getDirectory(['temples']);
+  return <CategoryPage slug="temples" directory={<DirectorySection cards={cards} />} />;
+}

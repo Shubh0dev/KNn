@@ -22,9 +22,20 @@ async function sniffImageType(file: File): Promise<string | null> {
   return null;
 }
 
-export function ImageManager({ listingId, images, editable, published }: {
+type Result = { ok: boolean; error?: string };
+export type ImageActions = {
+  register: (input: { listingId: string; path: string; alt?: string }) => Promise<Result>;
+  remove: (input: { listingId: string; imageId: string }) => Promise<Result>;
+  setCover: (input: { listingId: string; imageId: string }) => Promise<Result>;
+  move: (input: { listingId: string; imageId: string; direction: 'up' | 'down' }) => Promise<Result>;
+};
+const BUSINESS_ACTIONS: ImageActions = { register: registerListingImage, remove: removeListingImage, setCover: setCoverImage, move: moveListingImage };
+
+export function ImageManager({ listingId, images, editable, published, actions = BUSINESS_ACTIONS, maxImages = IMAGE_LIMITS.max, reviewNotice = true }: {
   listingId: string; images: ManagedImage[]; editable: boolean; published: boolean;
+  actions?: ImageActions; maxImages?: number; reviewNotice?: boolean;
 }) {
+  const { register: registerListingImage, remove: removeListingImage, setCover: setCoverImage, move: moveListingImage } = actions;
   const router = useRouter();
   const input = useRef<HTMLInputElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -33,7 +44,7 @@ export function ImageManager({ listingId, images, editable, published }: {
   const [uploading, setUploading] = useState(false);
   const [toRemove, setToRemove] = useState<ManagedImage | null>(null);
 
-  const remaining = IMAGE_LIMITS.max - images.length;
+  const remaining = maxImages - images.length;
 
   async function upload(files: FileList | null) {
     if (!files?.length) return;
@@ -61,7 +72,7 @@ export function ImageManager({ listingId, images, editable, published }: {
       results.push(registered.ok ? { ok: true, text: `${file.name} uploaded.` } : { ok: false, text: `${file.name}: ${registered.error}` });
       if (!registered.ok) await supabase.storage.from('listing-images').remove([path]);
     }
-    if (files.length > Math.max(remaining, 0)) results.push({ ok: false, text: `Only ${IMAGE_LIMITS.max} images are allowed per listing; extra files were skipped.` });
+    if (files.length > Math.max(remaining, 0)) results.push({ ok: false, text: `Only ${maxImages} images are allowed per listing; extra files were skipped.` });
 
     setMessages(results);
     setUploading(false);
@@ -69,7 +80,7 @@ export function ImageManager({ listingId, images, editable, published }: {
     router.refresh();
   }
 
-  const run = (fn: () => Promise<{ ok: boolean; error?: string }>) =>
+  const run = (fn: () => Promise<Result>) =>
     startTransition(async () => {
       const result = await fn();
       setMessages(result.ok ? [] : [{ ok: false, text: result.error ?? 'That did not work.' }]);
@@ -77,7 +88,7 @@ export function ImageManager({ listingId, images, editable, published }: {
     });
 
   return <div className="bp-images">
-    {published && editable && <p className="bp-muted">Adding photos to a published listing sends it back for review.</p>}
+    {published && editable && reviewNotice && <p className="bp-muted">Adding photos to a published listing sends it back for review.</p>}
 
     {images.length === 0
       ? <p className="bp-muted">No images yet. Add at least one clear photo before submitting.</p>

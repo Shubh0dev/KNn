@@ -42,7 +42,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
   const steps = [
     { done: true, label: 'Create your business profile' },
     { done: documents > 0, label: 'Upload a verification document', href: '/business/verification/' },
-    { done: !['unverified', 'rejected'].includes(active.verification_status), label: 'Request verification', href: '/business/verification/' },
+    { done: !['unverified', 'rejected', 'changes_requested'].includes(active.verification_status), label: 'Request verification', href: '/business/verification/' },
     { done: listings.length > 0, label: 'Create your first listing', href: '/business/listings/new/' },
     { done: listings.some(l => l.status !== 'draft'), label: 'Submit a listing for review', href: '/business/listings/' },
   ];

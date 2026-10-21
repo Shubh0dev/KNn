@@ -9,6 +9,7 @@ import { getBusinessContext } from '@/lib/business/context';
 import { LISTING_EDITABLE, LISTING_STATUS } from '@/lib/business/constants';
 import { formatDateTime } from '@/lib/business/format';
 import { isUuid } from '@/lib/business/state';
+import { getListingRules } from '@/lib/listings/rules';
 import { archiveListing, deleteDraftListing, restoreListing, submitListing, updateListing } from '../../actions';
 import { ImageManager } from '../../ImageManager';
 import { ListingForm } from '../../ListingForm';
@@ -46,11 +47,12 @@ export default async function Page({ params, searchParams }: Props) {
   const submittable = ['draft', 'changes_requested', 'rejected'].includes(listing.status);
   const reviewerNote = events.find(e => e.to_status === listing.status && e.note && ['changes_requested', 'rejected', 'suspended'].includes(e.to_status));
 
+  const rules = await getListingRules(supabase);
   const checklist = [
     { done: ['pending', 'verified'].includes(active.verification_status), label: 'Business verification requested', href: '/business/verification/' },
-    { done: (listing.description ?? '').trim().length >= 30, label: 'Description of at least 30 characters' },
+    { done: (listing.description ?? '').trim().length >= rules.min_description_length, label: `Description of at least ${rules.min_description_length} characters` },
     { done: Boolean((listing.area ?? '').trim()), label: 'Locality or area' },
-    { done: images.length > 0, label: 'At least one image' },
+    ...(rules.require_image ? [{ done: images.length > 0, label: 'At least one image' }] : []),
   ];
   const ready = checklist.every(item => item.done);
 
@@ -105,7 +107,7 @@ export default async function Page({ params, searchParams }: Props) {
 
         <section className="bp-card">
           <h2 className="serif">Photos</h2>
-          <ImageManager listingId={listing.id} images={images} editable={editable} published={listing.status === 'published'} />
+          <ImageManager listingId={listing.id} images={images} editable={editable} published={listing.status === 'published'} maxImages={rules.max_images} />
         </section>
 
         <section className="bp-card">
