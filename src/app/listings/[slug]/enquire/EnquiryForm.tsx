@@ -1,11 +1,12 @@
 'use client';
 
-import { startTransition, useActionState, useEffect, useRef, useState } from 'react';
+import { startTransition, useActionState, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CheckCircle2, Phone } from 'lucide-react';
 import { addDays, indiaNow, telHref, type EnquiryKind } from '@/lib/enquiries/rules';
 import { sendEnquiry } from './actions';
+import { signalNavigationStart } from '@/lib/loading/navigation';
 import { LoadingButton } from '@/components/loading/LoadingButton';
 
 type Props = {
@@ -36,6 +37,8 @@ export function EnquiryForm({ listingId, slug, kind, offered, businessName, sign
   const [restored, setRestored] = useState(false);
   const { date: today } = indiaNow();
   const next = `/listings/${slug}/enquire/${kind === 'general' && offered !== 'general' ? '?type=general' : ''}`;
+  const signInHref = `/login/?next=${encodeURIComponent(next)}`;
+  const goToSignIn = useCallback(() => { signalNavigationStart(signInHref); router.push(signInHref); }, [signInHref, router]);
 
   // Restore a draft saved before signing in.
   useEffect(() => {
@@ -54,9 +57,9 @@ export function EnquiryForm({ listingId, slug, kind, offered, businessName, sign
     if (state?.sent) clearDraft(slug);
     if (state && 'needsSignIn' in state && state.needsSignIn && formRef.current) {
       writeDraft(slug, formRef.current);
-      router.push(`/login/?next=${encodeURIComponent(next)}`);
+      goToSignIn();
     }
-  }, [state, slug, next, router]);
+  }, [state, slug, goToSignIn]);
 
   if (state?.sent) {
     const s = state.sent;
@@ -88,7 +91,7 @@ export function EnquiryForm({ listingId, slug, kind, offered, businessName, sign
     const form = event.currentTarget;
     if (!signedIn) {
       writeDraft(slug, form);
-      router.push(`/login/?next=${encodeURIComponent(next)}`);
+      goToSignIn();
       return;
     }
     const data = new FormData(form);

@@ -13,6 +13,7 @@ import { createClient } from './lib/supabase/client';
 import { isSupabaseConfigured } from './lib/supabase/env';
 import type { PublicCard } from './lib/public/listings';
 import { trackEvent } from './lib/analytics/client';
+import { signalNavigationStart } from '@/lib/loading/navigation';
 import {
   allDiscoveries, areas, events, experiences, foods, sampleNote, shortcuts,
   shopping, spiritual, stays, transport, type Discovery,
@@ -40,7 +41,9 @@ export function Header() {
   const submit = (event: FormEvent) => {
     event.preventDefault();
     trackEvent('search', { term: topQuery });
-    router.push(`/explore?q=${encodeURIComponent(topQuery.trim())}`);
+    const href = `/explore?q=${encodeURIComponent(topQuery.trim())}`;
+    signalNavigationStart(href);
+    router.push(href);
     setMenuOpen(false);
   };
   const navGroups = [
