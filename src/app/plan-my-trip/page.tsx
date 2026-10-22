@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { TripPlanner } from '../../PlannerExplore';
+import { CircularLoader } from '@/components/loading/CircularLoader';
 
 export const metadata: Metadata = {
   title: 'My Kashi Trip | KashiNagri',
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <Suspense fallback={<div className="route-loading">Preparing your trip planner…</div>}>
+    <Suspense fallback={<div className="route-loading"><CircularLoader size="md" delayed /><span>Preparing your trip planner…</span></div>}>
       <TripPlanner />
     </Suspense>
   );

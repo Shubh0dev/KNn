@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { ExploreDiscovery } from '../../PlannerExplore';
+import { CircularLoader } from '@/components/loading/CircularLoader';
 
 export const metadata: Metadata = {
   title: 'Explore Kashi | KashiNagri',
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <Suspense fallback={<div className="route-loading">Opening Kashi discoveries…</div>}>
+    <Suspense fallback={<div className="route-loading"><CircularLoader size="md" delayed /><span>Opening Kashi discoveries…</span></div>}>
       <ExploreDiscovery />
     </Suspense>
   );
