@@ -6,6 +6,8 @@ import { usePathname } from 'next/navigation';
 import { BarChart3, ChevronDown, ExternalLink, Inbox, LayoutDashboard, ListChecks, LogOut, Menu, Settings, ShieldCheck, X } from 'lucide-react';
 import { signOut } from '@/app/auth/actions';
 import { setActiveBusiness } from '@/app/business/actions';
+import { useFormStatus } from 'react-dom';
+import { InlineLoader } from '@/components/loading/InlineLoader';
 import { SubmitButton } from '@/components/business/SubmitButton';
 
 type Props = {
@@ -26,6 +28,17 @@ const NAV = [
   { href: '/business/verification/', label: 'Verification', icon: ShieldCheck, badge: 'verification' },
   { href: '/business/settings/', label: 'Settings', icon: Settings },
 ] as const;
+
+/** Switching business runs a Server Action; the select is locked and a spinner shows while it runs. */
+function BusinessSelect({ businesses, activeId }: { businesses: { id: string; name: string }[]; activeId: string }) {
+  const { pending } = useFormStatus();
+  return <>
+    <select id="bp-business-select" name="businessId" defaultValue={activeId} disabled={pending} aria-busy={pending} onChange={e => e.currentTarget.form?.requestSubmit()} data-testid="select-business">
+      {businesses.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+    </select>
+    <InlineLoader active={pending} label="Switching business…" testId="business-switching" />
+  </>;
+}
 
 export function BusinessChrome({ businesses, activeId, userName, userEmail, newEnquiries, verificationStatus, children }: Props) {
   const pathname = usePathname();
@@ -48,9 +61,7 @@ export function BusinessChrome({ businesses, activeId, userName, userEmail, newE
       {businesses.length > 1
         ? <form action={setActiveBusiness} className="bp-switcher">
             <label htmlFor="bp-business-select">Business</label>
-            <select id="bp-business-select" name="businessId" defaultValue={activeId} onChange={e => e.currentTarget.form?.requestSubmit()} data-testid="select-business">
-              {businesses.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
-            </select>
+            <BusinessSelect businesses={businesses} activeId={activeId} />
           </form>
         : <p className="bp-business-name">{businesses[0]?.name}</p>}
 
