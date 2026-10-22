@@ -8,6 +8,7 @@ import { LISTING_STATUS } from '@/lib/business/constants';
 import { formatDateTime } from '@/lib/business/format';
 import { isUuid } from '@/lib/business/state';
 import { updateReport } from './actions';
+import { FilterForm } from '@/components/loading/FilterForm';
 
 export const metadata: Metadata = { title: 'Reports | Admin | KashiNagri', robots: { index: false } };
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) ?? '';
@@ -42,7 +43,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
     <PageHeader title="Content reports" crumbs={[{ label: 'Admin', href: '/admin/' }, { label: 'Reports' }]}
       lede="Reports from signed-in visitors. A report never removes a listing on its own: check the listing, take any action from its page, then record the outcome here." />
     <FlashNotice params={params} />
-    <form className="bp-filters">
+    <FilterForm action="/admin/reports/" className="bp-filters" ariaLabel="Filter reports">
       <select name="status" defaultValue={status} aria-label="Report status">
         <option value="active">Open and under review</option>
         {Object.entries(REPORT_STATUS).map(([v, s]) => <option key={v} value={v}>{s.label}</option>)}
@@ -51,7 +52,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
       {isUuid(listing) && <input type="hidden" name="listing" value={listing} />}
       <button className="bp-btn-secondary" type="submit">Apply</button>
       {isUuid(listing) && <Link className="bp-link" href="/admin/reports/">Show all listings</Link>}
-    </form>
+    </FilterForm>
 
     {rows.length === 0 ? <EmptyState title="No reports">Nothing needs attention here.</EmptyState> : <ul className="bp-enquiries">{rows.map(r => {
       const rs = REPORT_STATUS[r.status];

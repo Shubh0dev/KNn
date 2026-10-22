@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Footer, Header } from '../../App';
 import { DirectorySection } from '@/components/public/DirectorySection';
 import { getFilteredDirectory } from '@/lib/public/listings';
+import { FilterForm } from '@/components/loading/FilterForm';
 
 export const metadata: Metadata = {
   title: 'Business directory | KashiNagri',
@@ -40,7 +41,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
       <h1 className="serif">Business directory</h1>
       <p>Live listings from local businesses verified by our team. Contact them directly or send a request. Prices and availability are confirmed by the business.</p>
     </section>
-    <form className="directory-filters" role="search" aria-label="Filter the directory" action="/directory/">
+    <FilterForm action="/directory/" className="directory-filters" ariaLabel="Filter the directory">
       <label><span>Search</span><input name="q" defaultValue={filters.q} placeholder="Name, area or type…" data-testid="input-directory-q" /></label>
       <label><span>Category</span><select name="category" defaultValue={filters.category} data-testid="select-directory-category">
         <option value="">All categories</option>
@@ -53,7 +54,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
       </select></label>
       <button type="submit" className="button-primary" data-testid="button-directory-search">Search</button>
       {filtered && <Link href="/directory/" className="directory-clear">Clear filters</Link>}
-    </form>
+    </FilterForm>
     <p className="directory-count" data-testid="directory-count" aria-live="polite">
       {cards.length === 0 ? 'No verified businesses match yet.' : `${cards.length} verified ${cards.length === 1 ? 'business' : 'businesses'}${label ? ` in ${label.toLowerCase()}` : ''}${filters.area ? ` in ${filters.area}` : ''}`}
     </p>

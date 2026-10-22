@@ -5,6 +5,7 @@ import { EnquiryStatus } from '@/components/enquiries/EnquiryParts';
 import { requirePermission } from '@/lib/admin/context';
 import { formatDateTime } from '@/lib/business/format';
 import { ENQUIRY_STATUS, KIND_COPY, requestSummary, type EnquiryKind } from '@/lib/enquiries/rules';
+import { FilterForm } from '@/components/loading/FilterForm';
 
 export const metadata: Metadata = { title: 'Enquiries | Admin | KashiNagri', robots: { index: false } };
 
@@ -63,7 +64,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
         <tbody>{o.top_businesses.map(b => <tr key={b.name}><td>{b.name}</td><td>{b.enquiries}</td><td>{b.responded}</td></tr>)}</tbody></table>
     </section>}
 
-    <form className="bp-filters" role="search" aria-label="Filter enquiries">
+    <FilterForm action="/admin/enquiries/" className="bp-filters" ariaLabel="Filter enquiries">
       <input name="q" defaultValue={q} placeholder="Reference (KN-…) or business name" aria-label="Search" data-testid="input-admin-enquiry-search" />
       <select name="status" defaultValue={status} aria-label="Status">
         <option value="">Any status</option>
@@ -71,7 +72,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
       </select>
       <button type="submit" className="bp-btn-secondary">Apply</button>
       {(q || status) && <Link href="/admin/enquiries/" className="bp-link">Clear</Link>}
-    </form>
+    </FilterForm>
 
     {lError
       ? <p className="auth-notice auth-error" role="alert">Enquiries could not be loaded.</p>

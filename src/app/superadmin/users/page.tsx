@@ -4,6 +4,7 @@ import { EmptyState, FlashNotice, PageHeader, StatusBadge } from '@/components/b
 import { getSuperContext } from '@/lib/admin/context';
 import { ACCOUNT_STATUS, ROLE_LABELS, type UserRow } from '@/lib/admin/constants';
 import { formatDate, sanitizeSearch } from '@/lib/business/format';
+import { FilterForm } from '@/components/loading/FilterForm';
 
 export const metadata: Metadata = { title: 'Users | Super Admin | KashiNagri', robots: { index: false } };
 const PAGE_SIZE = 25;
@@ -33,12 +34,12 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
     <PageHeader title="Users" crumbs={[{ label: 'Super Admin', href: '/superadmin/' }, { label: 'Users' }]}
       lede="Registered accounts. Passwords and sign-in tokens are never shown or stored here." />
     <FlashNotice params={params} />
-    <form className="bp-filters" role="search">
+    <FilterForm action="/superadmin/users/" className="bp-filters" ariaLabel="Filter accounts">
       <input name="q" defaultValue={q} placeholder="Name or email" aria-label="Search accounts" />
       <select name="role" defaultValue={role} aria-label="Role"><option value="">All roles</option>{Object.entries(ROLE_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>
       <select name="status" defaultValue={status} aria-label="Account status"><option value="">All statuses</option>{Object.entries(ACCOUNT_STATUS).map(([v, s]) => <option key={v} value={v}>{s.label}</option>)}</select>
       <button className="bp-btn-secondary" type="submit">Apply</button>
-    </form>
+    </FilterForm>
 
     {error ? <p className="auth-notice auth-error" role="alert">Accounts could not be loaded.</p> : rows.length === 0 ? <EmptyState title="No accounts match" /> : <div className="bp-table-wrap"><table className="bp-table">
       <thead><tr><th>Account</th><th>Roles</th><th>Status</th><th>Businesses</th><th>Joined</th><th>Last sign-in</th><th><span className="sr-only">Open</span></th></tr></thead>

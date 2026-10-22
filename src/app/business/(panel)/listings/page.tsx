@@ -5,6 +5,7 @@ import { EmptyState, FlashNotice, PageHeader, StatusBadge } from '@/components/b
 import { getBusinessContext } from '@/lib/business/context';
 import { LISTING_STATUS } from '@/lib/business/constants';
 import { formatDate, sanitizeSearch } from '@/lib/business/format';
+import { FilterForm } from '@/components/loading/FilterForm';
 
 export const metadata: Metadata = { title: 'Listings | Business Panel | KashiNagri', robots: { index: false } };
 
@@ -44,7 +45,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
     />
     <FlashNotice params={params} />
 
-    <form className="bp-filters" role="search" aria-label="Filter listings">
+    <FilterForm action="/business/listings/" className="bp-filters" ariaLabel="Filter listings">
       <input name="q" defaultValue={q} placeholder="Search by title" aria-label="Search listings by title" />
       <select name="status" defaultValue={status} aria-label="Filter by status">
         <option value="">All statuses</option>
@@ -53,7 +54,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
       </select>
       <button type="submit" className="bp-btn-secondary">Apply</button>
       {filtered && <Link href="/business/listings/" className="bp-link">Clear</Link>}
-    </form>
+    </FilterForm>
 
     {rows.length === 0
       ? filtered

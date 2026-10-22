@@ -4,6 +4,7 @@ import { EmptyState, FlashNotice, PageHeader, StatusBadge } from '@/components/b
 import { getSuperContext } from '@/lib/admin/context';
 import { businessTypeLabel, VERIFICATION_STATUS } from '@/lib/business/constants';
 import { formatDate, sanitizeSearch } from '@/lib/business/format';
+import { FilterForm } from '@/components/loading/FilterForm';
 
 export const metadata: Metadata = { title: 'Businesses | Super Admin | KashiNagri', robots: { index: false } };
 const PAGE_SIZE = 30;
@@ -36,11 +37,11 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
     <PageHeader title="Businesses" crumbs={[{ label: 'Super Admin', href: '/superadmin/' }, { label: 'Businesses' }]}
       lede="Every business account with its verification status, owner and listings. Open one to see documents, history and decisions." />
     <FlashNotice params={params} />
-    <form className="bp-filters" role="search">
+    <FilterForm action="/superadmin/businesses/" className="bp-filters" ariaLabel="Filter businesses">
       <input name="q" defaultValue={q} placeholder="Name or web address" aria-label="Search businesses" />
       <select name="status" defaultValue={status} aria-label="Verification status"><option value="">All statuses</option>{Object.entries(VERIFICATION_STATUS).map(([v, s]) => <option key={v} value={v}>{s.label}</option>)}</select>
       <button className="bp-btn-secondary" type="submit">Apply</button>
-    </form>
+    </FilterForm>
 
     {rows.length === 0 ? <EmptyState title="No businesses match" /> : <div className="bp-table-wrap"><table className="bp-table">
       <thead><tr><th>Business</th><th>Owner</th><th>Type</th><th>Listings</th><th>Reports</th><th>Status</th><th>Created</th><th><span className="sr-only">Open</span></th></tr></thead>

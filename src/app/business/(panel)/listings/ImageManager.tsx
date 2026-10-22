@@ -57,26 +57,26 @@ export function ImageManager({ listingId, images, editable, published, actions =
 
     // try/finally: a dropped connection or server error must never leave the button spinning.
     try {
-    for (const file of Array.from(files).slice(0, Math.max(remaining, 0))) {
-      if (!IMAGE_LIMITS.types.includes(file.type) || (await sniffImageType(file)) === null) {
-        results.push({ ok: false, text: `${file.name}: only JPEG, PNG, WebP or AVIF images are allowed.` });
-        continue;
+      for (const file of Array.from(files).slice(0, Math.max(remaining, 0))) {
+        if (!IMAGE_LIMITS.types.includes(file.type) || (await sniffImageType(file)) === null) {
+          results.push({ ok: false, text: `${file.name}: only JPEG, PNG, WebP or AVIF images are allowed.` });
+          continue;
+        }
+        if (file.size > IMAGE_LIMITS.maxBytes) {
+          results.push({ ok: false, text: `${file.name}: images must be 5 MB or smaller.` });
+          continue;
+        }
+        const path = `${listingId}/${crypto.randomUUID()}.${EXTENSIONS[file.type]}`;
+        const { error } = await supabase.storage.from('listing-images').upload(path, file, { contentType: file.type, upsert: false });
+        if (error) {
+          results.push({ ok: false, text: `${file.name}: the upload failed. Check your connection and try again.` });
+          continue;
+        }
+        const registered = await registerListingImage({ listingId, path });
+        results.push(registered.ok ? { ok: true, text: `${file.name} uploaded.` } : { ok: false, text: `${file.name}: ${registered.error}` });
+        if (!registered.ok) await supabase.storage.from('listing-images').remove([path]);
       }
-      if (file.size > IMAGE_LIMITS.maxBytes) {
-        results.push({ ok: false, text: `${file.name}: images must be 5 MB or smaller.` });
-        continue;
-      }
-      const path = `${listingId}/${crypto.randomUUID()}.${EXTENSIONS[file.type]}`;
-      const { error } = await supabase.storage.from('listing-images').upload(path, file, { contentType: file.type, upsert: false });
-      if (error) {
-        results.push({ ok: false, text: `${file.name}: the upload failed. Check your connection and try again.` });
-        continue;
-      }
-      const registered = await registerListingImage({ listingId, path });
-      results.push(registered.ok ? { ok: true, text: `${file.name} uploaded.` } : { ok: false, text: `${file.name}: ${registered.error}` });
-      if (!registered.ok) await supabase.storage.from('listing-images').remove([path]);
-    }
-    if (files.length > Math.max(remaining, 0)) results.push({ ok: false, text: `Only ${maxImages} images are allowed per listing; extra files were skipped.` });
+      if (files.length > Math.max(remaining, 0)) results.push({ ok: false, text: `Only ${maxImages} images are allowed per listing; extra files were skipped.` });
     } catch {
       results.push({ ok: false, text: 'The upload stopped because of a connection or server problem. Please try again.' });
     } finally {

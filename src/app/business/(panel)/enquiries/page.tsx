@@ -7,6 +7,7 @@ import { getBusinessContext } from '@/lib/business/context';
 import { formatDateTime, sanitizeSearch } from '@/lib/business/format';
 import { isUuid } from '@/lib/business/state';
 import { ENQUIRY_STATUS, KIND_COPY, requestSummary, telHref, whatsappHref, type EnquiryKind } from '@/lib/enquiries/rules';
+import { FilterForm } from '@/components/loading/FilterForm';
 
 export const metadata: Metadata = { title: 'Enquiries | Business Panel | KashiNagri', robots: { index: false } };
 
@@ -62,7 +63,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
       <Link key={key} href={`/business/enquiries/?view=${key}`} className={!status && view === key ? 'is-active' : ''} aria-current={!status && view === key ? 'page' : undefined} data-testid={`tab-enquiries-${key}`}>{v.label}</Link>)}
     </nav>
 
-    <form className="bp-filters" role="search" aria-label="Filter enquiries">
+    <FilterForm action="/business/enquiries/" className="bp-filters" ariaLabel="Filter enquiries">
       <input type="hidden" name="view" value={view} />
       <input name="q" defaultValue={q} placeholder="Name, phone, email or reference" aria-label="Search enquiries" />
       <select name="status" defaultValue={status} aria-label="Filter by status">
@@ -75,7 +76,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
       </select>
       <button type="submit" className="bp-btn-secondary">Apply</button>
       {filtered && <Link href="/business/enquiries/" className="bp-link">Clear</Link>}
-    </form>
+    </FilterForm>
 
     {error
       ? <p className="auth-notice auth-error" role="alert">We could not load your enquiries. Please refresh to try again.</p>

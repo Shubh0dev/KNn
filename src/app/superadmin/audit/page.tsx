@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { EmptyState, PageHeader } from '@/components/business/ui';
 import { getSuperContext } from '@/lib/admin/context';
 import { formatDateTime } from '@/lib/business/format';
+import { FilterForm } from '@/components/loading/FilterForm';
 
 export const metadata: Metadata = { title: 'Audit log | Super Admin | KashiNagri', robots: { index: false } };
 const PAGE_SIZE = 50;
@@ -57,14 +58,14 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
   return <>
     <PageHeader title="Audit log" crumbs={[{ label: 'Super Admin', href: '/superadmin/' }, { label: 'Audit log' }]}
       lede="Append-only record of sensitive actions: who, what, on which record and when. Entries cannot be edited or deleted by anyone through the app or the API." />
-    <form className="bp-filters" role="search">
+    <FilterForm action="/superadmin/audit/" className="bp-filters" ariaLabel="Filter the audit log">
       <select name="action" defaultValue={action} aria-label="Action"><option value="">All actions</option>{Object.entries(ACTION_GROUPS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>
       <select name="entity" defaultValue={entity} aria-label="Record type"><option value="">All record types</option>{ENTITY_TYPES.map(t => <option key={t} value={t}>{t}</option>)}</select>
       <input name="actor" defaultValue={actor} placeholder="Actor email" aria-label="Actor email" />
       <input name="from" type="date" defaultValue={from} aria-label="From date" />
       <input name="to" type="date" defaultValue={to} aria-label="To date" />
       <button className="bp-btn-secondary" type="submit">Apply</button>
-    </form>
+    </FilterForm>
     {rows.length === 0 ? <EmptyState title="No entries match" /> : <div className="bp-table-wrap"><table className="bp-table cc-audit-table">
       <thead><tr><th>When</th><th>Actor</th><th>Action</th><th>Target</th><th>Details</th></tr></thead>
       <tbody>{rows.map(r => {

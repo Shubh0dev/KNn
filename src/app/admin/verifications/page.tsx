@@ -4,6 +4,7 @@ import { EmptyState, FlashNotice, PageHeader, StatusBadge } from '@/components/b
 import { requirePermission } from '@/lib/admin/context';
 import { businessTypeLabel, VERIFICATION_STATUS } from '@/lib/business/constants';
 import { formatDate, sanitizeSearch } from '@/lib/business/format';
+import { FilterForm } from '@/components/loading/FilterForm';
 
 export const metadata: Metadata = { title: 'Verifications | Admin | KashiNagri', robots: { index: false } };
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
@@ -29,14 +30,14 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
     <PageHeader title="Business verifications" crumbs={[{ label: 'Admin', href: '/admin/' }, { label: 'Verifications' }]}
       lede="Oldest requests first. Verify only when a document proves who runs the business." />
     <FlashNotice params={params} />
-    <form className="bp-filters" role="search">
+    <FilterForm action="/admin/verifications/" className="bp-filters" ariaLabel="Filter verifications">
       <input name="q" defaultValue={q} placeholder="Search business name" aria-label="Search businesses" />
       <select name="status" defaultValue={status} aria-label="Verification status">
         {Object.entries(VERIFICATION_STATUS).map(([v, s]) => <option key={v} value={v}>{s.label}</option>)}
         <option value="all">All statuses</option>
       </select>
       <button className="bp-btn-secondary" type="submit">Apply</button>
-    </form>
+    </FilterForm>
 
     {rows.length === 0
       ? <EmptyState title={status === 'pending' ? 'No businesses are waiting' : 'Nothing matches'}>{status === 'pending' ? 'New verification requests will appear here.' : 'Try another status or search.'}</EmptyState>

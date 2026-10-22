@@ -3,6 +3,7 @@ import { EmptyState, StatusBadge } from '@/components/business/ui';
 import type { StaffContext } from '@/lib/admin/context';
 import { LISTING_STATUS, VERIFICATION_STATUS } from '@/lib/business/constants';
 import { formatDate, sanitizeSearch } from '@/lib/business/format';
+import { FilterForm } from '@/components/loading/FilterForm';
 
 const PAGE_SIZE = 25;
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) ?? '';
@@ -44,7 +45,7 @@ export async function ListingQueue({ ctx, params, basePath, defaultStatus, statu
   const one = <T,>(v: T | T[] | null) => (Array.isArray(v) ? v[0] : v);
 
   return <>
-    <form className="bp-filters" role="search" aria-label="Filter listings">
+    <FilterForm action={basePath} className="bp-filters" ariaLabel="Filter listings">
       <input name="q" defaultValue={q} placeholder="Listing title" aria-label="Search by listing title" />
       <input name="business" defaultValue={biz} placeholder="Business name" aria-label="Search by business name" />
       <select name="category" defaultValue={category} aria-label="Category">
@@ -55,7 +56,7 @@ export async function ListingQueue({ ctx, params, basePath, defaultStatus, statu
         {statusOptions.map(v => <option key={v} value={v}>{v === 'all' ? 'All statuses' : v === 'attention' ? 'Rejected or changes requested' : LISTING_STATUS[v]?.label ?? v}</option>)}
       </select>
       <button className="bp-btn-secondary" type="submit">Apply</button>
-    </form>
+    </FilterForm>
 
     {rows.length === 0
       ? <EmptyState title="Nothing here">{status === 'pending_review' ? 'No listings are waiting for review.' : 'No listings match these filters.'}</EmptyState>

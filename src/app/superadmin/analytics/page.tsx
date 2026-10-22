@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { PageHeader, StatCard } from '@/components/business/ui';
 import { getSuperContext } from '@/lib/admin/context';
 import { LISTING_STATUS } from '@/lib/business/constants';
+import { FilterForm } from '@/components/loading/FilterForm';
 
 export const metadata: Metadata = { title: 'Analytics | Super Admin | KashiNagri', robots: { index: false } };
 
@@ -47,12 +48,12 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
 
   const header = <PageHeader title="Analytics" crumbs={[{ label: 'Super Admin', href: '/superadmin/' }, { label: 'Analytics' }]}
     lede="Real, first-party measurements from KashiNagri's own database. Nothing here is estimated or imported."
-    actions={<form className="bp-filters cc-range" role="search">
+    actions={<FilterForm action="/superadmin/analytics/" className="bp-filters cc-range" ariaLabel="Choose a date range">
       <nav className="bp-segment" aria-label="Quick ranges">{[7, 30, 90].map(d => <Link key={d} href={`/superadmin/analytics/?days=${d}`}>{d} days</Link>)}</nav>
       <input type="date" name="from" defaultValue={from} aria-label="From" />
       <input type="date" name="to" defaultValue={to} aria-label="To" />
       <button className="bp-btn-secondary" type="submit">Apply</button>
-    </form>} />;
+    </FilterForm>} />;
 
   if (error || !data) return <>{header}<p className="auth-notice auth-error" role="alert">{error?.message?.includes('one year') ? 'Choose a date range of up to one year, with the end after the start.' : 'Analytics could not be loaded.'}</p></>;
   const a = data as Analytics;
