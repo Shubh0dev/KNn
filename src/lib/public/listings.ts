@@ -84,6 +84,30 @@ export async function searchListings(rawQuery: string, limit = 12): Promise<Publ
   }
 }
 
+export type DirectoryFilters = { q: string; category: string; area: string };
+
+/** Verified business listings with search, category and area filters (the /directory/ page). Never throws. */
+export async function getFilteredDirectory(filters: DirectoryFilters, limit = 48): Promise<{ cards: PublicCard[]; areas: string[] }> {
+  if (!isSupabaseConfigured()) return { cards: [], areas: [] };
+  try {
+    const client = publicClient();
+    const q = filters.q.replace(/[%_,()*\\.:"']/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 60);
+    let query = client.from('listings').select(CARD_SELECT).eq('status', 'published').not('business_id', 'is', null)
+      .order('published_at', { ascending: false }).limit(limit);
+    if (/^[a-z-]{2,40}$/.test(filters.category)) query = query.eq('listing_categories.slug', filters.category);
+    if (filters.area) query = query.eq('area', filters.area.slice(0, 80));
+    if (q.length >= 2) query = query.or(`title.ilike.%${q}%,summary.ilike.%${q}%,area.ilike.%${q}%,subtype.ilike.%${q}%`);
+    const [{ data }, areaRows] = await Promise.all([
+      query,
+      client.from('listings').select('area').eq('status', 'published').not('business_id', 'is', null).not('area', 'is', null).limit(1000),
+    ]);
+    const areas = Array.from(new Set((areaRows.data ?? []).map(r => (r.area as string).trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b));
+    return { cards: (data ?? []).map(row => toCard(row, client)), areas };
+  } catch {
+    return { cards: [], areas: [] };
+  }
+}
+
 /** Homepage featured placements (active window, public listings only). Never throws. */
 export async function getHomeFeatured(): Promise<PublicCard[]> {
   if (!isSupabaseConfigured()) return [];
@@ -108,6 +132,9 @@ export type PublicListing = PublicCard & {
   price_band: string | null; price_from: number | null; price_to: number | null; price_note: string | null;
   amenities: string[]; business_hours: Record<string, { open?: string; close?: string; closed?: boolean }> | null;
   images: { url: string; alt: string }[]; businessVerified: boolean;
+  categorySlug: string | null; enquiryMode: string; whatsappEnabled: boolean;
+  /** Listing number, or the business's published number when the listing has none. */
+  publicPhone: string | null;
 };
 
 export async function getPublicListing(slug: string): Promise<PublicListing | null> {
@@ -117,14 +144,15 @@ export async function getPublicListing(slug: string): Promise<PublicListing | nu
     const { data } = await client.from('listings')
       // Explicit columns: the anonymous role is not granted internal ids such as created_by.
       .select(`id, slug, title, summary, subtype, area, description, address, latitude, longitude, contact_phone, contact_email, website,
-        price_band, price_from, price_to, price_note, amenities, business_hours, business_id,
-        listing_categories ( slug, name ), businesses ( name, verification_status ), listing_images ( storage_path, alt_text, is_cover, sort_order )`)
+        price_band, price_from, price_to, price_note, amenities, business_hours, business_id, enquiry_mode, whatsapp_enabled,
+        listing_categories ( slug, name ), businesses ( name, verification_status, public_phone ), listing_images ( storage_path, alt_text, is_cover, sort_order )`)
       .eq('slug', slug).eq('status', 'published').maybeSingle();
     if (!data) return null;
     const card = toCard({ ...data, listing_categories: data.listing_categories }, client);
     const images = ((data.listing_images ?? []) as any[]).sort((a, b) => Number(b.is_cover) - Number(a.is_cover) || a.sort_order - b.sort_order)
       .map(i => ({ url: client.storage.from('listing-images').getPublicUrl(i.storage_path).data.publicUrl, alt: i.alt_text ?? data.title }));
     const business = Array.isArray(data.businesses) ? data.businesses[0] : data.businesses;
+    const category = Array.isArray(data.listing_categories) ? data.listing_categories[0] : data.listing_categories;
     return {
       ...card,
       description: data.description, address: data.address, latitude: data.latitude, longitude: data.longitude,
@@ -132,6 +160,8 @@ export async function getPublicListing(slug: string): Promise<PublicListing | nu
       price_band: data.price_band, price_from: data.price_from, price_to: data.price_to, price_note: data.price_note,
       amenities: data.amenities ?? [], business_hours: data.business_hours, images,
       businessVerified: business?.verification_status === 'verified',
+      categorySlug: category?.slug ?? null, enquiryMode: data.enquiry_mode ?? 'booking', whatsappEnabled: Boolean(data.whatsapp_enabled),
+      publicPhone: data.contact_phone ?? business?.public_phone ?? null,
     };
   } catch {
     return null;

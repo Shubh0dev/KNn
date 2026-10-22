@@ -14,9 +14,9 @@ export function ViewTracker({ listingId }: { listingId: string }) {
   return null;
 }
 
-export function TrackedLink({ listingId, type, href, children, className }: { listingId: string; type: ListingEvent; href: string; children: ReactNode; className?: string }) {
+export function TrackedLink({ listingId, type, href, children, className, 'data-testid': testId }: { listingId: string; type: ListingEvent; href: string; children: ReactNode; className?: string; 'data-testid'?: string }) {
   const external = /^https?:/.test(href);
-  return <a href={href} className={className} onClick={() => {
+  return <a href={href} className={className} data-testid={testId} onClick={() => {
     trackListing(listingId, type);
     if (external) trackEvent('outbound_click', { url: href }); // host only, for partner/affiliate reporting
   }} {...(external ? { target: '_blank', rel: 'noopener noreferrer nofollow' } : {})}>{children}</a>;

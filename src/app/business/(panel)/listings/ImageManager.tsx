@@ -6,6 +6,8 @@ import { ArrowLeft, ArrowRight, ImagePlus, Star, Trash2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { IMAGE_LIMITS } from '@/lib/business/constants';
 import { moveListingImage, registerListingImage, removeListingImage, setCoverImage } from './actions';
+import { LoadingButton } from '@/components/loading/LoadingButton';
+import { InlineLoader } from '@/components/loading/InlineLoader';
 
 export type ManagedImage = { id: string; url: string; alt: string | null; is_cover: boolean };
 
@@ -47,12 +49,14 @@ export function ImageManager({ listingId, images, editable, published, actions =
   const remaining = maxImages - images.length;
 
   async function upload(files: FileList | null) {
-    if (!files?.length) return;
+    if (!files?.length || uploading) return;
     setUploading(true);
     setMessages([]);
     const supabase = createClient();
     const results: { ok: boolean; text: string }[] = [];
 
+    // try/finally: a dropped connection or server error must never leave the button spinning.
+    try {
     for (const file of Array.from(files).slice(0, Math.max(remaining, 0))) {
       if (!IMAGE_LIMITS.types.includes(file.type) || (await sniffImageType(file)) === null) {
         results.push({ ok: false, text: `${file.name}: only JPEG, PNG, WebP or AVIF images are allowed.` });
@@ -73,17 +77,24 @@ export function ImageManager({ listingId, images, editable, published, actions =
       if (!registered.ok) await supabase.storage.from('listing-images').remove([path]);
     }
     if (files.length > Math.max(remaining, 0)) results.push({ ok: false, text: `Only ${maxImages} images are allowed per listing; extra files were skipped.` });
-
-    setMessages(results);
-    setUploading(false);
-    if (input.current) input.current.value = '';
-    router.refresh();
+    } catch {
+      results.push({ ok: false, text: 'The upload stopped because of a connection or server problem. Please try again.' });
+    } finally {
+      setMessages(results);
+      setUploading(false);
+      if (input.current) input.current.value = '';
+      router.refresh();
+    }
   }
 
   const run = (fn: () => Promise<Result>) =>
     startTransition(async () => {
-      const result = await fn();
-      setMessages(result.ok ? [] : [{ ok: false, text: result.error ?? 'That did not work.' }]);
+      try {
+        const result = await fn();
+        setMessages(result.ok ? [] : [{ ok: false, text: result.error ?? 'That did not work.' }]);
+      } catch {
+        setMessages([{ ok: false, text: 'That did not work because of a connection or server problem. Please try again.' }]);
+      }
       router.refresh();
     });
 
@@ -106,12 +117,13 @@ export function ImageManager({ listingId, images, editable, published, actions =
 
     {editable && remaining > 0 && <>
       <input ref={input} type="file" accept={IMAGE_LIMITS.types.join(',')} multiple hidden onChange={e => upload(e.target.files)} data-testid="input-listing-images" />
-      <button type="button" className="bp-btn-secondary" onClick={() => input.current?.click()} disabled={uploading || busy}>
-        <ImagePlus size={15} /> {uploading ? 'Uploading…' : 'Add images'}
-      </button>
+      <LoadingButton type="button" className="bp-btn-secondary" loading={uploading} loadingLabel="Uploading…" disabled={busy} onClick={() => input.current?.click()} testId="button-add-images">
+        <ImagePlus size={15} /> Add images
+      </LoadingButton>
       <small className="bp-muted"> JPEG, PNG, WebP or AVIF, up to 5 MB each. {remaining} more allowed.</small>
     </>}
 
+    <InlineLoader active={busy} label="Updating images…" testId="images-updating" />
     {messages.length > 0 && <ul className="bp-upload-log" aria-live="polite">{messages.map((m, i) => <li key={i} className={m.ok ? 'is-ok' : 'is-bad'}>{m.text}</li>)}</ul>}
 
     <dialog ref={dialog} className="bp-dialog" aria-labelledby="img-remove-title">

@@ -162,6 +162,8 @@ export const listingSchema = z
     price_note: text(200),
     amenities: z.array(z.string().trim().min(1).max(60)).max(20, 'Choose at most 20 amenities.'),
     business_hours: z.custom<BusinessHours | undefined>(),
+    enquiry_mode: z.preprocess(v => (v === undefined || v === '' ? 'booking' : v), z.enum(['booking', 'message', 'contact_only'], { error: 'Choose how travellers can contact you.' })),
+    whatsapp_enabled: z.boolean(),
   })
   .superRefine(coordinatePair)
   .superRefine((value, ctx) => {
@@ -196,6 +198,7 @@ export function parseListing(formData: FormData): ParseResult<ListingInput> {
     ...Object.fromEntries(formData),
     amenities: formData.getAll('amenities').filter((v): v is string => typeof v === 'string'),
     business_hours: hours,
+    whatsapp_enabled: formData.get('whatsapp_enabled') === 'on',
   };
   return toResult(listingSchema.safeParse(raw));
 }

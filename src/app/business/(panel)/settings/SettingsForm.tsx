@@ -2,6 +2,7 @@
 
 import { startTransition, useActionState, type ReactNode } from 'react';
 import type { ActionState } from '@/lib/business/state';
+import { LoadingButton } from '@/components/loading/LoadingButton';
 
 /**
  * Wraps server-rendered inputs in a form that reports success/errors inline.
@@ -31,7 +32,7 @@ export function SettingsForm({ action, children, submitLabel = 'Save changes', d
     {state?.message && <p className="auth-notice auth-success" role="status">{state.message}</p>}
     {children}
     {!disabled && <div className="bp-form-actions">
-      <button type="submit" className="button-primary" disabled={pending} aria-busy={pending} data-testid={testId}>{pending ? 'Saving…' : submitLabel}</button>
+      <LoadingButton loading={pending} loadingLabel="Saving…" testId={testId}>{submitLabel}</LoadingButton>
     </div>}
   </form>;
 }

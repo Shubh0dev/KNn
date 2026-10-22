@@ -3,42 +3,52 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { getBusinessContext } from '@/lib/business/context';
-import { ENQUIRY_STATUS } from '@/lib/business/constants';
-import { isUuid } from '@/lib/business/state';
+import { ENQUIRY_STATUS, messageRequired } from '@/lib/enquiries/rules';
+import { friendlyDbError, isUuid } from '@/lib/business/state';
 
-/** Only same-section return paths are accepted. */
-function backPath(value: unknown) {
-  const path = typeof value === 'string' ? value : '';
-  return path.startsWith('/business/enquiries/') && !path.includes('//') && !path.includes('\\') ? path.split('#')[0].split('?')[0] : '/business/enquiries/';
+const detail = (id: string, key: 'notice' | 'error', value: string) => `/business/enquiries/${id}/?${key}=${encodeURIComponent(value)}`;
+
+/**
+ * Called once the enquiry page has loaded: a New request becomes Seen (recorded in its
+ * history) and its notifications are cleared. Returns whether anything changed so the
+ * page can refresh its badge and status.
+ */
+export async function markEnquirySeen(enquiryId: string): Promise<{ changed: boolean }> {
+  const { supabase, active, access } = await getBusinessContext();
+  if (!isUuid(enquiryId)) return { changed: false };
+  const { data } = await supabase.from('enquiries').select('status').eq('id', enquiryId).eq('business_id', active.id).maybeSingle();
+  if (!data) return { changed: false };
+  let changed = false;
+  if (data.status === 'new') {
+    const { error } = await supabase.rpc('business_update_enquiry', { p_enquiry_id: enquiryId, p_status: 'read' });
+    changed = !error;
+  }
+  const { data: cleared } = await supabase.from('notifications').update({ read_at: new Date().toISOString() })
+    .eq('user_id', access.user.id).eq('enquiry_id', enquiryId).is('read_at', null).select('id');
+  changed ||= (cleared ?? []).length > 0;
+  if (changed) revalidatePath('/business', 'layout');
+  return { changed };
 }
-const joinQuery = (path: string, search: string, key: string, value: string) => {
-  const params = new URLSearchParams(search);
-  params.delete('notice');
-  params.delete('error');
-  params.set(key, value);
-  return `${path}?${params}`;
-};
 
-export async function setEnquiryStatus(formData: FormData) {
+/**
+ * Status change and/or message to the traveller. business_update_enquiry checks
+ * membership of the enquiry's business and the allowed transitions again.
+ */
+export async function updateEnquiry(formData: FormData) {
   const { supabase, active } = await getBusinessContext();
-  const back = backPath(formData.get('back'));
-  const search = String(formData.get('search') ?? '').slice(0, 300);
   const id = formData.get('enquiryId');
   const status = String(formData.get('status') ?? '');
+  const message = String(formData.get('message') ?? '').trim();
+  if (!isUuid(id) || !(status in ENQUIRY_STATUS) || status === 'new') redirect('/business/enquiries/?error=That%20update%20is%20not%20valid.');
+  if (message.length > 2000) redirect(detail(id, 'error', 'Keep the message under 2000 characters.'));
+  if (messageRequired(status) && message.length < 5) redirect(detail(id, 'error', 'Add a short message for the traveller explaining the decision or the alternative.'));
 
-  if (!isUuid(id) || !(status in ENQUIRY_STATUS) || status === 'new') {
-    redirect(joinQuery(back, search, 'error', 'That update is not valid.'));
-  }
+  // The enquiry must belong to the business selected in the panel.
+  const { data: own } = await supabase.from('enquiries').select('id').eq('id', id).eq('business_id', active.id).maybeSingle();
+  if (!own) redirect('/business/enquiries/?error=That%20enquiry%20was%20not%20found.');
 
-  // The business_id filter plus RLS mean another business's enquiry can never match.
-  const { data, error } = await supabase
-    .from('enquiries')
-    .update({ status })
-    .eq('id', id)
-    .eq('business_id', active.id)
-    .select('id');
-
-  if (error || !data?.length) redirect(joinQuery(back, search, 'error', 'The enquiry could not be updated. It may no longer exist.'));
+  const { error } = await supabase.rpc('business_update_enquiry', { p_enquiry_id: id, p_status: status as never, p_message: message || undefined });
   revalidatePath('/business', 'layout');
-  redirect(joinQuery(back, search, 'notice', 'status-updated'));
+  if (error) redirect(detail(id, 'error', friendlyDbError(error, 'The enquiry could not be updated. Please try again.')));
+  redirect(detail(id, 'notice', 'status-updated'));
 }

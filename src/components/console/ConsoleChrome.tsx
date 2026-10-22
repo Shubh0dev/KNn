@@ -4,15 +4,16 @@ import { useEffect, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  BarChart3, Building2, ChevronDown, ExternalLink, FileText, Flag, LayoutDashboard, ListChecks, LogOut,
+  BarChart3, Building2, ChevronDown, ExternalLink, FileText, Flag, Inbox, LayoutDashboard, ListChecks, LogOut,
   Menu, Megaphone, ScrollText, Settings, ShieldCheck, Store, Users, UserCog, X,
 } from 'lucide-react';
 import { signOut } from '@/app/auth/actions';
+import { SubmitButton } from '@/components/business/SubmitButton';
 
 const ICONS = {
   dashboard: LayoutDashboard, verify: ShieldCheck, listings: ListChecks, published: Store, reports: Flag,
   users: Users, admins: UserCog, businesses: Building2, content: Megaphone, settings: Settings,
-  audit: ScrollText, analytics: BarChart3, documents: FileText,
+  audit: ScrollText, analytics: BarChart3, documents: FileText, enquiries: Inbox,
 } as const;
 
 export type ConsoleNavItem = { href: string; label: string; icon: keyof typeof ICONS; badge?: number; exact?: boolean; match?: string };
@@ -74,7 +75,7 @@ export function ConsoleChrome({ panel, nav, footerLinks, userName, userEmail, ro
           <div className="bp-menu">
             <p><strong>{userName}</strong><small>{userEmail}</small></p>
             <Link href="/account/">My account</Link>
-            <form action={signOut}><button type="submit" data-testid="button-sign-out"><LogOut size={14} /> Sign out</button></form>
+            <form action={signOut}><SubmitButton className="" pendingLabel="Signing out…" testId="button-sign-out"><LogOut size={14} /> Sign out</SubmitButton></form>
           </div>
         </details>
       </header>

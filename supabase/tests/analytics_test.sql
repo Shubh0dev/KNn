@@ -120,9 +120,9 @@ begin
   perform set_config('request.jwt.claims', json_build_object('sub', u_v, 'role', 'authenticated')::text, true);
   execute 'set local role authenticated';
   for i in 1..3 loop
-    insert into public.enquiries (listing_id, sender_name, sender_email, message) values (lst, 'Visitor', 'p4-v@example.test', 'Is a room free next week? ' || i);
+    insert into public.enquiries (listing_id, sender_name, sender_email, sender_phone, message) values (lst, 'Visitor', 'p4-v@example.test', '+91 90000 00002', 'Is a room free next week? ' || i);
   end loop;
-  msg := null; begin insert into public.enquiries (listing_id, sender_name, sender_email, message) values (lst, 'Visitor', 'p4-v@example.test', 'Fourth enquiry today'); exception when others then msg := sqlerrm; end;
+  msg := null; begin insert into public.enquiries (listing_id, sender_name, sender_email, sender_phone, message) values (lst, 'Visitor', 'p4-v@example.test', '+91 90000 00002', 'Fourth enquiry today'); exception when others then msg := sqlerrm; end;
   ok := msg like '%several enquiries about this listing today%'; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'enquiries per listing per day are limited\n'; if not ok then fails := fails + 1; end if;
   execute 'reset role';
 

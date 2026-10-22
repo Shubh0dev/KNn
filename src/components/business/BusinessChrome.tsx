@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { BarChart3, ChevronDown, ExternalLink, Inbox, LayoutDashboard, ListChecks, LogOut, Menu, Settings, ShieldCheck, X } from 'lucide-react';
 import { signOut } from '@/app/auth/actions';
 import { setActiveBusiness } from '@/app/business/actions';
+import { SubmitButton } from '@/components/business/SubmitButton';
 
 type Props = {
   businesses: { id: string; name: string }[];
@@ -81,7 +82,7 @@ export function BusinessChrome({ businesses, activeId, userName, userEmail, newE
             <p><strong>{userName}</strong><small>{userEmail}</small></p>
             <Link href="/business/settings/">Settings</Link>
             <Link href="/account/">My account</Link>
-            <form action={signOut}><button type="submit" data-testid="button-sign-out"><LogOut size={14} /> Sign out</button></form>
+            <form action={signOut}><SubmitButton className="" pendingLabel="Signing out…" testId="button-sign-out"><LogOut size={14} /> Sign out</SubmitButton></form>
           </div>
         </details>
       </header>

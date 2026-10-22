@@ -130,10 +130,9 @@ begin
   -- ------------------------------------------------------------ enquiries and analytics
   perform set_config('request.jwt.claims', json_build_object('sub', u_c, 'role', 'authenticated')::text, true);
   execute 'set local role authenticated';
-  insert into public.enquiries (listing_id, sender_name, sender_email, message) values (l_a, 'Visitor C', 'bp-c@example.test', 'Is a room free next week?');
-  update public.enquiries set status = 'closed' where listing_id = l_a;
-  get diagnostics n = row_count;
-  ok := n = 0; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'sender cannot change enquiry status\n'; if not ok then fails := fails + 1; end if;
+  insert into public.enquiries (listing_id, sender_name, sender_email, sender_phone, message) values (l_a, 'Visitor C', 'bp-c@example.test', '+91 90000 00003', 'Is a room free next week?');
+  msg := null; begin update public.enquiries set status = 'closed' where listing_id = l_a; exception when insufficient_privilege then msg := 'denied'; end;
+  ok := msg = 'denied'; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'sender cannot change enquiry status\n'; if not ok then fails := fails + 1; end if;
   execute 'reset role';
 
   perform set_config('request.jwt.claims', '{"role":"anon"}', true);
@@ -147,8 +146,8 @@ begin
   execute 'set local role authenticated';
   select count(*) into n from public.enquiries;
   ok := n = 1; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'owner A reads the enquiry about their listing\n'; if not ok then fails := fails + 1; end if;
-  update public.enquiries set status = 'read' where listing_id = l_a;
-  get diagnostics n = row_count;
+  perform public.business_update_enquiry((select id from public.enquiries where listing_id = l_a), 'read', null);
+  select count(*) into n from public.enquiries where listing_id = l_a and status = 'read';
   ok := n = 1; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'owner A marks the enquiry as read\n'; if not ok then fails := fails + 1; end if;
   select coalesce(sum(event_count), 0) into n from public.business_engagement_summary(biz_a, 30);
   ok := n = 1; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'owner A sees real tracked engagement\n'; if not ok then fails := fails + 1; end if;

@@ -3,6 +3,7 @@
 import { startTransition, useActionState } from 'react';
 import { REPORT_REASONS } from '@/lib/admin/constants';
 import { reportListing } from './actions';
+import { LoadingButton } from '@/components/loading/LoadingButton';
 
 export function ReportForm({ listingId, slug }: { listingId: string; slug: string }) {
   const [state, action, pending] = useActionState(reportListing, undefined);
@@ -22,6 +23,6 @@ export function ReportForm({ listingId, slug }: { listingId: string; slug: strin
       </select>
     </label>
     <label>Details (optional)<textarea name="details" rows={4} maxLength={1000} data-testid="input-report-details" /></label>
-    <button type="submit" className="button-primary auth-submit" disabled={pending} data-testid="button-send-report">{pending ? 'Sending…' : 'Send report'}</button>
+    <LoadingButton loading={pending} loadingLabel="Sending…" className="button-primary auth-submit" testId="button-send-report">Send report</LoadingButton>
   </form>;
 }

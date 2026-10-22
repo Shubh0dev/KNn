@@ -8,10 +8,10 @@ type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
 export default async function Page({ searchParams }: { searchParams: SearchParams }) {
   // Layouts are not re-run on every navigation, so each page checks again.
-  const { supabase, active } = await getBusinessContext();
+  const { supabase, active, access } = await getBusinessContext();
   const params = await searchParams;
 
-  const [listingsResult, enquiriesResult, documentsResult, engagementResult, activityResult, latestEnquiries] = await Promise.all([
+  const [listingsResult, enquiriesResult, documentsResult, engagementResult, activityResult, latestEnquiries, updates] = await Promise.all([
     supabase.from('listings').select('id, status').eq('business_id', active.id),
     supabase.from('enquiries').select('id', { count: 'exact', head: true }).eq('business_id', active.id).eq('status', 'new'),
     supabase.from('business_verification_documents').select('id', { count: 'exact', head: true }).eq('business_id', active.id),
@@ -29,6 +29,10 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
       .eq('status', 'new')
       .order('created_at', { ascending: false })
       .limit(3),
+    // In-app notifications (new requests, cancellations) for this business's enquiries.
+    supabase.from('notifications').select('id, title, body, link, created_at, enquiries!inner ( business_id )')
+      .eq('user_id', access.user.id).eq('enquiries.business_id', active.id).is('read_at', null)
+      .order('created_at', { ascending: false }).limit(5),
   ]);
 
   const listings = (listingsResult.data ?? []) as { id: string; status: string }[];
@@ -90,7 +94,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
                 <Link href={`/business/listings/${event.listing_id}/edit/`}>{listing?.title ?? 'Listing'}</Link>
                 <StatusBadge label={status?.label ?? event.to_status} tone={status?.tone ?? 'neutral'} />
                 {event.note && <p className="bp-muted">{event.note}</p>}
-                <time dateTime={event.created_at}>{new Date(event.created_at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}</time>
+                <time dateTime={event.created_at}>{new Date(event.created_at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Kolkata' })}</time>
               </li>;
             })}</ul>}
       </section>
@@ -104,11 +108,16 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
           </li>)}</ol>
         </section>}
 
+        {(updates.data ?? []).length > 0 && <section className="bp-card" data-testid="business-updates">
+          <h2 className="serif">Updates</h2>
+          <ul className="bp-plain-list">{(updates.data ?? []).map((n: any) => <li key={n.id}><Link href={n.link ?? '/business/enquiries/'}>{n.title}</Link> <small className="bp-muted">{n.body}</small></li>)}</ul>
+        </section>}
+
         {(latestEnquiries.data ?? []).length > 0 && <section className="bp-card">
           <h2 className="serif">Latest enquiries</h2>
           <ul className="bp-plain-list">{(latestEnquiries.data ?? []).map((enquiry: any) => {
             const listing = Array.isArray(enquiry.listings) ? enquiry.listings[0] : enquiry.listings;
-            return <li key={enquiry.id}><strong>{enquiry.sender_name}</strong> about {listing?.title ?? 'a listing'}</li>;
+            return <li key={enquiry.id}><Link href={`/business/enquiries/${enquiry.id}/`}><strong>{enquiry.sender_name}</strong></Link> about {listing?.title ?? 'a listing'}</li>;
           })}</ul>
           <Link href="/business/enquiries/" className="bp-link">Open inbox</Link>
         </section>}

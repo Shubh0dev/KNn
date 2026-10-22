@@ -4,6 +4,8 @@ import { startTransition, useActionState, useState, type ReactNode } from 'react
 import Link from 'next/link';
 import { AMENITIES, DAYS, PRICE_BANDS, SUBTYPES, type BusinessHours } from '@/lib/business/constants';
 import type { ActionState } from '@/lib/business/state';
+import { ENQUIRY_MODES, KIND_COPY, enquiryKind } from '@/lib/enquiries/rules';
+import { LoadingButton } from '@/components/loading/LoadingButton';
 
 export type ListingDefaults = {
   title?: string | null; category_id?: string | null; subtype?: string | null; summary?: string | null;
@@ -12,6 +14,7 @@ export type ListingDefaults = {
   contact_phone?: string | null; contact_email?: string | null; website?: string | null;
   price_band?: string | null; price_from?: number | null; price_to?: number | null; price_note?: string | null;
   amenities?: string[] | null; business_hours?: BusinessHours | null;
+  enquiry_mode?: string | null; whatsapp_enabled?: boolean | null;
 };
 
 type Category = { id: string; slug: string; name: string };
@@ -43,6 +46,8 @@ export function ListingForm({ action, categories, defaults = {}, submitLabel, ca
   const amenityOptions = [...suggested, ...selected.filter(a => !suggested.includes(a))];
   const err = (name: string) => state?.fieldErrors?.[name];
   const hours = defaults.business_hours ?? {};
+  const [mode, setMode] = useState(defaults.enquiry_mode ?? 'booking');
+  const kind = enquiryKind(slug, mode);
 
   // Submitting through a handler (instead of <form action>) keeps what the
   // user typed when validation fails; React would otherwise reset the form.
@@ -107,6 +112,21 @@ export function ListingForm({ action, categories, defaults = {}, submitLabel, ca
       <Field label="Website" name="website" error={err('website')} wide>
         <input id="f-website" name="website" type="url" defaultValue={defaults.website ?? ''} placeholder="https://" />
       </Field>
+      <div className="bp-field bp-field-wide">
+        <label className="bp-check"><input type="checkbox" name="whatsapp_enabled" defaultChecked={Boolean(defaults.whatsapp_enabled)} data-testid="input-listing-whatsapp" /> This phone number accepts WhatsApp messages</label>
+        <small>Shows a WhatsApp button on your listing (mobile numbers only). Turning it on or off on a published listing sends it back for review.</small>
+      </div>
+    </fieldset>
+
+    <fieldset className="bp-fieldset">
+      <legend>Requests from travellers</legend>
+      <p className="bp-muted bp-fieldset-note">KashiNagri does not take bookings or payments. Travellers send you a request; you confirm availability with them directly.</p>
+      <Field label="How travellers can contact you" name="enquiry_mode" error={err('enquiry_mode')} wide>
+        <select id="f-enquiry_mode" name="enquiry_mode" value={mode} onChange={e => setMode(e.target.value)} data-testid="select-listing-enquiry-mode">
+          {ENQUIRY_MODES.map(m => <option key={m.value} value={m.value}>{m.label}</option>)}
+        </select>
+        <small>{ENQUIRY_MODES.find(m => m.value === mode)?.help} {kind !== 'none' && kind !== 'general' ? `For this category the form is: ${KIND_COPY[kind].title.toLowerCase()}.` : ''}</small>
+      </Field>
     </fieldset>
 
     <fieldset className="bp-fieldset">
@@ -157,7 +177,7 @@ export function ListingForm({ action, categories, defaults = {}, submitLabel, ca
     </fieldset>}
 
     <div className="bp-form-actions">
-      <button type="submit" className="button-primary" disabled={pending} aria-busy={pending} data-testid="button-save-listing">{pending ? 'Saving…' : submitLabel}</button>
+      <LoadingButton loading={pending} loadingLabel="Saving…" testId="button-save-listing">{submitLabel}</LoadingButton>
       <Link href={cancelHref} className="bp-btn-secondary">Cancel</Link>
     </div>
   </form>;

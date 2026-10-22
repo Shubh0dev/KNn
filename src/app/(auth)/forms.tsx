@@ -3,6 +3,7 @@
 import { startTransition, useActionState, type FormEvent } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { requestPasswordReset, signIn, signUp, updatePassword, type FormState } from '../auth/actions';
+import { LoadingButton } from '@/components/loading/LoadingButton';
 
 /**
  * Submit through a handler instead of <form action>: React 19 resets an
@@ -23,10 +24,10 @@ function Notice({ state }: { state: FormState }) {
   return null;
 }
 
-function Submit({ pending, label }: { pending: boolean; label: string }) {
-  return <button type="submit" className="button-primary auth-submit" disabled={pending} data-testid="button-auth-submit">
-    {pending ? 'Please wait…' : label} {!pending && <ArrowRight size={15} />}
-  </button>;
+function Submit({ pending, label, pendingLabel }: { pending: boolean; label: string; pendingLabel: string }) {
+  return <LoadingButton loading={pending} loadingLabel={pendingLabel} className="button-primary auth-submit" testId="button-auth-submit">
+    {label} <ArrowRight size={15} />
+  </LoadingButton>;
 }
 
 export function LoginForm({ next }: { next?: string }) {
@@ -36,7 +37,7 @@ export function LoginForm({ next }: { next?: string }) {
     <input type="hidden" name="next" value={next ?? ''} />
     <label>Email<input name="email" type="email" autoComplete="email" required data-testid="input-email" /></label>
     <label>Password<input name="password" type="password" autoComplete="current-password" required data-testid="input-password" /></label>
-    <Submit pending={pending} label="Sign in" />
+    <Submit pending={pending} label="Sign in" pendingLabel="Signing in…" />
   </form>;
 }
 
@@ -50,7 +51,7 @@ export function RegisterForm({ next }: { next?: string }) {
     <label>Email<input name="email" type="email" autoComplete="email" required data-testid="input-email" /></label>
     <label>Password<input name="password" type="password" autoComplete="new-password" minLength={8} maxLength={72} required data-testid="input-password" /><small>At least 8 characters.</small></label>
     <label>Confirm password<input name="confirm_password" type="password" autoComplete="new-password" required data-testid="input-confirm-password" /></label>
-    <Submit pending={pending} label="Create account" />
+    <Submit pending={pending} label="Create account" pendingLabel="Creating account…" />
   </form>;
 }
 
@@ -59,7 +60,7 @@ export function ForgotPasswordForm() {
   return <form onSubmit={submitWith(action)} className="auth-form" noValidate>
     <Notice state={state} />
     <label>Email<input name="email" type="email" autoComplete="email" required data-testid="input-email" /></label>
-    <Submit pending={pending} label="Send reset link" />
+    <Submit pending={pending} label="Send reset link" pendingLabel="Sending…" />
   </form>;
 }
 
@@ -69,6 +70,6 @@ export function ResetPasswordForm() {
     <Notice state={state} />
     <label>New password<input name="password" type="password" autoComplete="new-password" minLength={8} maxLength={72} required data-testid="input-password" /></label>
     <label>Confirm new password<input name="confirm_password" type="password" autoComplete="new-password" required data-testid="input-confirm-password" /></label>
-    <Submit pending={pending} label="Update password" />
+    <Submit pending={pending} label="Update password" pendingLabel="Updating…" />
   </form>;
 }

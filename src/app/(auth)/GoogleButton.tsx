@@ -1,5 +1,6 @@
 import { isGoogleSignInEnabled } from '@/lib/auth/providers';
 import { signInWithGoogle } from '../auth/actions';
+import { SubmitButton } from '@/components/business/SubmitButton';
 
 function GoogleMark() {
   return <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true">
@@ -17,7 +18,7 @@ export async function GoogleButton({ next }: { next?: string }) {
     <div className="auth-divider"><span>or</span></div>
     <form action={signInWithGoogle}>
       <input type="hidden" name="next" value={next ?? ''} />
-      <button type="submit" className="partner-secondary auth-oauth" data-testid="button-google"><GoogleMark /> Continue with Google</button>
+      <SubmitButton className="partner-secondary auth-oauth" pendingLabel="Opening Google…" testId="button-google"><GoogleMark /> Continue with Google</SubmitButton>
     </form>
   </>;
 }

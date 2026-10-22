@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { signOut } from '@/app/auth/actions';
 import type { Access } from '@/lib/auth/session';
+import { SubmitButton } from '@/components/business/SubmitButton';
 
 const ROLE_LABELS: Record<string, string> = {
   visitor: 'Visitor',
@@ -28,7 +29,7 @@ export function PanelShell({ access, panel, children }: { access: Access; panel:
         </nav>
         <div className="panel-user">
           <span>{name}<small>{access.roles.filter(r => r !== 'visitor').map(r => ROLE_LABELS[r]).join(' · ') || ROLE_LABELS.visitor}</small></span>
-          <form action={signOut}><button type="submit" className="partner-secondary" data-testid="button-sign-out">Sign out</button></form>
+          <form action={signOut}><SubmitButton className="partner-secondary" pendingLabel="Signing out…" testId="button-sign-out">Sign out</SubmitButton></form>
         </div>
       </div>
     </header>

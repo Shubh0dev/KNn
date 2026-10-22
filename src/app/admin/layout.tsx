@@ -23,6 +23,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     nav.push({ href: '/admin/published/', label: 'Published listings', icon: 'published' });
   }
   if (can('reports.review')) nav.push({ href: '/admin/reports/', label: 'Reports', icon: 'reports', badge: reports?.count ?? 0 });
+  if (can('enquiries.view')) nav.push({ href: '/admin/enquiries/', label: 'Enquiries', icon: 'enquiries' });
 
   return <ConsoleChrome
     panel="Admin Panel"

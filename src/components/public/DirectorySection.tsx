@@ -7,7 +7,7 @@ import type { PublicCard } from '@/lib/public/listings';
  * there are no published listings, so the existing page is unchanged until
  * real content is approved.
  */
-export function DirectorySection({ cards, title = 'Listed on KashiNagri', showEmpty = false }: { cards: PublicCard[]; title?: string; showEmpty?: boolean }) {
+export function DirectorySection({ cards, title = 'Listed on KashiNagri', showEmpty = false, browseHref = '/directory/' }: { cards: PublicCard[]; title?: string; showEmpty?: boolean; browseHref?: string | null }) {
   if (cards.length === 0) {
     return showEmpty ? <section className="directory-band directory-empty" aria-label="Verified listings">
       <span className="eyebrow">Verified listings</span>
@@ -33,5 +33,6 @@ export function DirectorySection({ cards, title = 'Listed on KashiNagri', showEm
         <Link href={`/listings/${card.slug}/`} className="listing-card-link">View listing <ArrowRight size={14} /></Link>
       </div>
     </article>)}</div>
+    {browseHref && <Link href={browseHref} className="listing-card-link directory-browse" data-testid="link-directory-browse">Search all verified businesses by category and area <ArrowRight size={14} /></Link>}
   </section>;
 }

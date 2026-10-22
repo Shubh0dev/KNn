@@ -192,9 +192,10 @@ begin
   ok := n = 1; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'override is audited with the super admin as actor\n'; if not ok then fails := fails + 1; end if;
   v := public.superadmin_platform_metrics(30);
   ok := (v -> 'accounts' ->> 'total')::int >= 7 and v ? 'pending'; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'super admin reads platform metrics\n'; if not ok then fails := fails + 1; end if;
-  select count(*) into n from public.superadmin_list_users('p3-', null, null, 50, 0);
+  -- Only this test's accounts (labelled e2e accounts also contain 'p3-').
+  select count(*) into n from public.superadmin_list_users('p3-', null, null, 50, 0) u where u.id in (u_v, u_o, u_a1, u_a2, u_oa, u_s, u_s2);
   ok := n = 7; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'super admin searches accounts\n'; if not ok then fails := fails + 1; end if;
-  select count(*) into n from public.superadmin_list_users('p3-', 'admin', null, 50, 0);
+  select count(*) into n from public.superadmin_list_users('p3-', 'admin', null, 50, 0) u where u.id in (u_v, u_o, u_a1, u_a2, u_oa, u_s, u_s2);
   ok := n = 3; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'super admin filters accounts by role\n'; if not ok then fails := fails + 1; end if;
   msg := null; begin perform public.superadmin_grant_admin(u_s, '{}'); exception when insufficient_privilege then msg := 'denied'; end;
   ok := msg = 'denied'; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'super admin cannot change own roles\n'; if not ok then fails := fails + 1; end if;
@@ -224,7 +225,7 @@ begin
   msg := null; begin perform public.superadmin_update_setting('moderation', '{"report_daily_limit_per_user":10,"auto_hide_on_reports":true}'); exception when others then msg := sqlerrm; end;
   ok := msg like '%not allowed%'; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'automatic removal on reports cannot be switched on\n'; if not ok then fails := fails + 1; end if;
   perform public.superadmin_update_setting('listing_rules', '{"min_description_length":80,"require_image":true,"max_images":10}');
-  select count(*) into n from public.audit_logs where action = 'settings.updated' and entity_id = 'listing_rules';
+  select count(*) into n from public.audit_logs where action = 'settings.updated' and entity_id = 'listing_rules' and actor_id = u_s;
   ok := n = 1; r := r || (case when ok then 'PASS  ' else 'FAIL  ' end) || E'settings change is audited\n'; if not ok then fails := fails + 1; end if;
 
   -- curated content and featured placements

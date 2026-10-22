@@ -48,7 +48,8 @@ the earlier migration file). Never disable RLS to fix an error.
 1. `npm ci && npm run typecheck && npm test && npm run build` locally (CI runs the same).
 2. Apply any new migration in Supabase (SQL editor or MCP) **before** pushing code that needs it.
 3. Run the database tests in the SQL editor; each must end with `0 failed` and rolls itself back:
-   `supabase/tests/rls_smoke_test.sql`, `business_panel_test.sql`, `admin_panel_test.sql`, `analytics_test.sql`.
+   `supabase/tests/rls_smoke_test.sql`, `business_panel_test.sql`, `admin_panel_test.sql`, `analytics_test.sql`,
+   `enquiry_booking_test.sql`.
 4. Commit and push to `main`; Vercel builds and deploys.
 5. Smoke-check: `/`, a category page, `/login/`, `/business/`, `/admin/`, `/superadmin/` (signed out → login),
    `/sitemap.xml`, `/robots.txt`.
@@ -82,7 +83,33 @@ site events and 200 listing events per session per hour; enquiries limited to 10
 indicative, not audited figures. Consider a scheduled job to aggregate and purge raw `site_events`
 older than ~13 months.
 
-## 6. Test accounts and cleanup
+## 6. Enquiry-based booking (Part 5)
+
+KashiNagri takes **requests, not bookings**: no instant booking, inventory or payments.
+
+- **Request types** follow the listing category and the business's choice (`listings.enquiry_mode`):
+  stays → stay request (check-in/out, guests, rooms); food → table request (date, time, party size);
+  guides / events / travel / spiritual services → booking request (experience, date, participants);
+  anything else, or "Questions only" → general message; "Phone and email only" → no form.
+  Curated places (no business) never take enquiries.
+- **Validation** runs in the app and again in the database (`private.enquiries_validate`): India-time
+  dates, check-out after check-in, max 60 nights, counts 1–50, valid phone, duplicate requests within 24 h
+  refused with the original reference, a per-form token stops double submits, rate limits from Part 4.
+- **Workflow** (`business_update_enquiry`, `cancel_my_enquiry`): New → Seen → Responded →
+  Accepted / Declined / Alternative proposed → Confirmed → Completed; visitors can cancel until a
+  reservation is confirmed; declines and alternatives need a message. Every step is in `enquiry_events`.
+- **Who sees contact details**: the visitor (own requests), members of the receiving business, and staff
+  with `enquiries.view` only after giving a reason (`admin_reveal_enquiry_contact`, audited). Staff lists
+  are masked. Notifications and analytics never contain phone numbers or e-mails.
+- **Notifications** are in-app only (`notifications`). **No e-mail, SMS or WhatsApp message is sent.** To
+  add them, configure an e-mail/SMS provider and send from a server-side job or Edge Function triggered
+  by new `notifications` rows; keep provider keys server-side only.
+- **WhatsApp** links are plain `wa.me` links: shown for a business only when it ticks "accepts WhatsApp"
+  (re-reviewed) and the number is a valid mobile; shown to a business only when the visitor allowed it.
+- **Sign-in**: browsing is public; sending a request needs an account. The draft is kept in the tab's
+  `sessionStorage` (never in a URL) during sign-in and cleared once sent.
+
+## 7. Test accounts and cleanup
 
 Automated end-to-end tests use labelled accounts (`e2e-*@example.test`) and records (`E2E TEST …`,
 slug `e2e-test-*`). After a test run they are deactivated and banned. Remove them completely with

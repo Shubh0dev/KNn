@@ -2,6 +2,7 @@
 
 import { startTransition, useActionState, useEffect, useRef, useState, type ReactNode } from 'react';
 import { ArrowLeft, ArrowRight, Lock } from 'lucide-react';
+import { LoadingButton } from '@/components/loading/LoadingButton';
 import { BUSINESS_TYPES } from '@/lib/business/constants';
 import { slugify } from '@/lib/business/validation';
 import { createBusiness } from './actions';
@@ -105,9 +106,9 @@ export function OnboardingForm() {
 
     <div className="bp-form-actions">
       {step > 0 && <button type="button" className="bp-btn-secondary" onClick={() => setStep(step - 1)}><ArrowLeft size={15} /> Back</button>}
-      <button type="submit" className="button-primary" disabled={pending} aria-busy={pending} data-testid="button-create-business">
-        {step < STEPS.length - 1 ? <>Continue <ArrowRight size={15} /></> : pending ? 'Creating…' : 'Create business profile'}
-      </button>
+      <LoadingButton loading={pending} loadingLabel="Creating…" testId="button-create-business">
+        {step < STEPS.length - 1 ? <>Continue <ArrowRight size={15} /></> : 'Create business profile'}
+      </LoadingButton>
     </div>
   </form>;
 }

@@ -92,13 +92,7 @@ export const VERIFICATION_STATUS: Record<string, { label: string; tone: Tone; he
   suspended: { label: 'Suspended', tone: 'bad', help: 'Your business is suspended. Contact support.' },
 };
 
-export const ENQUIRY_STATUS: Record<string, { label: string; tone: Tone }> = {
-  new: { label: 'New', tone: 'info' },
-  read: { label: 'Read', tone: 'neutral' },
-  replied: { label: 'Replied', tone: 'good' },
-  closed: { label: 'Closed', tone: 'neutral' },
-  spam: { label: 'Spam', tone: 'bad' },
-};
+export { ENQUIRY_STATUS } from '../enquiries/rules';
 
 export const ENGAGEMENT_LABELS: Record<string, string> = {
   view: 'Listing views',

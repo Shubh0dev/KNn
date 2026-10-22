@@ -13,6 +13,7 @@ const NAV: ConsoleNavItem[] = [
   { href: '/superadmin/admins/', label: 'Admins', icon: 'admins' },
   { href: '/superadmin/businesses/', label: 'Businesses', icon: 'businesses' },
   { href: '/superadmin/listings/', label: 'All listings', icon: 'listings' },
+  { href: '/admin/enquiries/', label: 'Enquiries', icon: 'enquiries' },
   { href: '/superadmin/content/', label: 'Website content', icon: 'content' },
   { href: '/superadmin/settings/', label: 'Settings & plans', icon: 'settings' },
   { href: '/superadmin/audit/', label: 'Audit log', icon: 'audit' },

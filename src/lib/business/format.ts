@@ -1,10 +1,13 @@
 import { DAYS, type BusinessHours } from './constants';
 
+// Servers (Vercel) run in UTC; show every time in India time, where the platform operates.
+export const IST = 'Asia/Kolkata';
+
 export const formatDate = (value: string | null | undefined) =>
-  value ? new Date(value).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '–';
+  value ? new Date(value).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: IST }) : '–';
 
 export const formatDateTime = (value: string | null | undefined) =>
-  value ? new Date(value).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : '–';
+  value ? new Date(value).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short', timeZone: IST }) : '–';
 
 const rupees = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 

@@ -46,6 +46,11 @@ begin
   biz_b := public.create_business('Ganga View Stay', 'rls-ganga-view-stay', 'Test', 'Assi');
   insert into public.listings (business_id, category_id, title, slug) values (biz_b, cat, 'Riverside room', 'rls-riverside-room') returning id into lst_b;
   execute 'reset role';
+  -- Meet the Part 2 submission rules (description, area, image, verification requested, accepted document).
+  update public.businesses set business_type = 'stay', verification_status = 'pending' where id = biz_b;
+  update public.listings set description = 'A quiet riverside room near Assi Ghat with a small balcony.', area = 'Assi' where id = lst_b;
+  insert into public.listing_images (listing_id, storage_path, is_cover) values (lst_b, lst_b::text || '/cover.png', true);
+  insert into public.business_verification_documents (business_id, document_type, storage_path, review_status) values (biz_b, 'identity', biz_b::text || '/id.pdf', 'accepted');
 
   perform set_config('request.jwt.claims', json_build_object('sub', u_c, 'role', 'authenticated')::text, true);
   execute 'set local role authenticated';
@@ -223,9 +228,8 @@ begin
   -- ---------------------------------------------------------------- enquiries privacy
   perform set_config('request.jwt.claims', json_build_object('sub', u_a, 'role', 'authenticated')::text, true);
   execute 'set local role authenticated';
-  insert into public.enquiries (listing_id, sender_name, sender_email, message) values (lst_b, 'Visitor A', 'rls-a@example.test', 'Is a room free next week?');
-  update public.enquiries set status = 'closed' where listing_id = lst_b;
-  get diagnostics n = row_count;
+  insert into public.enquiries (listing_id, sender_name, sender_email, sender_phone, message) values (lst_b, 'Visitor A', 'rls-a@example.test', '+91 90000 00001', 'Is a room free next week?');
+  n := 1; begin update public.enquiries set status = 'closed' where listing_id = lst_b; get diagnostics n = row_count; exception when insufficient_privilege then n := 0; end;
   if n = 0 then r := r || E'PASS  sender cannot change enquiry status\n'; else fails := fails + 1; r := r || E'FAIL  sender changed enquiry status\n'; end if;
   execute 'reset role';
 

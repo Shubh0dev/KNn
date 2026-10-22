@@ -45,6 +45,8 @@ function toRow(input: ListingInput) {
     price_note: input.price_note ?? null,
     amenities: input.amenities,
     business_hours: input.business_hours ?? null,
+    enquiry_mode: input.enquiry_mode,
+    whatsapp_enabled: input.whatsapp_enabled,
   };
 }
 

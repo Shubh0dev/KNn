@@ -6,7 +6,7 @@ import { items } from '../discovery-data';
 export const revalidate = 3600;
 
 const SITE = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.kashinagri.com').replace(/\/$/, '');
-const STATIC = ['/', '/temples/', '/ghats/', '/stays/', '/food/', '/travel/', '/shopping/', '/spiritual-services/', '/guides/', '/events/', '/areas/', '/local-businesses/', '/explore/', '/plan-my-trip/'];
+const STATIC = ['/', '/temples/', '/ghats/', '/stays/', '/food/', '/travel/', '/shopping/', '/spiritual-services/', '/guides/', '/events/', '/areas/', '/local-businesses/', '/directory/', '/explore/', '/plan-my-trip/'];
 
 /** Public pages only. Panels, auth and API routes are excluded (see robots.ts). */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

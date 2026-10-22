@@ -2,18 +2,20 @@
 
 import { useRef, type ReactNode } from 'react';
 import { useFormStatus } from 'react-dom';
+import { LoadingButton } from '@/components/loading/LoadingButton';
 
 /**
  * Button that asks for confirmation in a modal <dialog> before submitting its
  * parent form. Use for destructive actions.
  */
-export function ConfirmButton({ children, title, message, confirmLabel = 'Confirm', className = 'bp-btn-danger', testId }: {
-  children: ReactNode; title: string; message: string; confirmLabel?: string; className?: string; testId?: string;
+export function ConfirmButton({ children, title, message, confirmLabel = 'Confirm', className = 'bp-btn-danger', testId, pendingLabel = 'Saving…' }: {
+  children: ReactNode; title: string; message: string; confirmLabel?: string; className?: string; testId?: string; pendingLabel?: string;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const { pending } = useFormStatus();
   return <>
-    <button type="button" className={className} onClick={() => dialog.current?.showModal()} disabled={pending} data-testid={testId}>{children}</button>
+    {/* The trigger shows the progress once confirmed (the dialog closes on submit). */}
+    <LoadingButton type="button" loading={pending} loadingLabel={pendingLabel} className={className} onClick={() => dialog.current?.showModal()} testId={testId}>{children}</LoadingButton>
     <dialog ref={dialog} className="bp-dialog" aria-labelledby="bp-dialog-title">
       <h2 id="bp-dialog-title" className="serif">{title}</h2>
       <p>{message}</p>
