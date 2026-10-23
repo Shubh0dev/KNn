@@ -59,7 +59,7 @@ export default async function Page({ params, searchParams }: Props) {
           </form>)}</div>
           {['draft', 'archived'].includes(status) && <form action={deleteCurated} className="bp-mt">
             <input type="hidden" name="listingId" value={id} />
-            <ConfirmButton title="Delete this curated place?" message="It and its photos are permanently deleted." confirmLabel="Delete" testId="button-delete-curated">Delete</ConfirmButton>
+            <ConfirmButton title="Delete this curated place?" pendingLabel="Deleting…" message="It and its photos are permanently deleted." confirmLabel="Delete" testId="button-delete-curated">Delete</ConfirmButton>
           </form>}
         </section>
         <section className="bp-card">

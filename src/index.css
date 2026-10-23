@@ -934,12 +934,14 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------------------------------------------------------------- Loading indicators (timing: src/lib/loading/config.ts) */
 .kn-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-.kn-loader { display: inline-flex; flex-shrink: 0; vertical-align: middle; color: hsl(var(--accent)); }
-.kn-loader-ring { display: block; width: 100%; height: 100%; box-sizing: border-box; border-radius: 50%; border: 2px solid color-mix(in srgb, currentColor 22%, transparent); border-top-color: currentColor; animation: kn-spin .7s linear infinite; }
+.kn-loader { display: inline-flex; flex-shrink: 0; vertical-align: middle; color: var(--kn-spinner-color, hsl(var(--accent))); }
+.kn-loader-ring { display: block; width: 100%; height: 100%; box-sizing: border-box; border-radius: 50%; border: 2px solid color-mix(in srgb, currentColor 22%, transparent); border-top-color: currentColor; animation: kn-spin var(--kn-spinner-speed, 700ms) linear infinite; }
 .kn-loader-xs { width: 13px; height: 13px; }
 .kn-loader-sm { width: 16px; height: 16px; }
 .kn-loader-md { width: 26px; height: 26px; }
 .kn-loader-md .kn-loader-ring { border-width: 2.5px; }
+.kn-loader-lg { width: 40px; height: 40px; }
+.kn-loader-lg .kn-loader-ring { border-width: 3px; }
 .kn-loader-delayed { opacity: 0; animation: kn-appear 0s linear var(--kn-spinner-delay, 150ms) forwards; }
 @keyframes kn-spin { to { transform: rotate(360deg); } }
 @keyframes kn-appear { to { opacity: 1; } }
@@ -949,12 +951,73 @@ button .kn-loader { color: currentColor; }
 .kn-btn-loading { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
 button[aria-busy="true"]:disabled { opacity: .85; cursor: progress; }
 .kn-inline-loader { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: #6b4a3c; }
-/* Navigation: a small pill in the top-right corner, never covering the page. */
-.kn-nav-indicator { position: fixed; top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); z-index: 1000; display: none; align-items: center; gap: 8px; padding: 7px 12px 7px 9px; border: 1px solid #e6dccb; border-radius: 999px; background: rgba(255, 253, 247, .96); box-shadow: 0 6px 18px rgba(27, 17, 14, .1); color: #6b4a3c; font-size: 11.5px; font-weight: 700; pointer-events: none; }
-.kn-nav-indicator.is-visible { display: inline-flex; }
-@media (max-width: 520px) { .kn-nav-indicator { top: auto; bottom: max(14px, env(safe-area-inset-bottom)); right: 50%; transform: translateX(50%); } }
+/* Navigation: centred card (see "Brand spinner" below); the layer never blocks clicks. */
+.kn-nav-indicator { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center; pointer-events: none; }
 /* Reduced motion: no rotation, a gentle fade instead (overrides the global reduced-motion rule). */
 @media (prefers-reduced-motion: reduce) {
   .kn-loader-ring { animation: kn-pulse 1.6s ease-in-out infinite !important; border-top-color: color-mix(in srgb, currentColor 22%, transparent); border-color: currentColor; }
   .kn-loader-delayed { animation: kn-appear 0s linear var(--kn-spinner-delay, 150ms) forwards !important; }
 }
+
+/* ---------------------------------------------------------------- Loading system: route screens, overlay */
+/* Takes its space at once (no layout jump), becomes visible only after the spinner delay. */
+.kn-fade-delayed { opacity: 0; animation: kn-appear 0s linear var(--kn-spinner-delay, 150ms) forwards; }
+@media (prefers-reduced-motion: reduce) { .kn-fade-delayed { animation: kn-appear 0s linear var(--kn-spinner-delay, 150ms) forwards !important; } }
+.kn-skel-bar { height: 44px; }
+.kn-skel-line { height: 58px; }
+.kn-skel-short { height: 16px; width: 60%; }
+.kn-skel-eyebrow { height: 12px; width: 120px; }
+.kn-skel-two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.kn-skel-card { height: 180px; }
+.kn-skel-field { display: flex; flex-direction: column; gap: 7px; }
+.kn-skel-label { height: 11px; width: 140px; }
+.kn-skel-input { height: 42px; }
+.kn-skel-button { height: 42px; width: 160px; }
+.kn-skel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.kn-skel-tile { height: 220px; }
+.kn-skeleton-page, .kn-skeleton-form { padding-block: 32px; }
+.public-report .kn-skeleton-form { width: min(100%, 620px); margin-inline: auto; }
+@media (max-width: 760px) {
+  .kn-skel-two, .kn-skel-grid { grid-template-columns: 1fr; }
+  .bp-skel-row { grid-template-columns: 1fr 1fr; }
+  .kn-skel-tile:nth-child(n + 2) { display: none; }
+}
+/* navigationStyle 'overlay': fade only the content area; header and sidebar stay usable. */
+[data-kn-navigating] main, [data-kn-navigating] .bp-content { opacity: .55; transition: opacity .15s ease; }
+@media (prefers-reduced-motion: reduce) { [data-kn-navigating] main, [data-kn-navigating] .bp-content { transition: none; } }
+.directory-search-error { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; font-size: 13px; color: #6b4a3c; }
+.directory-search-error .partner-secondary { border: 1px solid #e0d3bd; padding: 8px 12px; border-radius: 3px; background: transparent; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+/* ---------------------------------------------------------------- Brand spinner: colour per rotation, centred navigation */
+/* Two-tone arc: bright leading edge, softer trailing edge, faint track. */
+.kn-loader-ring { border-right-color: color-mix(in srgb, currentColor 45%, transparent); }
+/* Standalone spinners (not inside buttons) cycle maroon -> saffron -> gold -> green, switching
+   colour exactly as each full rotation completes (cycle = 4 rotations), with a short blend. */
+.kn-loader:not(button .kn-loader) { animation: kn-brand-colours calc(var(--kn-spinner-speed, 800ms) * 4) linear infinite; }
+@keyframes kn-brand-colours {
+  0%, 22% { color: var(--kn-c1, #772337); }
+  25%, 47% { color: var(--kn-c2, #e0962f); }
+  50%, 72% { color: var(--kn-c3, #9d6d2b); }
+  75%, 97% { color: var(--kn-c4, #38591f); }
+  100% { color: var(--kn-c1, #772337); }
+}
+/* Delayed fallbacks keep their fade-in as well as the colour cycle. */
+.kn-loader-delayed:not(button .kn-loader) { animation: kn-appear 0s linear var(--kn-spinner-delay, 150ms) forwards, kn-brand-colours calc(var(--kn-spinner-speed, 800ms) * 4) linear infinite; }
+
+/* Navigation indicator: centred on screen, never blocks clicks. */
+.kn-nav-indicator.is-visible { display: flex; animation: kn-fade-in .18s ease-out; }
+.kn-nav-card { display: flex; flex-direction: column; align-items: center; gap: 12px; min-width: 132px; padding: 22px 26px 18px; border: 1px solid #e6dccb; border-radius: 14px; background: rgba(255, 253, 247, .97); box-shadow: 0 18px 50px rgba(43, 23, 18, .16); color: #6b4a3c; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+@media (max-width: 520px) { .kn-nav-card { min-width: 116px; padding: 18px 22px 14px; } }
+@keyframes kn-fade-in { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  /* No spinning and no colour flashing: a calm pulse in the first brand colour. */
+  .kn-loader:not(button .kn-loader), .kn-loader-delayed:not(button .kn-loader) { color: var(--kn-c1, #772337); }
+  .kn-loader:not(button .kn-loader) { animation: none !important; }
+  .kn-loader-delayed:not(button .kn-loader) { animation: kn-appear 0s linear var(--kn-spinner-delay, 150ms) forwards !important; }
+  .kn-nav-indicator.is-visible { animation: none; }
+}
+
+/* Page-loading card: a slightly larger, bolder ring so each brand colour reads clearly. */
+.kn-nav-card .kn-loader-lg { width: 46px; height: 46px; }
+.kn-nav-card .kn-loader-lg .kn-loader-ring { border-width: 3.5px; }

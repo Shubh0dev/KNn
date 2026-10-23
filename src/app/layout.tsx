@@ -4,10 +4,10 @@ import { DM_Sans, Playfair_Display } from 'next/font/google';
 import '../index.css';
 import { Analytics } from '@/components/analytics/Analytics';
 import { NavigationProgress } from '@/components/loading/NavigationProgress';
-import { LOADING_CONFIG } from '@/lib/loading/config';
+import { loadingCssVars } from '@/lib/loading/config';
 
-// Server-rendered fallbacks fade their spinner in after the same delay (see .kn-loader-delayed).
-const loadingVars = { '--kn-spinner-delay': `${LOADING_CONFIG.spinnerDelay}ms` } as CSSProperties;
+// Spinner delay, speed and colour from LOADING_CONFIG (server-rendered fallbacks fade in after the same delay).
+const loadingVars = loadingCssVars() as CSSProperties;
 
 const dmSans = DM_Sans({
   subsets: ['latin'],

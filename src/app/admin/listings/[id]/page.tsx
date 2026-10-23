@@ -114,7 +114,7 @@ export default async function Page({ params, searchParams }: Props) {
                   <label htmlFor="note">Reason / note for the business</label>
                   <textarea id="note" name="note" rows={3} maxLength={1000} placeholder="Required for every decision except approval" data-testid="input-listing-note" />
                 </div>
-                <ConfirmButton className="button-primary" title="Record this decision?" message="The listing status changes immediately and public visibility follows. The decision is recorded with your name, the time and your note." confirmLabel="Record decision" testId="button-record-listing-decision">Record decision</ConfirmButton>
+                <ConfirmButton className="button-primary" title="Record this decision?" pendingLabel="Recording decision…" message="The listing status changes immediately and public visibility follows. The decision is recorded with your name, the time and your note." confirmLabel="Record decision" testId="button-record-listing-decision">Record decision</ConfirmButton>
               </form>}
         </section>
 
@@ -162,7 +162,7 @@ export default async function Page({ params, searchParams }: Props) {
               </select>
             </div>
             <div className="bp-field"><label htmlFor="override-reason">Reason (at least 10 characters)</label><textarea id="override-reason" name="reason" rows={2} maxLength={1000} data-testid="input-override-reason" /></div>
-            <ConfirmButton className="bp-btn-danger" title="Apply override?" message="This bypasses the normal moderation workflow. It is recorded in the audit log with your reason." confirmLabel="Apply override" testId="button-apply-override">Apply override</ConfirmButton>
+            <ConfirmButton className="bp-btn-danger" title="Apply override?" pendingLabel="Applying override…" message="This bypasses the normal moderation workflow. It is recorded in the audit log with your reason." confirmLabel="Apply override" testId="button-apply-override">Apply override</ConfirmButton>
           </form>
         </section>}
       </aside>

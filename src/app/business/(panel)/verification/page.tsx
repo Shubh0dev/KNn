@@ -77,7 +77,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
                 <StatusBadge label={s?.label ?? doc.review_status} tone={s?.tone ?? 'neutral'} />
                 {isOwner && doc.review_status === 'pending' && <form action={removeVerificationDocument}>
                   <input type="hidden" name="documentId" value={doc.id} />
-                  <ConfirmButton className="bp-btn-link-danger" title="Remove this document?" message="The file is permanently deleted from private storage." confirmLabel="Remove" testId="button-remove-document">Remove</ConfirmButton>
+                  <ConfirmButton className="bp-btn-link-danger" title="Remove this document?" pendingLabel="Removing…" message="The file is permanently deleted from private storage." confirmLabel="Remove" testId="button-remove-document">Remove</ConfirmButton>
                 </form>}
               </li>;
             })}</ul>}

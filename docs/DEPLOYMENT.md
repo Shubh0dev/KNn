@@ -109,7 +109,16 @@ KashiNagri takes **requests, not bookings**: no instant booking, inventory or pa
 - **Sign-in**: browsing is public; sending a request needs an account. The draft is kept in the tab's
   `sessionStorage` (never in a URL) during sign-in and cleared once sent.
 
-## 7. Test accounts and cleanup
+## 7. Loading indicators
+
+All settings live in `src/lib/loading/config.ts`: spinner delay (150 ms: faster operations show nothing),
+minimum display time (200 ms), spinner speed, the four brand colours the ring cycles through (one colour per
+full rotation), sizes, page-loading style (centred card, content fade, or none) and route loading style
+(skeleton or spinner). These settings only affect what is shown; they never delay a request. Route loading
+screens are the `loading.tsx` files in each panel route; panel error screens (`error.tsx`) retry with a real
+reload. Visitors with reduced motion get a still ring without colour flashing.
+
+## 8. Test accounts and cleanup
 
 Automated end-to-end tests use labelled accounts (`e2e-*@example.test`) and records (`E2E TEST …`,
 slug `e2e-test-*`). After a test run they are deactivated and banned. Remove them completely with

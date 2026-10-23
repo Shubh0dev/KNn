@@ -128,11 +128,11 @@ export default async function Page({ params, searchParams }: Props) {
             ? <form action={restoreListing}><input type="hidden" name="listingId" value={listing.id} /><SubmitButton className="bp-btn-secondary" pendingLabel="Restoring…">Restore as draft</SubmitButton></form>
             : listing.status !== 'suspended' && <form action={archiveListing}>
                 <input type="hidden" name="listingId" value={listing.id} />
-                <ConfirmButton className="bp-btn-secondary" title="Archive this listing?" message="It will be hidden from travellers. You can restore it later as a draft, and it will need approval again." confirmLabel="Archive" testId="button-archive">Archive listing</ConfirmButton>
+                <ConfirmButton className="bp-btn-secondary" title="Archive this listing?" pendingLabel="Archiving…" message="It will be hidden from travellers. You can restore it later as a draft, and it will need approval again." confirmLabel="Archive" testId="button-archive">Archive listing</ConfirmButton>
               </form>}
           {listing.status === 'draft' && <form action={deleteDraftListing} className="bp-mt">
             <input type="hidden" name="listingId" value={listing.id} />
-            <ConfirmButton title="Delete this draft?" message="The draft and its photos are permanently deleted. This cannot be undone." confirmLabel="Delete draft" testId="button-delete-draft">Delete draft</ConfirmButton>
+            <ConfirmButton title="Delete this draft?" pendingLabel="Deleting…" message="The draft and its photos are permanently deleted. This cannot be undone." confirmLabel="Delete draft" testId="button-delete-draft">Delete draft</ConfirmButton>
           </form>}
         </section>
       </aside>

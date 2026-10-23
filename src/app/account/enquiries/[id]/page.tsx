@@ -78,7 +78,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
       <form action={cancelEnquiry} className="enquiry-cancel">
         <input type="hidden" name="enquiryId" value={e.id} />
         <label>Reason (optional, shared with the business)<input name="reason" maxLength={500} data-testid="input-cancel-reason" /></label>
-        <ConfirmButton title="Cancel this request?" message="The business will see that you cancelled it. This cannot be undone." confirmLabel="Cancel request" testId="button-cancel-enquiry">Cancel request</ConfirmButton>
+        <ConfirmButton title="Cancel this request?" pendingLabel="Cancelling…" message="The business will see that you cancelled it. This cannot be undone." confirmLabel="Cancel request" testId="button-cancel-enquiry">Cancel request</ConfirmButton>
       </form>
     </section>}
     {e.status === 'confirmed' && <p className="bp-muted">To change or cancel a confirmed reservation, please contact the business directly.</p>}

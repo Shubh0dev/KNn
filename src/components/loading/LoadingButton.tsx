@@ -1,7 +1,7 @@
 'use client';
 
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import { spinnersEnabled } from '@/lib/loading/config';
+import { LOADING_CONFIG, spinnersEnabled } from '@/lib/loading/config';
 import { useDelayedLoading } from '@/lib/loading/useDelayedLoading';
 import { CircularLoader } from './CircularLoader';
 
@@ -23,7 +23,7 @@ export function LoadingButton({ loading, loadingLabel = 'Saving…', children, d
   const showSpinner = useDelayedLoading(loading, spinnersEnabled('button'));
   return <button {...rest} type={type} className={className} disabled={disabled || loading || showSpinner} aria-busy={loading} data-testid={testId}>
     {showSpinner
-      ? <span className="kn-btn-loading" data-testid={testId ? `${testId}-loading` : undefined}><CircularLoader size="xs" /><span>{loadingLabel}</span></span>
+      ? <span className="kn-btn-loading" data-testid={testId ? `${testId}-loading` : undefined}><CircularLoader size={LOADING_CONFIG.sizes.button} /><span>{loadingLabel}</span></span>
       : children}
   </button>;
 }

@@ -48,7 +48,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
       <form action={grantAdmin} className="bp-form cc-stack-form">
         <div className="bp-field"><label htmlFor="admin-email">Account email</label><input id="admin-email" name="email" type="email" required data-testid="input-admin-email" /></div>
         <PermissionChecks selected={['businesses.verify', 'listings.moderate']} prefix="new-perm" />
-        <ConfirmButton className="button-primary" title="Grant admin access?" message="This account will be able to use the Admin Panel with the permissions you ticked." confirmLabel="Grant access" testId="button-grant-admin">Grant admin access</ConfirmButton>
+        <ConfirmButton className="button-primary" title="Grant admin access?" pendingLabel="Granting access…" message="This account will be able to use the Admin Panel with the permissions you ticked." confirmLabel="Grant access" testId="button-grant-admin">Grant admin access</ConfirmButton>
       </form>
     </section>
 
@@ -67,7 +67,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
         </form>
         <form action={revokeAdmin} className="bp-mt">
           <input type="hidden" name="userId" value={admin.id} />
-          <ConfirmButton title="Remove admin access?" message="All admin permissions are removed. The account itself stays active as a normal account." confirmLabel="Remove access" testId="button-revoke-admin">Remove admin access</ConfirmButton>
+          <ConfirmButton title="Remove admin access?" pendingLabel="Removing access…" message="All admin permissions are removed. The account itself stays active as a normal account." confirmLabel="Remove access" testId="button-revoke-admin">Remove admin access</ConfirmButton>
         </form>
       </section>;
     })}

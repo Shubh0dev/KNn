@@ -73,7 +73,7 @@ export default async function Page({ params, searchParams }: Props) {
             <input type="hidden" name="userId" value={id} />
             <input name="businessSlug" placeholder="Business web address (slug)" aria-label="Business web address" required />
             <select name="memberRole" defaultValue="manager" aria-label="Member role"><option value="manager">Manager</option><option value="owner">Owner (only if none)</option></select>
-            <ConfirmButton className="bp-btn-secondary bp-btn-small" title="Give business access?" message="This person will be able to manage the business's listings and will receive the business owner role. Recorded in the audit log." confirmLabel="Assign access" testId="button-add-member">Assign access</ConfirmButton>
+            <ConfirmButton className="bp-btn-secondary bp-btn-small" title="Give business access?" pendingLabel="Assigning access…" message="This person will be able to manage the business's listings and will receive the business owner role. Recorded in the audit log." confirmLabel="Assign access" testId="button-add-member">Assign access</ConfirmButton>
           </form>
           <small className="bp-muted">Business owners normally get access by registering their own business. Use this for transfers or adding staff.</small>
         </section>
@@ -96,12 +96,12 @@ export default async function Page({ params, searchParams }: Props) {
                   <input type="hidden" name="userId" value={id} />
                   <input type="hidden" name="status" value="suspended" />
                   <div className="bp-field"><label htmlFor="reason">Reason</label><textarea id="reason" name="reason" rows={2} maxLength={500} required data-testid="input-suspend-reason" /></div>
-                  <ConfirmButton title="Suspend this account?" message="The person keeps their data but loses access to every protected action until reactivated. Their businesses' listings cannot be managed meanwhile." confirmLabel="Suspend account" testId="button-suspend-account">Suspend account</ConfirmButton>
+                  <ConfirmButton title="Suspend this account?" pendingLabel="Suspending…" message="The person keeps their data but loses access to every protected action until reactivated. Their businesses' listings cannot be managed meanwhile." confirmLabel="Suspend account" testId="button-suspend-account">Suspend account</ConfirmButton>
                 </form>
               : <form action={setAccountStatus}>
                   <input type="hidden" name="userId" value={id} />
                   <input type="hidden" name="status" value="active" />
-                  <ConfirmButton className="bp-btn-secondary" title="Reactivate this account?" message="The person regains access immediately." confirmLabel="Reactivate" testId="button-reactivate-account">Reactivate account</ConfirmButton>
+                  <ConfirmButton className="bp-btn-secondary" title="Reactivate this account?" pendingLabel="Reactivating…" message="The person regains access immediately." confirmLabel="Reactivate" testId="button-reactivate-account">Reactivate account</ConfirmButton>
                 </form>}
           <p className="bp-muted">Accounts are never permanently deleted from this panel. Deletion needs a separate retention and erasure process.</p>
         </section>

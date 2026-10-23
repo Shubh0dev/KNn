@@ -1,10 +1,13 @@
+import type { SpinnerSize } from '@/lib/loading/config';
+
 /**
  * Small circular spinner. Inside buttons it inherits the text colour and is
  * hidden from screen readers (the button carries aria-busy and its label);
- * standalone, pass `label` so it is announced.
+ * standalone, pass `label` so it is announced. Sizes: xs/sm for buttons and
+ * inline actions, md for sections, lg for whole pages (see LOADING_CONFIG.sizes).
  */
 export function CircularLoader({ size = 'sm', label, className = '', delayed = false }: {
-  size?: 'xs' | 'sm' | 'md';
+  size?: SpinnerSize;
   label?: string;
   className?: string;
   /** Fade in after the configured spinner delay (CSS only), for server-rendered fallbacks. */

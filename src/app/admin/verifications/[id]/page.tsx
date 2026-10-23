@@ -121,8 +121,8 @@ export default async function Page({ params, searchParams }: Props) {
                 <input type="hidden" name="businessId" value={id} />
                 <input type="hidden" name="documentId" value={doc.id} />
                 <input name="note" placeholder="Note (required to reject)" aria-label="Review note" maxLength={1000} />
-                <button name="decision" value="accepted" className="bp-btn-secondary bp-btn-small" data-testid="button-accept-document">Accept</button>
-                <button name="decision" value="rejected" className="bp-btn-danger bp-btn-small" data-testid="button-reject-document">Not accepted</button>
+                <SubmitButton name="decision" value="accepted" className="bp-btn-secondary bp-btn-small" pendingLabel="Accepting…" testId="button-accept-document">Accept</SubmitButton>
+                <SubmitButton name="decision" value="rejected" className="bp-btn-danger bp-btn-small" pendingLabel="Saving…" testId="button-reject-document">Not accepted</SubmitButton>
               </form>}
             </li>;
           })}</ul>}
@@ -150,7 +150,7 @@ export default async function Page({ params, searchParams }: Props) {
                     <label htmlFor="note">Reason / note for the business</label>
                     <textarea id="note" name="note" rows={3} maxLength={1000} placeholder="Required for corrections, rejection and suspension" data-testid="input-decision-note" />
                   </div>
-                  <ConfirmButton className="button-primary" title="Record this decision?" message="The business will see the outcome and your note. The decision is recorded in the audit log with your name." confirmLabel="Record decision" testId="button-record-decision">Record decision</ConfirmButton>
+                  <ConfirmButton className="button-primary" title="Record this decision?" pendingLabel="Recording decision…" message="The business will see the outcome and your note. The decision is recorded in the audit log with your name." confirmLabel="Record decision" testId="button-record-decision">Record decision</ConfirmButton>
                 </form>
               </>}
         </section>

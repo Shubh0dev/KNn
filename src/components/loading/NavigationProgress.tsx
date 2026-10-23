@@ -30,6 +30,14 @@ export function NavigationProgress() {
     setNavigating(false);
   }, [pathname, search]);
 
+  // 'overlay' style: fade the content area (main) while the next page loads. Always removed when hidden.
+  const overlay = LOADING_CONFIG.navigationStyle === 'overlay';
+  useEffect(() => {
+    if (!overlay || !visible) return;
+    document.documentElement.dataset.knNavigating = 'true';
+    return () => { delete document.documentElement.dataset.knNavigating; };
+  }, [overlay, visible]);
+
   // Safety net: never leave the indicator running.
   useEffect(() => {
     if (!navigating) return;
@@ -83,6 +91,6 @@ export function NavigationProgress() {
 
   if (!enabled) return null;
   return <div className={`kn-nav-indicator${visible ? ' is-visible' : ''}`} aria-live="polite" data-testid="navigation-indicator" data-visible={visible}>
-    {visible && <><CircularLoader size="sm" /><span>Loading…</span></>}
+    {visible && <div className="kn-nav-card"><CircularLoader size={LOADING_CONFIG.sizes.navigation} /><span>Loading…</span></div>}
   </div>;
 }

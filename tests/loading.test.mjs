@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createSpinnerController } from '../src/lib/loading/controller.ts';
-import { LOADING_CONFIG, spinnersEnabled } from '../src/lib/loading/config.ts';
+import { LOADING_CONFIG, loadingCssVars, spinnersEnabled } from '../src/lib/loading/config.ts';
 
 /** Deterministic clock: timers fire only when advanced. */
 function fakeClock() {
@@ -33,7 +33,11 @@ const make = (clock, log) => createSpinnerController({ delay: 150, minimum: 300,
 
 test('defaults match the documented values', () => {
   assert.equal(LOADING_CONFIG.spinnerDelay, 150);
-  assert.equal(LOADING_CONFIG.minimumSpinnerDuration, 300);
+  assert.equal(LOADING_CONFIG.minimumSpinnerDuration, 200);
+  assert.ok(LOADING_CONFIG.minimumSpinnerDuration >= 150 && LOADING_CONFIG.minimumSpinnerDuration <= 200, 'minimum display within the 150–200 ms range');
+  assert.equal(LOADING_CONFIG.navigationStyle, 'spinner');
+  assert.equal(LOADING_CONFIG.routeFallback, 'skeleton');
+  assert.deepEqual(Object.keys(LOADING_CONFIG.sizes).sort(), ['button', 'inline', 'navigation', 'page', 'section']);
   assert.equal(LOADING_CONFIG.navigationLoadingEnabled, true);
   assert.equal(LOADING_CONFIG.buttonLoadingEnabled, true);
   assert.equal(LOADING_CONFIG.globalLoadingEnabled, true);
@@ -113,4 +117,23 @@ test('switches: the global switch turns every spinner off', () => {
   assert.equal(spinnersEnabled('navigation', { ...base, navigationLoadingEnabled: false }), false);
   assert.equal(spinnersEnabled('inline', { ...base, globalLoadingEnabled: false }), false);
   assert.equal(spinnersEnabled('button', { ...base, globalLoadingEnabled: false }), false);
+});
+
+test('navigationStyle none turns the navigation indicator off', () => {
+  assert.equal(spinnersEnabled('navigation', { ...LOADING_CONFIG, navigationStyle: 'none' }), false);
+  assert.equal(spinnersEnabled('navigation', { ...LOADING_CONFIG, navigationStyle: 'overlay' }), true);
+  assert.equal(spinnersEnabled('button', { ...LOADING_CONFIG, navigationStyle: 'none' }), true);
+});
+
+test('visual settings reach CSS as custom properties', () => {
+  const vars = loadingCssVars({ ...LOADING_CONFIG, spinnerDelay: 120, spinnerSpeed: 900 });
+  assert.equal(vars['--kn-spinner-delay'], '120ms');
+  assert.equal(vars['--kn-spinner-speed'], '900ms');
+  assert.equal(vars['--kn-c1'], LOADING_CONFIG.spinnerPalette[0]);
+  assert.equal(vars['--kn-c4'], LOADING_CONFIG.spinnerPalette[3]);
+});
+
+test('a one-colour palette switches the colour cycle off', () => {
+  const vars = loadingCssVars({ ...LOADING_CONFIG, spinnerPalette: ['#772337'] });
+  assert.deepEqual([vars['--kn-c1'], vars['--kn-c2'], vars['--kn-c3'], vars['--kn-c4']], ['#772337', '#772337', '#772337', '#772337']);
 });

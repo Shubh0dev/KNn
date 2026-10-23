@@ -91,7 +91,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
                 <label className="bp-check"><input type="checkbox" name="is_sponsored" defaultChecked={p.is_sponsored} disabled={!sponsored.enabled && !p.is_sponsored} /> Sponsored</label>
                 <SubmitButton className="bp-btn-secondary bp-btn-small" pendingLabel="…">Save</SubmitButton>
               </form></td>
-              <td className="bp-row-actions"><form action={removePlacement}><input type="hidden" name="id" value={p.id} /><ConfirmButton className="bp-btn-link-danger" title="Remove this placement?" message="The listing stays published; it just stops being featured." confirmLabel="Remove" testId="button-remove-placement">Remove</ConfirmButton></form></td>
+              <td className="bp-row-actions"><form action={removePlacement}><input type="hidden" name="id" value={p.id} /><ConfirmButton className="bp-btn-link-danger" title="Remove this placement?" pendingLabel="Removing…" message="The listing stays published; it just stops being featured." confirmLabel="Remove" testId="button-remove-placement">Remove</ConfirmButton></form></td>
             </tr>;
           })}</tbody>
         </table></div>}
